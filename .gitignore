@@ -1,14 +1,26 @@
 # .gitignore file for openLilyLib
 
 # We don't want to track the compiled results or any intermediate files
+# from Lilypond
 *.pdf
 *.ps
+*.eps
 *.log
 *.midi
 *.mid
 
+# We don't want to track intermediate files from LaTeX
+*.aux
+*.out
+*.toc
+*.bbl
+*.blg
+*.dvi
+
 # We don't want backup files to be tracked
 *.*~
+*~
+*.bak
 
 # We don't want to track binary document files
 # If you want to track text documents, use
@@ -16,3 +28,11 @@
 *.doc
 *.docx
 *.odt
+
+# We also generally don't want to track image files
+# If necessary, add them with git add -f
+*.tif
+*.png
+*.jpg
+
+
