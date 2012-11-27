@@ -23,41 +23,49 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %{
-  Default font set for Adobe Minion Pro
-  
-  Include this file if you want to use Minion Pro as your default font
-  Keep in mind that there is also the opticals set available
-  
-  Of course this will only work if you have all referenced
-  font faces of the (non-free) Adobe Minon Pro family installed
+   includes/stylesheets/default-a4-lied.ily
+   
+   Stylesheet for a voice-piano song on A4 paper
+
+   TODO: The font-sizes have to be adjusted 
 %}
 
+#(ly:set-option 'relative-includes #t)
+% Condensed layout with 'semibold' appearance
+\include "default-a4-lied_base.ily"
+
+% Adjust the font sizes to the combination of the stylesheet and the font
 \layout {
+  
   \context {
     \Score
-
-    % Medium Condensed is a _very_ useful font face for lyrics
-    % Condensed makes it quite narrow, and Medium suits very
-    % well in LilyPond's overall appearance 
-    \override BarNumber #'font-name = "Minion Pro Semibold Condensed"
-    \override DynamicTextSpanner #'font-name = "Minion Pro Medium Italic"
-    \override FootnoteItem #'font-name = "Minion Pro Medium"
-    \override LyricText #'font-name = #"Minion Pro Medium Condensed"
-    \override MetronomeMark #'font-name = "Minion Pro Bold"
-    \override MultiMeasureRestText #'font-name = "Minion Pro Medium Italic"
-    \override OttavaBracket #'font-name = "Minion Pro Semibold Condensed Italic"
-    \override TextScript #'font-name = "Minion Pro Medium Italic"
-    \override TextSpanner #'font-name = "Minion Pro Medium Italic"
-    \override TupletNumber #'font-name = "Minion Pro Bold Italic"
-  }
-
-  \context {
-    \Staff
-    \override InstrumentName #'font-name = "Minion Pro Medium Condensed"
+%    \override BarNumber #'font-size = #1.25
+%    \override DynamicTextSpanner #'font-size = #0.5
+%    \override LyricText #'font-size = #1.25
+%    \override MetronomeMark #'font-size = #2
+%    \override MultiMeasureRestText #'font-size = #0.5
+%    \override OttavaBracket #'font-size = #0.3
+%    \override TextScript #'font-size = #0.5
+%    \override TextSpanner #'font-size = #0.5
+%    \override TupletNumber #'font-size = #-1
   }
 
   \context {
     \PianoStaff
-    \override InstrumentName #'font-name = "Minion Pro Medium Condensed"
+%    \override InstrumentName #'font-size = #1.25
   }
+
+  \context {
+    \Staff
+%    \override InstrumentName #'font-size = #1.25
+  }
+
+  \context {
+    \Dynamics
+%    \override TextScript #'font-size = #1.2 % has to be set separately (a bug?)
+%    \override TextSpanner #'font-size = #1.2
+%    \override DynamicTextSpanner #'font-size = #1.2
+  }
+
 }
+    
