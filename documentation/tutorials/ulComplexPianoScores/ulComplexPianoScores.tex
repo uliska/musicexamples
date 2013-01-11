@@ -1,0 +1,102 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                         %
+%      This file is part of the 'openLilyLib' library.                    %
+%                                ===========                              %
+%                                                                         %
+%              https://github.com/lilyglyphs/openLilyLib                  %
+%                                                                         %
+%  Copyright 2012-13 by Urs Liska, lilyglyphs@ursliska.de                 %
+%                                                                         %
+%  'openLilyLib' is free software: you can redistribute it and/or modify  %
+%  it under the terms of the GNU General Public License as published by   %
+%  the Free Software Foundation, either version 3 of the License, or      %
+%  (at your option) any later version.                                    %
+%                                                                         %
+%  This program is distributed in the hope that it will be useful,        %
+%  but WITHOUT ANY WARRANTY; without even the implied warranty of         %
+%  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the           %
+%  GNU General Public License for more details.                           %
+%                                                                         %
+%  You should have received a copy of the GNU General Public License      %
+%  along with this program.  If not, see <http://www.gnu.org/licenses/>.  %
+%                                                                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% 
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[../LilyPond-Tutorials]{subfiles}
+
+\begin{document}
+
+\chapter{Managing Complex Piano Scores}
+\originalAuthor{Urs Liska}
+
+% Your tutorial should contain an abstract
+\begin{abstract}
+This tutorial has been published before on the private homepage of Urs Liska. 
+Therefore it was conceived as a standalone document that doesn't focus too sharply on a distinct issue, but has a rather broad objective, covering two topics that would well deserve separate tutorials.
+Therefore it may provide some amount of duplicate information relative to other documents. It may be even seen from the fact that it was quite difficult to decide upon a name for the tutorial in the context of this compilation.
+But you may see this as a welcome opportunity to learn from differing perspectives.
+
+When it comes to more complex tasks it may seem very complicated to deal with LilyPond.
+But many issues are much less complicated than one would assume, provided one tackles them in a structured manner.
+\end{abstract}
+
+\section*{Preface}
+
+Suppose you are interested in typesetting music with LilyPond, because you are impressed by the quality of its output. 
+And suppose you have already started climbing up the learning curve. 
+You will by now have discovered that it is extremely simple to start writing scores with the text based input files, and you will probably also have noticed that LilyPond is able to produce beautiful and legible output from not more than just just the plain music definitions. 
+But you will then also have come to the point where you don't see the forest for the trees, where you just don't know how to handle the complexity anymore that is introduced when trying to deal with complex typesetting tasks. 
+While it is very practical that you can do everything in different ways it is also very confusing.
+
+Well, I'm not telling you this because I'm a LilyPond guru and can promise you to teach you typesetting without substantial efforts. 
+No, I'm a person who has just slightly overcome exactly this situation, and who is just beginning to find his way through Lilypond's fascinating world. 
+But because of this I still know the perspective of the beginner, and therefore I would like to try to shed some light on issues that would have helped me a lot when tackling LilyPond's learning curve myself.
+
+In this tutorial I will develop a very short but nevertheless quite complex score. 
+There is nothing really fancy about this example, but it is probably just a little too complex for a straightforward start-typing-and-see-what-happens approach. 
+During the tutorial I'll try not simply to tell you what you have to type but to reflect a little bit about it and to discuss the different possible approaches. 
+I really hope this will help you to get more acquainted with LilyPond's possibilities and options.
+
+Possibly this tutorial will also be of interest for people who are wondering if LilyPond is a suitable choice to learn. 
+If you are dealing with music typesetting, expect to do serious work with it and know that you will have to do scores of some complexity, then have a look at this tutorial, even if you don't understand the details. 
+It may give you an impression what to expect beyond simple beginners' examples. 
+Of course it depends on what you intend to do, but I really think that LilyPond deserves a closer look if you are interested in high quality music engraving.
+
+The tutorial is divided into two parts: First entering the music in an efficient and structured manner, then improving the output and manually correcting the (few) imperfections that LilyPond's default output leaves for you \dots
+
+\section{Part I: Entering the music}
+
+So this is the score we want to engrave. 
+It's the postlude of an orchestral Song by Arnold Schönberg, in Anton Webern's piano reduction (Arnold Schönberg, „Nie ward ich, Herrin, müd“ | Nr. 4 aus "6 Orchesterlieder" | für Gesang und Orchester | op. 8/4, © Copyright 1911 by Universal Edition A.G., Wien/UE 3041, \url{www.universaledition.com} [permission granted for use in this tutorial]). 
+
+\todo{Enter image}
+
+I originally bothered to deal with this because I wanted to try if LilyPond could provide me with an even clearer rendering of the rhythmic complexity than the printed score that I have. 
+When I had entered the music I realized that there was so little left to improve that I decided to tackle the issues that I so far generally had ignored (which is possible since I usually typeset music only for the purpose of playing it myself).
+
+In this tutorial we will repeat this exercise step by step, discussing the methods on the way. 
+While doing this I'll often reference LilyPond's (excellent) documentation and encourage you to re-read the relevant passages on this occasion.
+
+The first step is to enter the music, without bothering about collisions or aesthetic perfection. 
+But as this example has a certain complexity it is important to do this in a well-structured manner. 
+Even more if you imagine that it is only five out of 85 measures of the whole song.
+
+The crucial point with this kind of music is to get it right with the \emph{voices}. 
+If you maintain a straightforward and clean way to deal with the Voice contexts \todo{link} it will help you extremely with keeping your input document understandable (for you and others) and maintainable. 
+And if you also make sure that you use the \cmd{voiceXXX} commands \todo{link} in a meaningful way you enable LilyPond to do most of the typesetting decisions on its own. I've seen many cases of seemingly difficult notation problems that arose from inadequately assigned voices.
+
+Now what do we have in our example? 
+It is obviously polyphonic (which is kind of natural with an orchestral reduction), so we should instantiate several voices. 
+In both staves there are up to three simultaneous voices, although there are never more than five voices at the same time in the whole score. 
+The upper staff starts with two voices, and there is a third voice added in the second bar (starting with a''4 gis'') while the lower voice from the first bar is continued in the lower staff. 
+The lower staff starts with three independent voices in the first measure, while from measure 2 there is only one voice left (the upper “voice” being from the upper staff). 
+As the passages with three voices are quite short we could realize them as temporary polyphony (which I'd probably do if I'd typeset the whole song), but in this tutorial I will explicitely give them individual voices. 
+Keep in mind that this isn't about finding the “correct” solution. 
+There is nothing wrong or faulty with either way, LilyPond will engrave beautifully in both cases. 
+The point is to find the solution for the specific task that will cause the least possible confusion for you as the author.
+
+\end{document}
