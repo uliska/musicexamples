@@ -1,0 +1,66 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                         %
+%      This file is part of the 'openLilyLib' library.                    %
+%                                ===========                              %
+%                                                                         %
+%              https://github.com/lilyglyphs/openLilyLib                  %
+%                                                                         %
+%  Copyright 2012-13 by Urs Liska, lilyglyphs@ursliska.de                 %
+%                                                                         %
+%  'openLilyLib' is free software: you can redistribute it and/or modify  %
+%  it under the terms of the GNU General Public License as published by   %
+%  the Free Software Foundation, either version 3 of the License, or      %
+%  (at your option) any later version.                                    %
+%                                                                         %
+%  This program is distributed in the hope that it will be useful,        %
+%  but WITHOUT ANY WARRANTY; without even the implied warranty of         %
+%  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the           %
+%  GNU General Public License for more details.                           %
+%                                                                         %
+%  You should have received a copy of the GNU General Public License      %
+%  along with this program.  If not, see <http://www.gnu.org/licenses/>.  %
+%                                                                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Contributor's Guide - Tutorial part
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[openLilyLib_CG]{subfiles}
+
+\begin{document}
+
+\part{Tutorials}
+
+\chapter{Documentation}
+\todo{Explain the layout of the directory structure. \\
+Explain the subfiles approach.\\
+Explain the use of sectioning levels.}
+
+\chapter{Command Reference}
+
+This is the reference on specific commands that have been implemented for openLilyLib.
+It has to be written from scratch, but I want to at least enumerate all commands as soon as I implement them
+
+\section{Formatting}
+Point out that one should \emph{never} apply manual formattings but always semantic style sheets.
+If there is none then an author should define one or ask for new ones.
+
+\subsection{Paragraph Formatting}
+\begin{description}
+\item[\cmd{originalAuthor}] Although it's a collaborative effort, we want to attribute the original author of tutorials or noteable chunks of documentation. Place this command between the \cmd{chapter} heading and an \{abstract\} environment
+\end{description}
+
+\subsection{Character Formatting}
+
+\begin{description}
+\item[\cmd{cmd}] Commands that start with a backslash can be printed using this command. It switches the font and prints the backslash in front of the command name.
+\item[\cmd{todo}] Any TODO item should be entered in the source using this command, because it will guarantee a consistent appearance and it's quite spottable \dots
+\end{description}
+
+\subsection{environments}
+\begin{description}
+\item[abstract] As the “book” documentclasses don't provide \{abstract\} environments, we have our own. Any tutorial should be preceded by an abstract.
+\end{description}
+
+\end{document}
