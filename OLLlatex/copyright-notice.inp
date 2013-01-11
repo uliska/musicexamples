@@ -1,0 +1,38 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Copyright notice for openLilyLib documents %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\noindent Copyright \copyright{} 2012--13 Urs Liska
+
+\medskip
+\hrule
+
+% FDL (for this document)
+\begin{quote}
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.\\
+A copy of the license is included in \fref{subsubsec:fdl}, entitled “GNU Free Documentation License”.
+\end{quote}
+
+\hrule
+
+% GPL (for the package)
+\begin{quote}
+openLilyLib is free software: you can redistribute it and/or modify  
+it under the terms of the GNU General Public License as published by  
+the Free Software Foundation, either version 3 of the License, or     
+(at your option) any later version.         
+  
+This explicitely also applies for any code examples that may be part of this manual.
+                                                                        
+This program is distributed in the hope that it will be useful,       
+but WITHOUT ANY WARRANTY; without even the implied warranty of        
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the          
+GNU General Public License for more details.                          
+
+A copy of the license is included in \fref{subsubsec:gpl}, entitled “GNU
+General Public License”.
+
+\end{quote}
