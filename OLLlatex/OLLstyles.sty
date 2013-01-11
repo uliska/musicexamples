@@ -30,3 +30,20 @@
 % It will contain style sheets for semantic paragraph and character formatting,
 % specific environments etc.
 
+% Attribution of the original author of a chapter/tutorial or anything.
+% This should be placed after the \chapter heading
+% and usually be followed by an 'abstract' environment
+\newcommand{\originalAuthor}[1]{%
+\textbf{Original author: #1}
+
+\smallskip
+\hrule
+
+\smallskip
+}
+
+% Add a TODO item that is easily spotted
+\newcommand{\todo}[1]{{\color{red}{\textbf{\textsf{[TODO: #1]}}}}}
+
+% Format LaTeX or LilyPond commands and save typing of the backslash
+\newcommand*{\cmd}[1]{\texttt{\textbackslash #1}}
