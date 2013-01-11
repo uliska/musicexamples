@@ -37,7 +37,7 @@
 % Condensed layout with 'semibold' appearance
 \include "default-a4-lied_base.ily"
 % Switch all grobs to Adobe Minion Pro
-\include "fontset_Minion-Pro.ily"
+\include "../fontsets/fontset_Minion-Pro.ily"
 
 % Adjust the font sizes to the combination of the stylesheet and the font
 \layout {
