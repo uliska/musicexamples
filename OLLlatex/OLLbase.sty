@@ -43,8 +43,62 @@
 % but we can remove this once we have established lilyglyphs
 \RequirePackage[utf8]{inputenc}
 
+% Individual parts of the books (e.g. tutorials or separate parts of
+% documentation are organized as 'subfiles'
+\RequirePackage{subfiles}
 
+% use 'fancyref' for smart cross-references
+\RequirePackage{fancyref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Add fancyref categories for subsection and subsubsection:
+
+% subsection - subsec:
+
+\newcommand*{\fancyrefsubseclabelprefix}{subsec}
+
+\fancyrefaddcaptions{english}{%
+  \providecommand*{\frefsubsecname}{subsection}%
+  \providecommand*{\Frefsubsecname}{Subsection}%
+}
+
+\frefformat{plain}{\fancyrefsubseclabelprefix}{\frefsubsecname\fancyrefdefaultspacing#1}
+\Frefformat{plain}{\fancyrefsubseclabelprefix}{\Frefsubsecname\fancyrefdefaultspacing#1}
+
+\frefformat{vario}{\fancyrefsubseclabelprefix}{%
+  \frefsubsecname\fancyrefdefaultspacing#1#3%
+}
+\Frefformat{vario}{\fancyrefsubseclabelprefix}{%
+  \Frefsubsecname\fancyrefdefaultspacing#1#3%
+}
+
+% subsubsection - subsubsec:
+
+\newcommand*{\fancyrefsubsubseclabelprefix}{subsubsec}
+
+\fancyrefaddcaptions{english}{%
+  \providecommand*{\frefsubsubsecname}{subsection}% the same as for subsection
+  \providecommand*{\Frefsubsubsecname}{Subsection}%
+}
+
+\frefformat{plain}{\fancyrefsubsubseclabelprefix}{\frefsubsubsecname\fancyrefdefaultspacing#1}
+\Frefformat{plain}{\fancyrefsubsubseclabelprefix}{\Frefsubsubsecname\fancyrefdefaultspacing#1}
+
+\frefformat{vario}{\fancyrefsubsubseclabelprefix}{%
+  \frefsubsubsecname\fancyrefdefaultspacing#1#3%
+}
+\Frefformat{vario}{\fancyrefsubsubseclabelprefix}{%
+  \Frefsubsubsecname\fancyrefdefaultspacing#1#3%
+}
+
+% End fancyref
+%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options for use of hyperlinks
 % (make sure this is included last)
 \RequirePackage[%
-	colorlinks=True]{hyperref}
+	colorlinks,
+	urlcolor=blue,
+	bookmarks=true,
+	bookmarksnumbered=true]{hyperref}
