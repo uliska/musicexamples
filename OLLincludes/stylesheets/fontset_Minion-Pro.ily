@@ -5,7 +5,7 @@
 %                                                                         %
 %              https://github.com/lilyglyphs/openLilyLib                  %
 %                                                                         %
-%  Copyright 2012 by Urs Liska, lilyglyphs@ursliska.de                    %
+%  Copyright 2012-13 by Urs Liska, lilyglyphs@ursliska.de                 %
 %                                                                         %
 %  'openLilyLib' is free software: you can redistribute it and/or modify  %
 %  it under the terms of the GNU General Public License as published by   %
