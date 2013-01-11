@@ -1,0 +1,50 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                         %
+%      This file is part of the 'openLilyLib' library.                    %
+%                                ===========                              %
+%                                                                         %
+%              https://github.com/lilyglyphs/openLilyLib                  %
+%                                                                         %
+%  Copyright 2012-13 by Urs Liska, lilyglyphs@ursliska.de                 %
+%                                                                         %
+%  'openLilyLib' is free software: you can redistribute it and/or modify  %
+%  it under the terms of the GNU General Public License as published by   %
+%  the Free Software Foundation, either version 3 of the License, or      %
+%  (at your option) any later version.                                    %
+%                                                                         %
+%  This program is distributed in the hope that it will be useful,        %
+%  but WITHOUT ANY WARRANTY; without even the implied warranty of         %
+%  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the           %
+%  GNU General Public License for more details.                           %
+%                                                                         %
+%  You should have received a copy of the GNU General Public License      %
+%  along with this program.  If not, see <http://www.gnu.org/licenses/>.  %
+%                                                                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% base file to be included by any OLL document class
+\NeedsTeXFormat{LaTeX2e} 
+\ProvidesPackage{OLLbase}
+
+% Include the lilyglyphs package to allow notational elements 
+% in continuous text.
+% NOTE: This implies the inclusion of the fontspec package
+% which in turn requires the files to be compiled with
+% XeLaTeX (or possibly LuaLaTeX)
+
+% NOTE: As I experienced a strange bug (presumably after
+% an update of my LaTeX distribution (as a result of an Ubuntu 
+% version upgrade)) I comment this out for now.
+% But it is intended to be included again, so the above note
+% about fontspec and XeLaTeX should be taken seriously
+%\RequirePackage{lilyglyphs}
+
+% As long as lilyglyps isn't used we use utf encoding,
+% but we can remove this once we have established lilyglyphs
+\RequirePackage[utf8]{inputenc}
+
+
+% Options for use of hyperlinks
+% (make sure this is included last)
+\RequirePackage[%
+	colorlinks=True]{hyperref}
