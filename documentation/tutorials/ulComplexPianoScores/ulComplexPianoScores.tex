@@ -99,4 +99,26 @@ Keep in mind that this isn't about finding the “correct” solution.
 There is nothing wrong or faulty with either way, LilyPond will engrave beautifully in both cases. 
 The point is to find the solution for the specific task that will cause the least possible confusion for you as the author.
 
+\subsetion{The File Structure}
+We start with an empty but complete structure. 
+I strongly encourage you to think about the file structure before entering any music and start with a working framework. 
+While this may look too complicated at first it will become a life-saver if you want to do anything complex.
+
+\todo{Include file. set up listings}
+
+Let's go through this first listing. 
+The comment at the beginning should be self-explanatory (well, that's what comments are for, isn't it?). 
+Line 22 holds the \version block, the \paper and \header settings (line 24-31) are nothing fancy and only serve to make practical dimensions for the example images.
+You will probably have come across the concept of putting some common (or “global”) like key and time signature information in a variable often named “global” (line 33-36). 
+An interesting issue with this may only be as to where we will reference it. 
+I assume the most common thing is to add a reference to \global at the beginning of each music variable. 
+But for reasons discussed in a later chapter I decided to put these references at another place in the \score block.
+
+Lines 38\,--\,69 hold empty definitions of the six variables (three voices for each hand). 
+While LilyPond happily compiles empty variables printing nothing you must provide them in order for the references in the \score block to work. However I consider this a good thing because it urges you to make your structure explicit right from the start.
+Note the s1*5 in line 43 and 64. While this is absolutely not essential, I always prefer to place such dummy skips before starting, so that the staves are already there. It will eventually become necessary with the voice that crosses the staves. It is equally unnecessary to already print the final barline at this stage – but I like to see the outline of the intendet result right from the beginning.
+Another thought: You may consider the big three line comments superfluous. But it will become very handy to have the file structured in such a way when the source starts to get crowded. Insert such “visual stoppers” as often as your musical structure permits. It will help you greatly with scrolling through the file later on.
+Now we'll have a look at the set-up of the \score block. Basically it is just a PianoStaff enclosing two normal staves. What I always found confusing when learning to typeset with LilyPond is the fact that you can introduce the music in different ways into the score. While it is often equivalent from the perspective of the typesetting engine, it may make a big difference for your file structure. Generally I suggest not to put any actual music definitions inside the \score block because it tends to clutter things. If you have a totally clean score block you can even reuse it for several projects. In the case of such a simple piano score this won't make much sense. But if you have a more complex set-up, say a instrumentation that you use regularely you can use it in clever set-ups. But that's another story …
+In each Staff I instantiate three parallel voices and reference the corresponding variables. At the beginning of each staff's definition I reference the \global variable (in the left hand staff followed by the \clef command). This means that the content of \global is used at the staff level and is not repeated in every voice. We'll see the difference for our project in a later chapter, but just don't let you confuse by the fact that you can have these options to put things differently with LilyPond.
+
 \end{document}
