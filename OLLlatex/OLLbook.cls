@@ -35,18 +35,3 @@
 
 % Include style sheets, special constructs etc.
 \RequirePackage{OLLstyles}
-
-% The book classes don't have 'abstract' environments.
-% But as we produce 'books' compiled from multiple 'articles'
-% we need our own 'abstract' environment
-\newenvironment{abstract}{%
-	\addcontentsline{toc}{subsection}{Abstract}
-	\begin{quote}
-	\textbf{\textsf{Abstract}}	
-	
-	\medskip
-}
-{%
-	\end{quote}
-}
-
