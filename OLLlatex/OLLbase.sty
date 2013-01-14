@@ -31,18 +31,7 @@
 % NOTE: This implies the inclusion of the fontspec package
 % which in turn requires the files to be compiled with
 % XeLaTeX (or possibly LuaLaTeX)
-
-% NOTE: As I experienced a strange bug (presumably after
-% an update of my LaTeX distribution (as a result of an Ubuntu 
-% version upgrade)) I comment this out for now.
-% But it is intended to be included again, so the above note
-% about fontspec and XeLaTeX should be taken seriously
-%\RequirePackage{lilyglyphs}
-
-% As long as lilyglyps isn't used we use utf encoding,
-% but we can remove this once we have established lilyglyphs
-\usepackage[T1]{fontenc}
-\RequirePackage[latin1]{inputenc}
+\RequirePackage{lilyglyphs}
 
 % Individual parts of the books (e.g. tutorials or separate parts of
 % documentation are organized as 'subfiles'
