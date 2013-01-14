@@ -1,0 +1,32 @@
+% Use this or any other documentclass you like
+\documentclass{scrreprt}
+
+% include OLL's base files (in their present state)
+\usepackage{OLLbase}
+\usepackage{OLLstyles}
+
+% Style file for command you define along writing
+\usepackage{agStyles}
+
+\begin{document}
+\chapter{Orchestral Scores with LilyPond}
+\originalAuthor{Antonio Gervasoni}
+\begin{abstract}
+Please provide an abstract.
+This will be formatted differently in the final version (not on its own page).
+\end{abstract}
+
+Start your body text here.
+
+Use \fancyStyle{semantic markup} instead of \textsc{manual formatting}.
+See the style file \simpleStyle{agStyles.sty} for examples.
+And use \cmd{fref} for cross-references (see \fref{sec:ref_sec}).
+
+\todo{think about life!}
+
+\pagebreak
+
+\section{Referenced section}
+\label{sec:ref_sec}
+
+\end{document}
