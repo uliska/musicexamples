@@ -23,41 +23,62 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %{
-  OLLib/full.ily
-  This is the main entry point for openLilyLib's full OLLib.
+   OLLib/pianoToolbox/pianoStaff.ily
+   Shorthands to simplify the use of aPianoStaff
 %}
 
-% Include all (full) sub-toolboxes
-#(ly:set-option 'relative-includes #t)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Commands that simplify switching staves within a PianoStaff
+% They assume the staves to be named 'up' and 'down'
+% (in accordance with openLilyLib's score block naming conventions)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Editorial additions and (multiple editors') productivity tools
-\include "editorialToolbox/editorialToolbox.ily"
+% Change staff to "up" or "down"
+% (shorthands)
+SUp = \change Staff = "up"
+SDn = \change Staff = "down"
 
-% Tools to simplify the usage of piano music
-\include "pianoToolbox/pianoToolbox.ily"
+% Change staff
+% and switch Voice contexts to be inner voices
+% (the most common use)
+SSUp = { \SUp \voiceTwo }
+SSDn = { \SDn \voiceOne }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Includes that are not imported from the old ulLibrary
+% Change staff
+% and switch to \oneVoice
+% (another common use)
+Ssup = { \SUp \oneVoice }
+Ssdn = { \SDn \oneVoice }
 
-% Visual highlightings of editorial Additions
-%\include "../includes/ulLibrary/editorialToolbox.ily"
 
-% Tools to manipulate (shape) curves (Slurs, PhrasingSlurs and Ties)
-% and to display (debug) their bezier control points
-%\include "../includes/ulLibrary/curvesToolbox.ily"
+%%%%%%%%%%%%%%%%%%%%%
+% Miscellaneous tools
+%%%%%%%%%%%%%%%%%%%%%
 
-% Toolbox with some general tools
-%\include "../includes/ulLibrary/generalTools.ily"
+%{ \chordBracket
+   
+   Use an arpeggio bracket to indicate a cross staff chord
+   Shorthand to once override the arpeggio bracket
+   use in combination with a following \arpeggio command  
+   (does only work in combination with the connectArpeggios defined below)
+%}
+chordBracket = {
+  \once \override PianoStaff.Arpeggio #'stencil = #ly:arpeggio::brew-chord-bracket
+}
 
-% Toolbox with manual tweaks like moved objects
-%\include "../includes/ulLibrary/tweaks.ily"
 
-% A Scheme Engraver that prints double bar lines
-% before any \time changes
-%\include "../includes/ulLibrary/layout/DbBars_engraver.ily"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% General overrides for a PianoStaff
+% (Provide useful defaults)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% a function that correctly places tuplet numbers on kneed beams
-%\include "../includes/ulLibrary/layout/tuplet_numers_on_kneed_beams.ily"
+\layout {
+        \context {
+              \PianoStaff
+              % activate the possibility to use cross staff stems
+              \consists #Span_stem_engraver
+              % Arpeggios are more often connected than not
+              connectArpeggios = ##t 
+        }
+  }   
 
-% A Scheme Engraver that corrects stem-side staccato alignment
-%\include "../includes/ulLibrary/layout/staccato_corrector_engraver.ily"
