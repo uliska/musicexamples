@@ -158,3 +158,13 @@
   }
 
 }
+
+%{
+   Include a file with empty music definitions.
+   These are necessary because they are expected by the score block.
+   An actual score should redefine any or all of the variables
+%}
+
+#(ly:set-option 'relative-includes #t)
+\include "../../scoreBlocks/lied_voice_piano-defaults.ily"
+
