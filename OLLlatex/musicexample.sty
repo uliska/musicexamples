@@ -1,0 +1,236 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                         %
+%      This file is part of the 'openLilyLib' library.                    %
+%                                ===========                              %
+%                                                                         %
+%              https://github.com/lilyglyphs/openLilyLib                  %
+%                                                                         %
+%  Copyright 2012-13 by Urs Liska, lilyglyphs@ursliska.de                 %
+%                                                                         %
+%  'openLilyLib' is free software: you can redistribute it and/or modify  %
+%  it under the terms of the GNU General Public License as published by   %
+%  the Free Software Foundation, either version 3 of the License, or      %
+%  (at your option) any later version.                                    %
+%                                                                         %
+%  This program is distributed in the hope that it will be useful,        %
+%  but WITHOUT ANY WARRANTY; without even the implied warranty of         %
+%  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the           %
+%  GNU General Public License for more details.                           %
+%                                                                         %
+%  You should have received a copy of the GNU General Public License      %
+%  along with this program.  If not, see <http://www.gnu.org/licenses/>.  %
+%                                                                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Infrastructure to deal with music examples.
+% Intended for use with LilyPond documents,
+% but works with any images basically
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{musicexample}
+
+%TODO allow the caption name to be changed by package options
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Lowlevel printing commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The following commands are used to print music examples
+% without keeping track of them or numbering them.
+% While it is perfectly possible to directly include image files
+% instead, it is advisable to use them as a consistent interface
+
+% \musicSFE
+%
+% SingleFileExample (generic file)
+% Print a music example consisting of a single file
+% (typically one system, but can also be used
+%  for an arbitrary image file).
+% Places the image in a separate paragraph
+% and suppresses indentation.
+% If the image is wider than \texwidth, 
+% it is scaled to fit he text column.
+%TODO implement the optional downscaling to \textwidth
+%     (should also issue a warning)
+\newcommand{\musicSFE}[1]{
+
+	\noindent
+	\includegraphics{#1}
+
+}
+
+% \lilypondSFE
+%
+% SingleFileExample (Lilypond file)
+% Use this for Lilypond examples that consist of single files.
+% While the command actually treats them as ordinary images
+% one can use this for a script to keep track
+% of changed sources that should be recompiled.
+\newcommand{\lilypondSFE}[1]{
+	\musicSFE{#1}
+}
+
+% \musicMFE
+%
+% MultiFileExample (generic file)
+% Use this for music examples consisting of multiple files
+% (typically one file for each system)
+% Provide the basename as the mandatory argument
+% and the numbering scheme for the subfiles as the optional argument.
+% The command will then iterate over the found subfiles and 
+% include them as \musicSystem-s
+%
+\newcommand{\musicMFE}[2][-##]{
+	%TODO Implement this
+	%      using a loop iterating through all found
+	%      single system images
+}
+
+% \lilypondMFE
+%
+% MultiFileExample (generic file)
+% This actually calls \musicMFE,
+% but a script can use it to keep track
+% of changed soruces that should be recompiled.
+\newcommand{\lilypondMFE}[2][-##]{
+	\musicMFE[#1]{#2}
+	%TODO Check if the passing of the optional argument works
+	%     (If it isn't given here it will be passed as []
+	%      instead of not at all)
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Interface for tracked music examples
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A) Non-fullpage example environments
+
+%TODO Include the following example types in the \listof{musicExample}
+%     (at least write a line to the aux file)
+
+% musicExample
+%
+% Float type for placing music examples
+% Place one or more of the above lowlevel 
+% commands inside the environment
+% and provide a \caption and \label inside
+%
+%TODO adjust layout according to the non float versions.
+%TODO (make that styling user-definable
+%       i.e. define a change that is applied to all methods)
+\floatstyle{plain}
+\newfloat{musicExample}{hbtp}{musex}
+\floatname{musicExample}{Notenbeispiel}
+
+
+% musicExampleNonFloat
+%
+% Non float version of a music example
+% While one can also use musicexample with the [H] option to 
+% place it HERE, this non-floating environment is
+% necessary to use multiline examples that may span
+% line break(s).
+% Place one or more of the above lowlevel 
+% commands inside the environment
+% and provide a \label.
+% As it isn't a float environment,
+% you have to provide the caption as a mandatory argument #1
+\newenvironment{musicExampleNonFloat}[1]
+	{%
+		\refstepcounter{musicExample}
+		\def\capt{#1}
+		
+		\bigskip
+	}{%
+	
+	{
+	\noindent
+	\small 
+	\textsf{Notenbeispiel \arabic{musicExample}:} \capt}
+
+	\bigskip
+	}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% B) Fullpage example environments
+
+%TODO Implement scrheadings
+%      Use header or footer for the caption
+%      Use two different scrheadings for the first and the consecutive pages
+%TODO How to realize a page range for multipage examples?
+%TODO Is the label really placed at the beginning of the example?
+%      Or rather where the command is placed?
+
+% \fullPageMusicExample
+%
+% (Not intended for use by document authors)
+% Base command placing the music example at the beginning
+% of the 'next' page (using afterpage)
+% and placing the label there.
+% #1 - the label for the caption
+% #2 - command(s) to be put after the pagebreak
+% (usually this is used by one of the following commands)
+
+\newcommand{\fullPageMusicExample}[2]{
+	\refstepcounter{musicExample}
+	\afterpage{
+		\label{#1}
+		#2
+	}	
+}
+
+% \onePageMusicExample
+%
+% Includes one single page pdf file as a music example.
+% Tha document author is responsible to provide files with suitable page margins
+% The caption is printed in the header or footer of the page
+% using the scrheadings mechanism
+%TODO (Does this imply the use of KOMA-Script document classes?)
+%TODO Is it possible to determine the number of pages in the pdf document?
+%      If so, could one remove the two separate commands
+%      and use only the above \fullPageMusicExample?
+%TODO Is it possible to provide 'cropped' image files
+%      and scale them suitably to the text area?
+\newcommand{\onePageMusicExample}[2]{%
+	\fullPageMusicExample{#2}{%
+		\includepdf[%
+		pages=-,
+		pagecommand={\thispagestyle{plain}}]{#1}
+	}
+}
+
+% \onePageLilypondExample
+%
+% Same as \onePageMusicExample
+% Used to keep track of lilypond generated music examples
+\newcommand{\onePageLilypondExample}[2]{
+	\onePageMusicExample{#1}{#2}
+}
+
+% \multiPageMusicExample
+%
+% Same as \onePageMusicExample
+% but for use with multi page documents.
+% Issues two \includepdf commands,
+% one with only the first page, the second with the remaining pages.
+% The call is separated to be able to use two different
+% pagecommands selecting appropriate scrheadings
+% (see \onePageMusicExample)
+\newcommand{\multiPageMusicExample}[2]{%
+	\fullPageMusicExample{#2}{%
+		\includepdf[%
+		pages=1,
+		pagecommand={\thispagestyle{empty}}]{#1}
+		\includepdf[%
+		pages=2-,
+		pagecommand={\thispagestyle{plain}}]{#1}
+	}
+}
+
+% \multiPageLilypondExample
+%
+% Same as \multiPageMusicExample
+% Used to keep track of lilypond generate music examples
+\newcommand{\multiPageLilypondExample}[2]{
+	\multiPageMusicExample{#1}{#2}
+}
