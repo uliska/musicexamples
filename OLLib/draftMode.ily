@@ -22,10 +22,28 @@
 %                                                                         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% OLLib/draftMode.ily
+
 %{
-  Activates Draft Mode for OLLib/editorialToolbox
+   This file should be called at the end of any library file 
+   that has an associated draftMode file.
+   If the master file has switched on the draftMode by
+     #(define-public draft-mode #t)
+   this function includes the file specified by
+     #(define draft-mode-file "...") (appended by _draftMode.ily)
 %}
 
-#(ly:set-option 'relative-includes #t)
-\include "inSourceCommunication_draftMode.ily"
+includeDraftMode =
+#(define-void-function (parser location)()
+   (if (defined? 'draft-mode)
+       (if draft-mode
+           ; Include the appropriate _draftMode.ily file
+           , if draft-mode is defined and true
+           (ly:parser-include-string parser
+               (string-append "\\include \"OLLib/" (string-append draft-mode-file "_draftMode.ily\"\n"))
+           )
+       )
+   )
+)
 
+\includeDraftMode

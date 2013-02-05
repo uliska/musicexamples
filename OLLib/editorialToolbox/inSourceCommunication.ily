@@ -156,6 +156,8 @@ poke =
                         #}
 )
 
-
+% Conditionally include _draftMode.ily
+#(define-public draft-mode-file "editorialToolbox/inSourceCommunication")
+\include "OLLib/draftMode.ily"
 
     
