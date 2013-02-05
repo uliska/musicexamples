@@ -38,12 +38,9 @@ includeDraftMode =
    (if (defined? 'draft-mode)
        (if draft-mode
            ; Include the appropriate _draftMode.ily file
-           , if draft-mode is defined and true
+           ; if draft-mode is defined and true
            (ly:parser-include-string parser
-               (string-append "\\include \"OLLib/" (string-append draft-mode-file "_draftMode.ily\"\n"))
-           )
-       )
-   )
-)
+               (string-append "\\include \"OLLib/" 
+                 (string-append draft-mode-file "_draftMode.ily\"\n"))))))
 
 \includeDraftMode
