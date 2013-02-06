@@ -28,6 +28,13 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{musicexample}
 
+% Allow definition of new float environment
+\RequirePackage{float}
+
+% Allow definition of new pagestyles for fullpage examples
+\RequirePackage{scrpage2}
+
+
 %TODO allow the caption name to be changed by package options
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -152,14 +159,22 @@
 	}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% B) Fullpage example environments
+% B) Full-page example environments
 
-%TODO Implement scrheadings
-%      Use header or footer for the caption
-%      Use two different scrheadings for the first and the consecutive pages
 %TODO How to realize a page range for multipage examples?
-%TODO Is the label really placed at the beginning of the example?
-%      Or rather where the command is placed?
+
+% With full-page examples the numbering and caption is realized
+% using the header/footer of the first (or only) page
+% (by use of scrpage2 from KOMA-Script).
+% The following predefined pagestyle places the caption
+% in the inner/left part of the header and 
+% the page number centered in the footer.
+% To change this to your needs, you only have to 
+% redefine the xmpPageOne style afterwards
+% (see the KOMA-Script documentation)
+\deftripstyle{xmpPageOne}%
+	{\upshape\textsf{Example \arabic{musicExample}:}\xmpCaption}{}{}%
+	{}{--\,\pagemark\,--}{}
 
 % \fullPageMusicExample
 %
@@ -185,17 +200,24 @@
 % Tha document author is responsible to provide files with suitable page margins
 % The caption is printed in the header or footer of the page
 % using the scrheadings mechanism
-%TODO (Does this imply the use of KOMA-Script document classes?)
 %TODO Is it possible to determine the number of pages in the pdf document?
 %      If so, could one remove the two separate commands
 %      and use only the above \fullPageMusicExample?
 %TODO Is it possible to provide 'cropped' image files
 %      and scale them suitably to the text area?
-\newcommand{\onePageMusicExample}[2]{%
-	\fullPageMusicExample{#2}{%
+%      This would be highly useful regarding two-sided layout
+%      (when you don't know whether the example will start left or right)
+%
+% Arguments:
+% #1 - file name (including path but without .pdf extension)
+% #2 - Caption to be printed
+% #3 - label (including 'xmp:')
+\newcommand{\onePageMusicExample}[3]{%
+	\fullPageMusicExample{#3}{%
+		\def\xmpCaption{#2}
 		\includepdf[%
 		pages=-,
-		pagecommand={\thispagestyle{plain}}]{#1}
+		pagecommand={\thispagestyle{xmpPageOne}}]{#1}
 	}
 }
 
@@ -203,8 +225,8 @@
 %
 % Same as \onePageMusicExample
 % Used to keep track of lilypond generated music examples
-\newcommand{\onePageLilypondExample}[2]{
-	\onePageMusicExample{#1}{#2}
+\newcommand{\onePageLilypondExample}[3]{
+	\onePageMusicExample{#1}{#2}{#3}
 }
 
 % \multiPageMusicExample
@@ -213,17 +235,24 @@
 % but for use with multi page documents.
 % Issues two \includepdf commands,
 % one with only the first page, the second with the remaining pages.
-% The call is separated to be able to use two different
-% pagecommands selecting appropriate scrheadings
-% (see \onePageMusicExample)
-\newcommand{\multiPageMusicExample}[2]{%
-	\fullPageMusicExample{#2}{%
+% The call is separated to be able to use two different pagestyles
+%
+% Arguments:
+% #1 - file name (including path but without .pdf extension)
+% #2 - Caption to be printed
+% #3 - label (including 'xmp:')
+
+\newcommand{\multiPageMusicExample}[3]{%
+	\fullPageMusicExample{#3}{%
+	\def\xmpCaption{#2}
 		\includepdf[%
 		pages=1,
-		pagecommand={\thispagestyle{empty}}]{#1}
+		pagecommand={%
+			\thispagestyle{xmpPageOne}
+			\cfoot{Test}}]{#1}
 		\includepdf[%
 		pages=2-,
-		pagecommand={\thispagestyle{plain}}]{#1}
+		pagecommand={\thispagestyle{scrplain}}]{#1}
 	}
 }
 
@@ -231,8 +260,8 @@
 %
 % Same as \multiPageMusicExample
 % Used to keep track of lilypond generate music examples
-\newcommand{\multiPageLilypondExample}[2]{
-	\multiPageMusicExample{#1}{#2}
+\newcommand{\multiPageLilypondExample}[3]{
+	\multiPageMusicExample{#1}{#2}{#3}
 }
 
 % Enable fancyref to work with music examples
