@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Project SYSTEM "Project-4.6.dtd">
+<!-- eric4 project file for project oll-gen-xmp-scores -->
+<!-- Saved: 2013-02-07, 11:26:04 -->
+<!-- Copyright (C) 2013 Urs Liska, lilyglyphs@ursliska.de -->
+<Project version="4.6">
+  <Language></Language>
+  <ProgLanguage mixed="0">Python</ProgLanguage>
+  <ProjectType>Console</ProjectType>
+  <Description>(Re-)generate Lilypond scores used by LaTeX-documents with the musicexamples package. May also be used independently to walk through a directory tree and conditionally compile Lilypond scores.</Description>
+  <Version>0.1</Version>
+  <Author>Urs Liska</Author>
+  <Email>lilyglyphs@ursliska.de</Email>
+  <Sources>
+    <Source>oll-gen-xmp-scores.py</Source>
+    <Source>__init__.py</Source>
+  </Sources>
+  <Forms>
+  </Forms>
+  <Translations>
+  </Translations>
+  <Resources>
+  </Resources>
+  <Interfaces>
+  </Interfaces>
+  <Others>
+  </Others>
+  <MainScript>oll-gen-xmp-scores.py</MainScript>
+  <Vcs>
+    <VcsType>None</VcsType>
+  </Vcs>
+  <FiletypeAssociations>
+    <FiletypeAssociation pattern="*.pyw" type="SOURCES" />
+    <FiletypeAssociation pattern="*.idl" type="INTERFACES" />
+    <FiletypeAssociation pattern="*.py" type="SOURCES" />
+    <FiletypeAssociation pattern="*.ptl" type="SOURCES" />
+  </FiletypeAssociations>
+</Project>
