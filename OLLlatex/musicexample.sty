@@ -86,34 +86,31 @@
 	\musicSFE{#1}
 }
 
-% \musicMFE
+% \lilypondMFE
 %
 % MultiFileExample (generic file)
 % Use this for music examples consisting of multiple files
 % (typically one file for each system)
-% Provide the basename as the mandatory argument
-% and the numbering scheme for the subfiles as the optional argument.
-% The command will then iterate over the found subfiles and 
-% include them as \musicSystem-s
+% Provide the basename (including relative path)
+% as the mandatory argument.
+% The command will then iterate over the found subfiles 
+% (as determined by LilyPond's system-count file)
+% and include them as \musicSystem-s
 %
-\newcommand{\musicMFE}[2][-##]{
+\newcounter{lilySysCnt}
+\newread\readLilySysCnt
+
+\newcommand{\lilypondMFE}[2][-##]{
+	%TODO set this to a file with the actual basefile name
+	\openin\readLilySysCnt=cnt.cnt
+	% read in the number of systems
+	\read \readLilySysCnt to \lilySysCnt
 	%TODO Implement this
-	%      using a loop iterating through all found
-	%      single system images
+	%     using a loop iterating through all found
+	%     single system images
+	%    (from 3 to \lilySysCnt)
 }
 
-% \lilypondMFE
-%
-% MultiFileExample (generic file)
-% This actually calls \musicMFE,
-% but a script can use it to keep track
-% of changed soruces that should be recompiled.
-\newcommand{\lilypondMFE}[2][-##]{
-	\musicMFE[#1]{#2}
-	%TODO Check if the passing of the optional argument works
-	%     (If it isn't given here it will be passed as []
-	%      instead of not at all)
-}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Interface for tracked music examples
