@@ -43,6 +43,13 @@
 	labelfont=sf,
 	justification=]{caption}
 
+% Allow reading the contents of an auxiliary file.
+% Needed for multi-system-examples, where the number of systems
+% is written to a ...systems.count file by LilyPond
+\RequirePackage{catchfile}
+
+% Loop through the systems of a multi-system example
+\RequirePackage{forloop}
 
 
 %TODO allow the caption name to be changed by package options
@@ -88,29 +95,46 @@
 
 % \lilypondMFE
 %
-% MultiFileExample (generic file)
-% Use this for music examples consisting of multiple files
-% (typically one file for each system)
-% Provide the basename (including relative path)
+% MultiFileExample (LilyPond generated)
+% Use this for music examples consisting of multiple systems
+% Provide the basename (including relative path but without extension)
 % as the mandatory argument.
-% The command will then iterate over the found subfiles 
-% (as determined by LilyPond's system-count file)
+% The command will then iterate over the found subfiles
+% (as determined by LilyPond's .systems.count file)
 % and include them as \musicSystem-s
 %
+% Store the number of systems in the MFExample
 \newcounter{lilySysCnt}
-\newread\readLilySysCnt
-
-\newcommand{\lilypondMFE}[2][-##]{
-	%TODO set this to a file with the actual basefile name
-	\openin\readLilySysCnt=cnt.cnt
-	% read in the number of systems
-	\read \readLilySysCnt to \lilySysCnt
-	%TODO Implement this
-	%     using a loop iterating through all found
-	%     single system images
-	%    (from 3 to \lilySysCnt)
+% forloop index
+\newcounter{lilySysInd}
+% This command should not be called directly,
+% but rather the below macro (with the consistently
+% capitalized name).
+\newcommand{\lilypondmfe}[1]{
+	% (Use catchfile to set lilySysCnt to the number inside
+	% LilyPonds -systems.count file)
+	\CatchFileDef{\scfftemp}{#1-systems.count}{\endlinechar=-1 }%
+	\setcounter{lilySysCnt}{\scfftemp}
+	% Increment counter for the forloop comparison
+	\stepcounter{lilySysCnt}
+	% Iterate over the found music systems
+	% (start with 3 because 1 and 2 are only the titles)
+	% and include them as \musicSFE systems
+	\forloop{lilySysInd}
+		{3}
+		{\value{lilySysInd} < \value{lilySysCnt}}
+		{\musicSFE{#1-\arabic{lilySysInd}}}
+	\endgroup % (End the group started by \lilypondMFE)
 }
 
+% Call this macro in the document
+% It starts a group and changes the catcode of the underscore.
+% This way you can use underscores in the filename.
+\def\lilypondMFE{%
+	\begingroup
+	\catcode`\_=12
+	\lilypondmfe
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Interface for tracked music examples
