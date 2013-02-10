@@ -28,8 +28,18 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{musicexample}
 
-% Allow definition of new float environment
-\RequirePackage{float}
+% Allow definition of the new float environment
+\RequirePackage{newfloat}
+
+% Include the following packages
+% to automatically provide versions of the environment4
+% (feature of the newfloat package):
+% - fltpage  -> FPmusicexample (caption on different page) 
+% - rotating -> sidewaysmusicexample (rotated example)
+% - sidecap  -> SCmusicexample (caption besides the example)
+% - wrapfig  -> wrapmusicexample (example with text floating around it)
+%
+% See the documentation of the packages for more information
 
 % Allow definition of new pagestyles for fullpage examples
 \RequirePackage{scrpage2}
@@ -41,7 +51,7 @@
 	format=plain,
 	font=small,
 	labelfont=sf,
-	justification=]{caption}
+	justification=RaggedRight]{caption}
 
 % Allow reading the contents of an auxiliary file.
 % Needed for multi-system-examples, where the number of systems
@@ -156,9 +166,16 @@
 %TODO adjust layout according to the non float versions.
 %TODO (make that styling user-definable
 %       i.e. define a change that is applied to all methods)
-\floatstyle{plain}
-\newfloat{musicExample}{hbtp}{musex}
-\floatname{musicExample}{Notenbeispiel}
+%\floatstyle{plain}
+%\newfloat{musicExample}{hbtp}{musex}
+%\floatname{musicExample}{Notenbeispiel}
+
+\DeclareFloatingEnvironment[%
+	fileext=loxmp,
+	listname={List of Music Examples},
+	name={Music Example},
+	placement=htpb]
+	{musicexample}
 
 
 % musicExampleNonFloat
@@ -175,7 +192,7 @@
 % you have to provide the caption as a mandatory argument #1
 \newenvironment{musicExampleNonFloat}[1]
 	{%
-		\refstepcounter{musicExample}
+		\refstepcounter{musicexample}
 		\def\capt{#1}
 		
 		\bigskip
@@ -204,7 +221,7 @@
 % redefine the xmpPageOne style afterwards
 % (see the KOMA-Script documentation)
 \deftripstyle{xmpPageOne}%
-	{\upshape\textsf{Example \arabic{musicExample}:}\xmpCaption}{}{}%
+	{\upshape\textsf{Example \arabic{musicexample}:}\xmpCaption}{}{}%
 	{}{--\,\pagemark\,--}{}
 
 % \fullPageMusicExample
@@ -218,7 +235,7 @@
 % (usually this is used by one of the following commands)
 
 \newcommand{\fullPageMusicExample}[2]{
-	\refstepcounter{musicExample}
+	\refstepcounter{musicexample}
 	\afterpage{
 		\label{#1}
 		#2
@@ -320,4 +337,3 @@
 \Frefformat{vario}{\fancyrefxmplabelprefix}{%
   \Frefxmpname\fancyrefdefaultspacing#1#3%
 }
-
