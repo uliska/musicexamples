@@ -62,8 +62,18 @@
 % Loop through the systems of a multi-system example
 \RequirePackage{forloop}
 
+% Define variables to make the text parts configurable
+% wrap this one in a command because it will be used in different places.
+% Not to be used by the document author
+\newcommand*{\ollXmpCaptionLabel}{Music Example}
+% Use the following two commands to adapt the respective 
+% strings to your needs (i.e. mostly language)
+\newcommand*{\setXmpCaptionLabel}[1]{%
+	\renewcommand{\ollXmpCaptionLabel}{#1}%
+	\SetupFloatingEnvironment{musicexample}{name=#1}}
+\newcommand*{\setXmpListName}[1]{%
+	\SetupFloatingEnvironment{musicexample}{listname=#1}}
 
-%TODO allow the caption name to be changed by package options
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Lowlevel printing commands
@@ -174,7 +184,7 @@
 \DeclareFloatingEnvironment[%
 	fileext=loxmp,
 	listname={List of Music Examples},
-	name={Music Example},
+	name={\ollXmpCaptionLabel},
 	placement=htpb]
 	{musicexample}
 
@@ -215,7 +225,7 @@
 % redefine the xmpPageOne style afterwards
 % (see the KOMA-Script documentation)
 \deftripstyle{xmpPageOne}%
-	{\upshape\textsf{Example \arabic{musicexample}:}\xmpCaption}{}{}%
+	{\upshape\textsf{\ollXmpCaptionLabel \arabic{musicexample}:}\xmpCaption}{}{}%
 	{}{--\,\pagemark\,--}{}
 
 % \fullPageMusicExample
