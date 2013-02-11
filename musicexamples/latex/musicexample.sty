@@ -191,20 +191,13 @@
 % and provide a \label.
 % As it isn't a float environment,
 % you have to provide the caption as a mandatory argument #1
-\newenvironment{musicExampleNonFloat}[1]
+\newenvironment{musicexampleNonFloat}
 	{%
-		\refstepcounter{musicexample}
-		\def\capt{#1}
-		
 		\bigskip
+		\captionsetup{type=musicexample}
 	}{%
-	
-	{
-	\noindent
-	\small 
-	\textsf{Notenbeispiel \arabic{musicExample}:} \capt}
 
-	\bigskip
+	\medskip
 	}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -231,16 +224,18 @@
 % Base command placing the music example at the beginning
 % of the 'next' page (using afterpage)
 % and placing the label there.
-% #1 - the label for the caption
-% #2 - command(s) to be put after the pagebreak
+% #1 - the caption used for the list of music examples
+% #2 - the label for the caption
+% #3 - command(s) to be put after the pagebreak
 % (usually this is used by one of the following commands)
 
-\newcommand{\fullPageMusicExample}[2]{
-	\refstepcounter{musicexample}
+\newcommand{\fullPageMusicExample}[3]{
+	\captionsetup{type=musicexample}
 	\afterpage{
-		\label{#1}
-		#2
-	}	
+		\captionlistentry{#1}
+		\label{#2}
+		#3
+	}
 }
 
 % \onePageMusicExample
@@ -262,7 +257,7 @@
 % #2 - Caption to be printed
 % #3 - label (including 'xmp:')
 \newcommand{\onePageMusicExample}[3]{%
-	\fullPageMusicExample{#3}{%
+	\fullPageMusicExample{#2}{#3}{%
 		\def\xmpCaption{#2}
 		\includepdf[%
 		pages=-,
@@ -292,7 +287,7 @@
 % #3 - label (including 'xmp:')
 
 \newcommand{\multiPageMusicExample}[3]{%
-	\fullPageMusicExample{#3}{%
+	\fullPageMusicExample{#2}{#3}{%
 	\def\xmpCaption{#2}
 		\includepdf[%
 		pages=1,
