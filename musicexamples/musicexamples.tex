@@ -1,0 +1,114 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                         %
+%      This file is part of the 'openLilyLib' library.                    %
+%                                ===========                              %
+%                                                                         %
+%              https://github.com/lilyglyphs/openLilyLib                  %
+%                                                                         %
+%  Copyright 2012-13 by Urs Liska, lilyglyphs@ursliska.de                 %
+%                                                                         %
+%  'openLilyLib' is free software: you can redistribute it and/or modify  %
+%  it under the terms of the GNU General Public License as published by   %
+%  the Free Software Foundation, either version 3 of the License, or      %
+%  (at your option) any later version.                                    %
+%                                                                         %
+%  This program is distributed in the hope that it will be useful,        %
+%  but WITHOUT ANY WARRANTY; without even the implied warranty of         %
+%  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the           %
+%  GNU General Public License for more details.                           %
+%                                                                         %
+%  You should have received a copy of the GNU General Public License      %
+%  along with this program.  If not, see <http://www.gnu.org/licenses/>.  %
+%                                                                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{OLLbook}
+
+\title{musicexamples \LaTeX{} package}
+\author{Urs Liska}
+
+\begin{document}
+\maketitle
+\begin{authorAbstract}{Urs Liska}
+\texttt{musicexamples} is a set of tools intended for printing and managing music examples in \LaTeX{} documents.
+It was developed with examples in mind that are produced using the LilyPond notation software%
+\footnote{\url{www.lilypond.org}},
+but it can also be used to handle any kind of images.
+
+It consists of three parts: a \LaTeX{} package, a set of configuration files for LilyPond scores and a set of Python scripts (to be implemented).
+\end{authorAbstract}
+
+\vfill
+\input{copyright-notice.inp}
+
+\tableofcontents
+
+\chapter{End User Documentation}
+\section{Installation and Requirements}
+
+\section{musicexamples.sty}
+
+\texttt{musicexamples} is a package that defines environments and commands to handle music examples (scores and fragments) within \LaTeX{} documents.
+It supports floating or non-floating examples, one- or multi-system examples and finally full-(one- or multi-)page scores to be inserted.
+The examples are numbered in one list and can be output as one contigious list of music examples, regardless of their type of inclusion.
+
+It was developed from the perspective of a user of the LilyPond notation software, but the package should work with any kind of image suitable for music examples.
+The package has some parallels with LilyPond's \texttt{lilypond-book} scripts, but it doesn't understand itself as a competitor for this, but rather as a different approach for people with somewhat different needs.
+For anybody writing (about) music it may also be a good idea to have a look at my \texttt{lilyglyphs} package that will eventually be merged into the openLilyLib family of resources.
+
+\bigskip
+In order to use \texttt{musicexamples} you simply write \cmd{usepackage\{musicexamples\}} or \cmd{RequirePackage\{musicexamples\}}.
+You will then have access to the its commands and environments:
+
+There are two environments to be used for music examples within a page: \texttt{musicexample} and \texttt{musicexampleNonFloat}.
+The point for having a non-floating environment is \emph{not} to have more control over the placement of the item, but rather to allow it to cross page breaks, so that a group of music systems may flow over one or more pages. 
+These environments do not print the music examples themselves but only provide the environment for them (as a \texttt{figure} environment doesn't already print the figure).
+You use them like any other float environment, so you can optionally add the placement directive after the \cmd{begin} statement.
+Inside the environment you add the contents (see below) and the \cmd{caption} to be used.
+\begin{quote}
+\begin{verbatim}
+\begin{musicexample}[t]
+  \includegraphics{exampleimage}
+  \caption{A typical music example}
+\end{musicexample}
+\end{verbatim}
+\end{quote}
+
+This will print your image in a floating environment [preferrably at the top of a page], will take care of the numbering and prepares for the inclusion in a list of music examples.
+
+The usage of \texttt{musicexampleNonFloat} is identical, except that it doesn't accept the optional placement argument.
+It will print the example right where you inserted the environment, and while the floating version can only print the example on one page, this one can spread over page breaks -- provided the music systems are given as a series of images.
+
+The captions are (to my knowledge) standard captions that can be influenced (formatted) with the commands of the \texttt{caption} package, the default layout and style being due to my needs when developing the package.
+The caption label defaults to “Music Example”, the heading of the list to “List of Music Examples”.
+In order to change them you can use the commands \cmd{setXmpCaptionLabel} and \cmd{setXmpListName} with one mandatory argument supplying the respective string.
+\begin{quote}
+\begin{verbatim}
+
+\end{verbatim}
+\end{quote}
+
+
+\begin{itemize}
+\item \texttt{musicexample}
+\item \texttt{musicexampleNonFloat}
+\item \cmd{onePageMusicExample}
+\item \cmd{onePageLilyPondExample}
+\item \cmd{multiPageMusicExample}
+\item \cmd{multiPageLilyPondExample}
+\end{itemize}
+
+\section{The LilyPond Configuration Files}
+
+\section{The Python Scripts}
+
+\chapter{Implementation}
+
+\section{musicexamples.sty}
+
+\section{LilyPond Files}
+
+\chapter{Licenses}
+\input{licenses.inp}
+
+\end{document}
