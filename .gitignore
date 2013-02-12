@@ -16,6 +16,8 @@
 *.bbl
 *.blg
 *.dvi
+# Texstudio helper files
+*.synctex.gz
 
 # We don't want backup files to be tracked
 *.*~
