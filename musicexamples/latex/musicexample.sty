@@ -96,10 +96,10 @@
 % it is scaled to fit he text column.
 %TODO implement the optional downscaling to \textwidth
 %     (should also issue a warning)
-\newcommand{\musicSFE}[1]{
+\newcommand{\musicSFE}[2][]{
 
 	\noindent
-	\includegraphics{#1}
+	\includegraphics[#1]{#2}
 
 }
 
@@ -110,8 +110,8 @@
 % While the command actually treats them as ordinary images
 % one can use this for a script to keep track
 % of changed sources that should be recompiled.
-\newcommand{\lilypondSFE}[1]{
-	\musicSFE{#1}
+\newcommand{\lilypondSFE}[2][]{
+	\musicSFE[#1]{#2}
 }
 
 % \lilypondMFE
@@ -131,7 +131,7 @@
 % This command should not be called directly,
 % but rather the below macro (with the consistently
 % capitalized name).
-\newcommand{\lilypondmfe}[1]{
+\newcommand{\lilypondmfe}[2][]{
 	% (Use catchfile to set lilySysCnt to the number inside
 	% LilyPonds -systems.count file)
 	\CatchFileDef{\scfftemp}{#1-systems.count}{\endlinechar=-1 }%
@@ -144,7 +144,7 @@
 	\forloop{lilySysInd}
 		{3}
 		{\value{lilySysInd} < \value{lilySysCnt}}
-		{\musicSFE{#1-\arabic{lilySysInd}}}
+		{\musicSFE[#1]{#2-\arabic{lilySysInd}}}
 	\endgroup % (End the group started by \lilypondMFE)
 }
 
