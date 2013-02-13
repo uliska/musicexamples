@@ -47,49 +47,59 @@ It consists of three parts: a \LaTeX{} package, a set of configuration files for
 \section{Installation and Requirements}
 
 \section{musicexamples.sty}
+\label{sec:xmp_musicexamples}
 
-\texttt{musicexamples} is a package that defines environments and commands to handle music examples (scores and fragments) within \LaTeX{} documents.
-It supports floating or non-floating examples, one- or multi-system examples and finally full-(one- or multi-)page scores to be inserted.
-The examples are numbered in one list and can be output as one contigious list of music examples, regardless of their type of inclusion.
+\texttt{musicexamples} is a \LaTeX{} package that defines environments and commands to handle music examples (scores and fragments) within \LaTeX{} documents.
+It supports floating or non-floating examples as well as full-(one- or multi-)page scores.
+The examples are numbered in one contigious list and can be output as one \cmd{listofmusicexamples}, regardless of their type of inclusion.
 
-It was developed from the perspective of a user of the LilyPond notation software, but the package should work with any kind of image suitable for music examples.
-The package has some parallels with LilyPond's \texttt{lilypond-book} script, but it doesn't understand itself as a competitor for this, but rather as a different approach for people with somewhat different needs.
-For anybody writing (about) music it may also be a good idea to have a look at my \texttt{lilyglyphs} package that will eventually be merged into the openLilyLib family of resources.
+The package was developed from the perspective of a user of the LilyPond notation software%
+\footnote{\url{http://www.lilypond.org}}, but you can use it with any kind of suitable music example images.
+The package has some similarities with LilyPond's \package{lilypond-book} script, but it doesn't understand itself as a competitor for this, but rather as a different approach for people with somewhat different needs.
+It can even be used in parallel, i.\,e.\ you can use \package{musicexamples'} environments to wrap \package{lilypond-book}-like source snippets.
+For anybody writing (about) music it may also be a good idea to have a look at my \package{lilyglyphs} package that will eventually be merged into the openLilyLib family of resources.
 
-\bigskip
+The following documentation is split into “basic” and “advanced” usage sections because there are basic possibilities that you can use without bothering about the advanced ones.
+Especially you are in no way forced to use LilyPond as the source of your music examples (although I can't recommend it highly enough \dots).
+In the basic “mode” you can simply use \package{musicexamples} as a tool to number and list your music examples.
+
+\subsection{Basic Usage}
+\label{subsec:xmp_basic-usage}
 In order to use \texttt{musicexamples} you simply write \cmd{usepackage\{musicexamples\}} or \cmd{RequirePackage\{musicexamples\}}.
-You will then have access to the its commands and environments:
+You will then have access to its commands and environments:
 
-There are two environments to be used for music examples within a page: \texttt{musicexample} and \texttt{musicexampleNonFloat}.
+There are two environments to be used for non-fullpage music examples: \env{musicexample} and \env{musicexampleNonFloat}.
 The point of having a non-floating environment is \emph{not} to have more control over the placement of the item, but rather to allow it to cross page breaks, so that a group of music systems may flow over one or more pages. 
-These environments do not print the music examples themselves but only provide the environment for them (as a \texttt{figure} environment doesn't already print the figure).
-You use them like any other float environment, so you can optionally add the placement directive after the \cmd{begin} statement (of the floating version).
-Inside the environment you add the contents (see below), a \cmd{label} and the \cmd{caption} to be used.
+These environments do not print the music examples themselves but only provide the environment for them (as a \texttt{figure} environment doesn't already print the figure), managing their placement, captions, numbering and listing.
+
+You use \env{musicexample} like any other float environment, so you can optionally add the placement directive after the \cmd{begin} statement (of the floating version).
+Inside the environment you add the contents, the \cmd{caption} to be used, and a \cmd{label}.
 \begin{quote}
 \begin{verbatim}
 \begin{musicexample}[t]
   \includegraphics{exampleimage}
   \caption{A typical music example}
+  \label{xmp:typical-example}
 \end{musicexample}
 \end{verbatim}
 \end{quote}
 
 This will print your image in a floating environment [preferrably at the top of a page], will take care of the numbering and prepares for the inclusion in a list of music examples.
+If you have loaded the \package{fancyref} package you can profit from the predefined set of reference strings for the new \texttt{xmp:} prefix shown in the example.
+There are also German strings provided if you load \package{fancyref} with the \texttt{german} option, but this doesn't work yet \ghIssue{5}.
 
 The usage of \texttt{musicexampleNonFloat} is identical, except that it doesn't accept the optional placement argument.
-It will print the example right where you inserted the environment, and while the floating version can only print the example in a box on a single page, this one can spread over page breaks -- provided the music systems are given as a series of images.
+It will print the example right where you inserted the environment, and while the floating version can only print the example in a box on a single page, this one can spread over page breaks -- provided the music systems are given as separate images.
 
-The captions are (to my knowledge) standard captions that can be influenced (formatted) with the commands of the \texttt{caption} package, the default layout and style being due to my needs when developing the package.
-The caption label defaults to “Music Example”, the heading of the list to “List of Music Examples”.
-In order to change them you can use the commands \cmd{setXmpCaptionLabel} and \cmd{setXmpListName} with one mandatory argument supplying the respective string.
+The captions are (to my knowledge) standard captions that can be influenced (formatted) with the commands of the \texttt{caption} package (please refer to its documentation), the default layout and style being due to my needs when developing the package.
+The caption label defaults to “Music Example”,to change this you can use the command \cmd{setXmpCaptionLabel} with one mandatory argument supplying the desired string.
 \begin{quote}
 \begin{verbatim}
 \setXmpCaptionLabel{Notenbeispiel}
-\setXmpListName{Verzeichnis der Notenbeispiele}
 \end{verbatim}
 \end{quote}
 
-The \texttt{newfloat} package that was used to define the new floating environment offers a nice feature:
+The \package{newfloat} package that was used to define the new floating environment offers a nice feature:
 If you have loaded certain other packages it will automagically create some other commands of floating environments for you.
 They behave the same as their standard counterparts, and for further information please refer to the respective package documentation.
 
@@ -102,8 +112,33 @@ It will create a music example that is rotated so you can use examples with a la
 It will create a music example with the caption placed beside.
 \item[{\cmd{FPmusicexample}}] is created by loading the \texttt{fltpage} package.
 It will create a music example with the caption placed on the previous or next page.
-As \texttt{musicexamples} offers a solution for full-page music examples (see below) you'll probably won't need this.
+As \texttt{musicexamples} offers its own solution for full-page music examples (see below) you'll probably won't need this.
 \end{description}
+
+The \cmd{fullPageMusicExample} command gives you the possibility to include full-page scores with one ore more pages.
+Internally it includes the pages using \cmd{includepdf} and the \package{afterpage} package.
+You have to specify the file name of the score (including the relative path) as mandatory argument \#1.
+As it is a command and not an environment you have to provide a caption and a label as mandatory arguments (\#2 and \#3) too.
+The caption is printed in the header or footer of the (first) page of the example.
+This is realized through the use of the \package{scrpage2} package from \package{KOMA-Script}.
+The pagestyle for the first page is set to \env{xmpPageOne} while the remaining pages are assigned \env{xmpPageRest}.
+By default the caption is printed on the left (inner) part of the header of the first page, while the page number is centered in the footer.
+The caption is styled manually within this page style.
+If you want to adapt these formats (page layout or caption formatting) you will have to redefine one or both formats using \cmd{deftripstyle} (see the KOMA-Script documentation for details).
+\begin{knownIssues}
+The pdf pages are included “as-is”, so nothing is done about the page layout and margins.
+The author is responsible for providing suitably laid out scores.
+But with two-sided layout there is no way (so far) to take care of the correct left and right margins.
+\end{knownIssues}
+
+\bigskip
+Music examples entered by any of the above environments or commands are numbered in one list (they share the counter \env{musicexamples}).
+You can create a list of music examples just as you would create a list of tables or figures with the command \cmd{listofmusicexamples}.
+The list title defaults to “List of Music Examples” and can be changed using \cmd{setXmpListName}.
+
+
+\subsection{Advanced Usage}
+\label{subsec:xmp_advanced-usage}
 
 There are several commands that are intended to actually print music examples within these two environments -- although you can of course print any images inside (as in the first example).
 \cmd{musicSFE} and \cmd{lilypondSFE} are used to print Single File Examples, which usually consist of one single music system.
