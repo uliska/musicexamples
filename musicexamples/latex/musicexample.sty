@@ -174,13 +174,6 @@
 % commands inside the environment
 % and provide a \caption and \label inside
 %
-%TODO adjust layout according to the non float versions.
-%TODO (make that styling user-definable
-%       i.e. define a change that is applied to all methods)
-%\floatstyle{plain}
-%\newfloat{musicExample}{hbtp}{musex}
-%\floatname{musicExample}{Notenbeispiel}
-
 \DeclareFloatingEnvironment[%
 	fileext=loxmp,
 	listname={List of Music Examples},
@@ -213,111 +206,67 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % B) Full-page example environments
 
-%TODO How to realize a page range for multipage examples?
-
 % With full-page examples the numbering and caption is realized
 % using the header/footer of the first (or only) page
 % (by use of scrpage2 from KOMA-Script).
-% The following predefined pagestyle places the caption
-% in the inner/left part of the header and 
-% the page number centered in the footer.
+% The following predefined pagestyles places the caption
+% in the inner/left part of the header (for the first page) 
+% and the page number centered in the footer.
 % To change this to your needs, you only have to 
-% redefine the xmpPageOne style afterwards
-% (see the KOMA-Script documentation)
+% redefine the xmpPageOne and xmpPageRest styles afterwards
+% using \deftripstyle again (see the KOMA-Script documentation).
 \deftripstyle{xmpPageOne}%
 	{\upshape\textsf{\ollXmpCaptionLabel \arabic{musicexample}:}\xmpCaption}{}{}%
 	{}{--\,\pagemark\,--}{}
 
+\deftripstyle{xmpPageRest}%
+	{}{}{}%
+	{}{--\,\pagemark\,--}{}
+
 % \fullPageMusicExample
 %
-% (Not intended for use by document authors)
-% Base command placing the music example at the beginning
-% of the 'next' page (using afterpage)
-% and placing the label there.
-% #1 - the caption used for the list of music examples
-% #2 - the label for the caption
-% #3 - command(s) to be put after the pagebreak
-% (usually this is used by one of the following commands)
+% Includes a full-page music example with one or more pages.
+% The document author is responsible to provide files with suitable page margins
+% as there isn't a suitable mechanism yet to adapt it
+% (especially not for right/left layout)
+% The caption is printed in the header or footer of the (first) page
+% using the scrpage2 mechanism.
+% The \pagestyle for the first page is set to "xmpPageOne",
+% while the \pagestyle for any following page is set to "xmpPageRest".
+% Arguments:
+% #1 - file name (including path but without .pdf extension)
+% #2 - Caption to be printed
+% #3 - label (including 'xmp:')
 
-\newcommand{\fullPageMusicExample}[3]{
+% Counter indexing the processed pages of a full page example
+\newcounter{xmpPageInd}
+\newcommand{\fullPageMusicExample}[3]{%
 	\captionsetup{type=musicexample}
+	\setcounter{xmpPageInd}{0}
 	\afterpage{
-		\captionlistentry{#1}
-		\label{#2}
-		#3
-	}
-}
-
-% \onePageMusicExample
-%
-% Includes one single page pdf file as a music example.
-% Tha document author is responsible to provide files with suitable page margins
-% The caption is printed in the header or footer of the page
-% using the scrheadings mechanism
-%TODO Is it possible to determine the number of pages in the pdf document?
-%      If so, could one remove the two separate commands
-%      and use only the above \fullPageMusicExample?
-%TODO Is it possible to provide 'cropped' image files
-%      and scale them suitably to the text area?
-%      This would be highly useful regarding two-sided layout
-%      (when you don't know whether the example will start left or right)
-%
-% Arguments:
-% #1 - file name (including path but without .pdf extension)
-% #2 - Caption to be printed
-% #3 - label (including 'xmp:')
-\newcommand{\onePageMusicExample}[3]{%
-	\fullPageMusicExample{#2}{#3}{%
 		\def\xmpCaption{#2}
+		\captionlistentry{#2}
+		\label{#3}
 		\includepdf[%
-		pages=-,
-		pagecommand={\thispagestyle{xmpPageOne}}]{#1}
+			pages=-,
+			pagecommand={%
+				\stepcounter{xmpPageInd}
+				\ifthenelse{\value{xmpPageInd} = 1}
+					{\thispagestyle{xmpPageOne}}
+					{\thispagestyle{xmpPageRest}}	
+			}]{#1}
 	}
 }
 
-% \onePageLilypondExample
+% \fullPageLilypondExample
 %
-% Same as \onePageMusicExample
-% Used to keep track of lilypond generated music examples
-\newcommand{\onePageLilypondExample}[3]{
-	\onePageMusicExample{#1}{#2}{#3}
+% The same as \fullPageMusicExample (which it calls).
+% Used for keeping track of LilyPond generated music examples.
+\newcommand{\fullPageLilypondExample}[3]{%
+	\fullPageMusicExample{#1}{#2}{#3}
 }
 
-% \multiPageMusicExample
-%
-% Same as \onePageMusicExample
-% but for use with multi page documents.
-% Issues two \includepdf commands,
-% one with only the first page, the second with the remaining pages.
-% The call is separated to be able to use two different pagestyles
-%
-% Arguments:
-% #1 - file name (including path but without .pdf extension)
-% #2 - Caption to be printed
-% #3 - label (including 'xmp:')
-
-\newcommand{\multiPageMusicExample}[3]{%
-	\fullPageMusicExample{#2}{#3}{%
-	\def\xmpCaption{#2}
-		\includepdf[%
-		pages=1,
-		pagecommand={%
-			\thispagestyle{xmpPageOne}
-			\cfoot{Test}}]{#1}
-		\includepdf[%
-		pages=2-,
-		pagecommand={\thispagestyle{scrplain}}]{#1}
-	}
-}
-
-% \multiPageLilypondExample
-%
-% Same as \multiPageMusicExample
-% Used to keep track of lilypond generate music examples
-\newcommand{\multiPageLilypondExample}[3]{
-	\multiPageMusicExample{#1}{#2}{#3}
-}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Enable fancyref to work with music examples
 % (you will have to use the fancyref package manually)
 % Then you can write \fref{xmp:your-label}
