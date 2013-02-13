@@ -93,6 +93,12 @@
 % Enable the drawing of directory tree graphs
 \RequirePackage{dirtree}
 
+% Let \chapter restart its numbering after \part
+\makeatletter
+\@addtoreset{chapter}{part}
+\makeatother  
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options for use of hyperlinks
 % (make sure this is included last)

@@ -31,30 +31,17 @@
 % Environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Attribution of the original author of a chapter/tutorial or anything.
-% This should be placed after the \chapter heading.
-% This command is defined in case one needs it instead of the
-% - preferred - 'authorAbstract' environment
-\newcommand{\originalAuthor}[1]{%
-\textbf{Original author: #1}
-
-\smallskip
-\hrule
-
-\smallskip
-}
-
 % Any tutorial (or significant documentation chapter) should
 % be attributed to its original (main) author and prepended 
 % with an abstract.
 % Use this environment for this purpose (usually immediately after 
 % a \chapter heading) and give the author name as #1
-\newenvironment{authorAbstract}[1]{%
-	\originalAuthor{#1}
+\newenvironment{authorAbstract}[2][None yet]{%
+	\originalAuthor[#1]{#2}
 	\begin{quote}
 	\textbf{\textsf{Abstract}}	
 	
-	\medskip
+	\smallskip
 }
 {%
 	\end{quote}
@@ -67,8 +54,42 @@
 % Character styles
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Format LaTeX or LilyPond commands and save typing of the backslash
-\newcommand*{\cmd}[1]{\texttt{\textbackslash #1}}
+% Format LaTeX or LilyPond commands like \env with a prepended backslash
+\newcommand*{\cmd}[1]{\env{\textbackslash #1}}
+
+% Format a contributor's name.
+% Used to indicate smaller contributions
+%TODO: Implement an index of contributors and their contributions
+\newcommand*{\contributor}[1]{\textit{#1}}
+
+% Format environment names
+\newcommand*{\env}[1]{\texttt{#1}}
+
+% Format package names
+\newcommand*{\package}[1]{\texttt{#1}}
 
 % Add a TODO item that is easily spotted
 \newcommand{\todo}[1]{{\color{red}{\textbf{\textsf{[TODO: #1]}}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Other commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Reference an Issue on openLilyLib's Github account
+\newcommand*{\ghIssue}[1]{\href{https://github.com/openlilylib/openLilyLib/issues/#1}{(GitHub-Issue \##1)}}
+
+% print "openLilyLib" (may be formatted later)
+\newcommand*{\openlilylib}{\texttt{openLilyLib}}
+
+% Attribution of the original author of a chapter/tutorial or anything.
+% This should be placed after the \chapter heading.
+% This command is defined in case one needs it instead of the
+% - preferred - 'authorAbstract' environment
+\newcommand{\originalAuthor}[2][]{%
+\textbf{Original author:\ #2} | Contributors:\ #1
+
+\smallskip
+\hrule
+
+\smallskip
+}

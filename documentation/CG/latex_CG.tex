@@ -1,0 +1,100 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                         %
+%      This file is part of the 'openLilyLib' library.                    %
+%                                ===========                              %
+%                                                                         %
+%              https://github.com/lilyglyphs/openLilyLib                  %
+%                                                                         %
+%  Copyright 2012-13 by Urs Liska, lilyglyphs@ursliska.de                 %
+%                                                                         %
+%  'openLilyLib' is free software: you can redistribute it and/or modify  %
+%  it under the terms of the GNU General Public License as published by   %
+%  the Free Software Foundation, either version 3 of the License, or      %
+%  (at your option) any later version.                                    %
+%                                                                         %
+%  This program is distributed in the hope that it will be useful,        %
+%  but WITHOUT ANY WARRANTY; without even the implied warranty of         %
+%  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the           %
+%  GNU General Public License for more details.                           %
+%                                                                         %
+%  You should have received a copy of the GNU General Public License      %
+%  along with this program.  If not, see <http://www.gnu.org/licenses/>.  %
+%                                                                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Contributor's Guide - Tutorial part
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[openLilyLib_CG]{subfiles}
+
+\begin{document}
+
+\chapter{Directory structure, Document Class(es) etc.}
+
+\begin{authorAbstract}{Urs Liska}
+To be done.\\
+Describe the main books, and how the parts are included into them using the \package{subfile} approach.\\
+Describe the documentclass(es), list the included packages
+\end{authorAbstract}
+
+
+
+
+\chapter{Command Reference}
+\begin{authorAbstract}{Urs Liska}
+This is the reference on specific commands that have been implemented for \openlilylib's \LaTeX{} documentation.
+It is somewhat sketchy, but I want all commands at least to be enumerated as soon as they are implemented.
+\end{authorAbstract}
+
+\section{Formatting}
+One should \emph{never} apply manual formattings but always semantic markup through the use of commands.
+If there is no suitable command available then an author should define one himself or ask for new ones.
+
+\subsection{Environments}
+\begin{description}
+\item[\env{authorAbstract}] Although \openlilylib{} is a collaborative effort, we want to attribute the original author of tutorials or noteable chunks of documentation.
+This environment should be used after a sectioning command.
+The original author is given as the mandatory argument to the environment.
+Contributors may be given as an optional argument (use a comma-separated list of \cmd{contributor} items).
+The contents of the environment is formatted as an abstract.
+\todo{It is intended to implement an index of original authors and their contributions.}\\
+If you want to mark a substantial contribution in a place where an abstract seems inappropriate use the command \cmd{originalAuthor} instead.
+\end{description}
+
+\subsection{Paragraph Formatting}
+\begin{description}
+\item[None yet]
+\end{description}
+
+\subsection{Character Formatting}
+
+\begin{description}
+\item[\cmd{cmd}] Commands that start with a backslash can be printed using this command. It switches the font and prints the backslash in front of the command name.
+\item[\cmd{env}] Environment names are highlighted using this command.
+\item[\cmd{package}] You can enter package names with this command.
+\item[\cmd{todo}] Any TODO item should be entered in the source using this command, because it will guarantee a consistent appearance and it's quite spottable.
+This may someday be enhanced to create an index.
+\end{description}
+
+\section{Other Commands}
+\begin{description}
+\item[\cmd{contributor}] Use this command together with \cmd{originalAuthor} or the \env{authorAbstract} environment.
+So far this is only a formatting command, but it is intended to create an index of contributors and their contributions (see \ghIssue{7})
+\item[\cmd{ghIssue}] Use this command to create a link to an issue report on \openlilylib's Github site.
+Pass the plain issue number (without leading zeroes or other entities) as the mandatory argument.
+\item[\cmd{openlilylib}] Use this command to print \openlilylib's name.
+This may be formatted more stylishly later \dots
+\item[\cmd{originalAuthor}] This is a stripped down command version of the \env{authorAbstract} environment.
+You can use this command to indicate authorship for some piece of text without the need for providing an abstract.
+The mandatory argument is the author's name, and you may supply a comma-separated list of \cmd{contributor} entries as the optional argument.
+\end{description}
+
+\section{Music and Code Examples}
+Inserting music examples can be achieved using \package{musicexamples}.
+This package is part of \openlilylib{} and is included by the document class.
+Please refer to the package documentation for how to work with it.
+
+\todo{Code listings (LilyPond or \LaTeX) haven't been implemented yet}
+
+\end{document}
