@@ -1,0 +1,55 @@
+\documentclass{book}
+\usepackage{titletoc}
+
+\makeatletter
+\def\@endpart{%
+  \vfil
+  \hrule
+  \startcontents[parts]
+  \printcontents[parts]{}{0}{}
+  \par\bigskip\hrule
+  \vfil\newpage
+              \if@twoside
+               \if@openright
+                \null
+                \thispagestyle{empty}%
+                \newpage
+               \fi
+              \fi
+              \if@tempswa
+                \twocolumn
+              \fi}
+\makeatother
+
+\begin{document}
+\tableofcontents
+
+\part{Test Part One}
+\chapter{Test Chapter}
+\section{Test Section}
+\subsection{Test Subsection}
+\subsubsection{Test Subsubsection}
+\section{Test Section}
+\subsection{Test Subsection}
+\subsubsection{Test Subsubsection}
+\chapter{Test Chapter}
+\section{Test Section}
+\subsection{Test Subsection}
+\subsubsection{Test Subsubsection}
+\section{Test Section}
+\subsection{Test Subsection}
+\subsubsection{Test Subsubsection}
+
+\part{Test Part Two}
+\chapter{Test Chapter}
+\section{Test Section}
+\subsection{Test Subsection}
+\subsubsection{Test Subsubsection}
+\section{Test Section}
+\subsection{Test Subsection}
+\subsubsection{Test Subsubsection}
+\section{Test Section}
+\subsection{Test Subsection}
+\subsubsection{Test Subsubsection}
+
+\end{document}
