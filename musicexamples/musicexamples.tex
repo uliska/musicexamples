@@ -116,12 +116,16 @@ As \texttt{musicexamples} offers its own solution for full-page music examples (
 \end{description}
 
 The \cmd{fullPageMusicExample} command gives you the possibility to include full-page scores with one ore more pages.
-Internally it includes the pages using \cmd{includepdf} and the \package{afterpage} package.
-You have to specify the file name of the score (including the relative path) as mandatory argument \#1.
-As it is a command and not an environment you have to provide a caption and a label as mandatory arguments (\#2 and \#3) too.
+It behaves differently from the above environment in that it \emph{is} a command -- and in that it actually inserts the example in the document instead of only providing its environment.
+The command expects three mandatory arguments: 
+\# 1: The file name (including the relative path) to a \emph{pdf}.
+\#2: the caption and \#3: the label.
+
+Internally the pages are included using \cmd{includepdf} and the \package{afterpage} package, so the score will start at the next page without leaving the rest of the page empty.
+The label will be placed correctly on the new page so references will be correct.
 The caption is printed in the header or footer of the (first) page of the example.
 This is realized through the use of the \package{scrpage2} package from \package{KOMA-Script}.
-The pagestyle for the first page is set to \env{xmpPageOne} while the remaining pages are assigned \env{xmpPageRest}.
+The pagestyle for the first page is set to the predefined \env{xmpPageOne} while the remaining pages are assigned \env{xmpPageRest}.
 By default the caption is printed on the left (inner) part of the header of the first page, while the page number is centered in the footer.
 The caption is styled manually within this page style.
 If you want to adapt these formats (page layout or caption formatting) you will have to redefine one or both formats using \cmd{deftripstyle} (see the KOMA-Script documentation for details).
@@ -129,6 +133,9 @@ If you want to adapt these formats (page layout or caption formatting) you will 
 The pdf pages are included “as-is”, so nothing is done about the page layout and margins.
 The author is responsible for providing suitably laid out scores.
 But with two-sided layout there is no way (so far) to take care of the correct left and right margins.
+Hopefully there will be some assistance implemented in the LilyPond configuration files for this, and maybe we'll implement the possibility to include “cropped“ scores (without page margins) that can be scaled into the text area of the \LaTeX{} document.
+
+So far the score will start on the \emph{next} page, but it is intended to implement an option to start at the next odd or even page \ghIssue{10}.
 \end{knownIssues}
 
 \bigskip
