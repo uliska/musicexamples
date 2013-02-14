@@ -47,12 +47,7 @@
 % Format the captions of the float environment
 % (Try making the coherent with the manually typeset captions
 %  of the non-float items)
-\RequirePackage[%
-	format=plain,
-	font=small,
-	labelfont=sf,
-	justification=RaggedRight,
-	singlelinecheck=false]{caption}
+\RequirePackage{caption}
 
 % Allow reading the contents of an auxiliary file.
 % Needed for multi-system-examples, where the number of systems
@@ -98,7 +93,6 @@
 %     (should also issue a warning)
 \newcommand{\musicSFE}[2][]{
 
-	\noindent
 	\includegraphics[#1]{#2}
 
 }
@@ -174,6 +168,8 @@
 % commands inside the environment
 % and provide a \caption and \label inside
 %
+% First declare an internal floating environment
+% (this will be the common counter)
 \DeclareFloatingEnvironment[%
 	fileext=loxmp,
 	listname={List of Music Examples},
@@ -181,6 +177,19 @@
 	placement=htpb]
 	{musicexample}
 
+% Define default alignment of music example environments
+\def\xmpAlignment{\center}
+% Change the alignment of music examples
+\newcommand{\setXmpAlignment}[1]{%
+	\def\xmpAlignment{#1}
+}
+% Now this is the environment to be used in a document:
+\newenvironment{musicExample}{%
+	\begin{musicexample}
+	\xmpAlignment
+}{%
+	\end{musicexample}
+}
 
 % musicExampleNonFloat
 %
@@ -194,9 +203,10 @@
 % and provide a \label.
 % As it isn't a float environment,
 % you have to provide the caption as a mandatory argument #1
-\newenvironment{musicexampleNonFloat}
+\newenvironment{musicExampleNonFloat}
 	{%
 		\bigskip
+		\xmpAlignment
 		\captionsetup{type=musicexample}
 	}{%
 
@@ -216,7 +226,7 @@
 % redefine the xmpPageOne and xmpPageTwo styles afterwards
 % using \deftripstyle again (see the KOMA-Script documentation).
 \deftripstyle{xmpPageOne}%
-	{\upshape\textsf{\ollXmpCaptionLabel \arabic{musicexample}:}\xmpCaption}{}{}%
+	{\upshape\ollXmpCaptionLabel \arabic{musicexample}: \xmpCaption}{}{}%
 	{}{--\,\pagemark\,--}{}
 
 \deftripstyle{xmpPageTwo}%
