@@ -213,13 +213,13 @@
 % in the inner/left part of the header (for the first page) 
 % and the page number centered in the footer.
 % To change this to your needs, you only have to 
-% redefine the xmpPageOne and xmpPageRest styles afterwards
+% redefine the xmpPageOne and xmpPageTwo styles afterwards
 % using \deftripstyle again (see the KOMA-Script documentation).
 \deftripstyle{xmpPageOne}%
 	{\upshape\textsf{\ollXmpCaptionLabel \arabic{musicexample}:}\xmpCaption}{}{}%
 	{}{--\,\pagemark\,--}{}
 
-\deftripstyle{xmpPageRest}%
+\deftripstyle{xmpPageTwo}%
 	{}{}{}%
 	{}{--\,\pagemark\,--}{}
 
@@ -232,7 +232,7 @@
 % The caption is printed in the header or footer of the (first) page
 % using the scrpage2 mechanism.
 % The \pagestyle for the first page is set to "xmpPageOne",
-% while the \pagestyle for any following page is set to "xmpPageRest".
+% while the \pagestyle for any following page is set to "xmpPageTwo".
 % Arguments:
 % #1 - file name (including path but without .pdf extension)
 % #2 - Caption to be printed
@@ -253,7 +253,7 @@
 				\stepcounter{xmpPageInd}
 				\ifthenelse{\value{xmpPageInd} = 1}
 					{\thispagestyle{xmpPageOne}}
-					{\thispagestyle{xmpPageRest}}	
+					{\thispagestyle{xmpPageTwo}}	
 			}]{#1}
 	}
 }
