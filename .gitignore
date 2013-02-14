@@ -18,6 +18,10 @@
 *.dvi
 # Texstudio helper files
 *.synctex.gz
+# minitoc helper files
+*.maf
+*.mtc*
+*.ptc*
 
 # We don't want backup files to be tracked
 *.*~
