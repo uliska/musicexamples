@@ -241,11 +241,17 @@
 % Counter indexing the processed pages of a full page example
 \newcounter{xmpPageInd}
 \newcommand{\fullPageMusicExample}[3]{%
-	\captionsetup{type=musicexample}
+	% Restart page counter
 	\setcounter{xmpPageInd}{0}
+	% Increment music example counter manually
+	\refstepcounter{musicexample}
+	% Set the caption text for use in the page style
+	\def\xmpCaption{#2}
 	\afterpage{
-		\def\xmpCaption{#2}
-		\captionlistentry{#2}
+		% The following two commands have to be placed after the \afterpage
+		% command to give the right page number
+		% Manually add an entry in the index file
+		\addcontentsline{loxmp}{musicexample}{\protect\numberline{\arabic{musicexample}}{\ignorespaces #2\relax }}%%
 		\label{#3}
 		\includepdf[%
 			pages=-,
