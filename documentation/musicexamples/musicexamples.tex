@@ -69,7 +69,7 @@ In order to use \texttt{musicexamples} you simply write \cmd{usepackage\{musicex
 You will then have access to its commands and environments:
 
 There are two environments to be used for non-fullpage music examples: \env{musicExample} and \env{musicExampleNonFloat}.
-The point of having a non-floating environment is \emph{not} to have more control over the placement of the item, but rather to allow it to cross page breaks, so that a group of music systems may flow over one or more pages. 
+It is \emph{not} the point having a non-floating environment to have more control over the placement of the item, but rather to allow it to cross page breaks, so that a group of music systems may flow over one or more pages. 
 These environments do not print the music examples themselves but only provide the environment for them (as a \texttt{figure} environment doesn't already print the figure), managing their placement, captions, numbering and listing.
 
 You use \env{musicExample} like any other float environment, so you can optionally add the placement directive after the \cmd{begin} statement (of the floating version).
@@ -92,7 +92,7 @@ The usage of \env{musicExampleNonFloat} is identical, except that it doesn't acc
 It will print the example right where you inserted the environment, and while the floating version can only print the example in a box on a single page, this one can spread over page breaks -- provided the music systems are given as separate images.
 
 The captions are standard captions that can be formatted with the commands of the \package{caption} package (please refer to its documentation).
-The caption label defaults to “Music Example”, to change this you can use the command \cmd{setXmpCaptionLabel} with one mandatory argument supplying the desired string.
+The caption label defaults to “Music Example” but you can change this with the command \cmd{setXmpCaptionLabel} with one mandatory argument supplying the desired string.
 The alignment of the caption is centered by default, but you can of course change this behaviour, either locally or generally:
 To change a single example you can just enter an alignment command (like \cmd{flushleft} or \cmd{flushright}) inside the environment, just before the image.
 To change the behaviour of all subsequent floating or non-floating environments you may use the \cmd{setXmpAlignment} command with the appropriate command as its argument.
@@ -133,11 +133,12 @@ The command expects three mandatory arguments:
 
 Internally the pages are included using \cmd{includepdf} and the \package{afterpage} package, so the score will start at the next page without leaving the rest of the current page empty.
 The label will be placed correctly on the new page so references will be correct.
+The handling of the caption is somewhat special with this command.
 The caption is printed in the header or footer of the (first) page of the example.
 This is realized through the use of the \package{scrpage2} package from \package{KOMA-Script}.
 The pagestyle for the first page is set to the predefined \env{xmpPageOne} while the remaining pages are assigned \env{xmpPageTwo}.
 By default the caption is printed on the left (or inner) part of the header of the first page, while the page number is centered in the footer.
-The caption is styled manually within this page style.
+The caption is styled manually within this page style and defaults to the default \cmd{caption} format.
 If you want to adapt these formats (page layout or caption formatting) you will have to redefine one or both formats using \cmd{deftripstyle} (see the KOMA-Script documentation for details).
 Note that if you change the formatting of the captions using \cmd{captionsetup} you will have to adjust these page styles too.
 
@@ -145,9 +146,9 @@ Note that if you change the formatting of the captions using \cmd{captionsetup} 
 
 \begin{knownIssues}
 The pdf pages are included “as-is”, so nothing is done about page layout and margins.
-The document/score author is responsible for providing suitably laid out scores.
-But with two-sided layout there is no way (so far) to take care of the correct inner and outer margins.
-Hopefully there will be some assistance implemented in the LilyPond configuration files for this, and maybe we'll implement the possibility to include “cropped“ scores (without page margins) that can be scaled into the text area of the \LaTeX{} document.
+The document/score author is responsible for providing suitably laid out scores, especially there is not automatic handling of inner/outer margins with two-sided layout.
+The LilyPond configuration files already provide commands to compile odd- and even-starting pdf files (not quite perfect and not documented yet), and I intend to enhance the present command to automatically detect and use the corresponding file, depending on which page it wants to place it.
+Maybe I'll also implement the possibility to include “cropped“ scores (without page margins) that can be scaled into the text area of the \LaTeX{} document.
 
 So far the score will start on the \emph{next} page, but it is intended to implement an option to explicitely start at the next odd or even page \ghIssue{10}.
 \end{knownIssues}
@@ -179,13 +180,14 @@ However it is usually recommendable to prepare the images with the right size in
 
 The image is included in its own paragraph without indentation.
 So if you provide an image with a width of \cmd{textwidth} the example will fill the whole line.
-If the width of the image is smaller then it will be left-aligned by default, but you can override the alignment manually with standard LaTeX commands.
-\\\todo{this has to be thought about again \ghIssue{15}}.\\
-If the image is too large then it will flow over the right margin (so far).
-\\\todo{It is intended to implement a conditional resizing that scales the image if it exceeds the text height or width \ghIssue{14}.}
+If the width of the image is smaller then it will be centered by default, and if it exceeds the text width it will flow over the right margin or even page border.
+\\\todo{It is intended to implement a conditional resizing that scales the image if it exceeds the text height or width \ghIssue{14}.}\\
+You can override the alignment manually with standard LaTeX commands inside the environment, and you can set the alignment for all subsequent musicexamples with \cmd{setXmpAlignment\{alignment-command\}}
 
 \begin{quote}
 \begin{verbatim}
+\setXmpAlignment{\flushleft}
+
 \lilypondSFE[scale=1.2]{examples/lilypond/example1}
 \end{verbatim}
 \end{quote}
@@ -197,15 +199,16 @@ The non-floating variant is useful if you want the example to flow naturally wit
 
 There is no “music“ variant of this command because it expects a series of music systems in a form that is typical for LilyPond's \texttt{lilypond-book} style output.
 (We will discuss some aspects on how to streamline the creation of these examples on the LilyPond side in \fref{sec:xmp_lilypond-configuration}).
-If you have a music examples consisting of several individual image files you can still use \cmd{musicSFE} multiple times to print them manually.
+If you have a music example consisting of several individual image files you can still use \cmd{musicSFE} multiple times to print them manually.
 
-To use \cmd{lilypondMFE} you provide it the file basename as the mandatory argument, just like with the other commands we saw so far.
+To use \cmd{lilypondMFE} you provide the file basename as the mandatory argument, just like with the other commands we saw so far.
 To work correctly the command expects a set of files to be present at the location specified by the argument.
-These are the files that you'll find when you include the file \texttt{lilypond-book-preable.ly} in your LilyPond document:
+These are some of the files that you'll find when you include the file \texttt{lilypond-book-preable.ly} in your LilyPond document:
 \begin{description}
 \item[\texttt{BASENAME-\#(.pdf)}] Numbered files for each system.
 The music systems start with \#\,3, while the first two files are the book and score title markups, which are discarded by the command
 \item[\texttt{BASENAME-systems.count}] is a file containing exclusively one number indicating the number of systems to be processed.
+This number includes the first two unused systems, so if you have an example with three systems this file will actually contain the number 5.
 \end{description}
 
 \cmd{lilypondMFE} will now iterate over the files 3 to n to consecutively print the systems using the \cmd{musicSFE} command.
@@ -214,18 +217,102 @@ The music systems start with \#\,3, while the first two files are the book and s
 As mentioned the book and score title markups from the LilyPond score are discarded by this command.
 If you need to have titles in the example you will have to supply them directly within the music example environment or as markups in the LilyPond score (not in the header but in the music part).
 
+\subsection{Command Reference}
+\label{subsec:xmp_command-reference}
+To finish off this section I will provide a short list of the available commands:
 
+\subsubsection*{Environments to Place Music Examples in}
+\begin{description}
+\item[\env{musicExample}] Floating environment, content is centered by default.
+\item[\env{musicExampleNonFloat}] Non-floating environment that can enclose multiple images across page breaks.
+\item[\cmd{fullPageMusicExample}] \emph{Command} that prints full-page music examples.
+Support for odd/even-starting scores is planned but not implemented yet.
+\item[\cmd{fullPageLilypondExample}] Same as above, but to be used for LilyPond generated examples.
+\end{description}
+
+More optional floating environments that are available when third-party packages are loaded.
+Some comments earlier in \fref{subsec:xmp_basic-usage}, more information in the respective package documentation:
+\begin{description}
+\item[\cmd{wrapmusicexample}](\texttt{wrapfig})
+\item[\cmd{sidewaysmusicexample}] (\texttt{rotating})
+\item[\cmd{SCmusicexample}] (\texttt{sidecap})
+\item[{\cmd{FPmusicexample}}] (\texttt{fltpage})
+\end{description}
+
+\subsubsection*{Commands that Print Music Examples}
+\begin{description}
+\item[\cmd{musicSFE} and \cmd{lilypondSFE}]Print single file.
+\item[\cmd{lilypondMFE}]Print a music example consisting of several files.
+\end{description}
+
+\subsubsection*{Miscellaneous Options and Commands}
+\begin{description}
+\item[\cmd{SetupFloatingEnvironment}](\package{caption}): Modify the appearance of the captions of the (floating and non-floating) environments.
+\item[\cmd{setXmpCaptionLabel}]Set the label used for the captions (e.\,s. set it to your own language)
+\item[\cmd{setXmpListName}]Set the Title for the list of music examples.
+\item[\cmd{setXmpAlignment}] Set the alignment for all subsequent music examples.
+To modify the alignment of a single example use standard \LaTeX{} commands inside the environment.
+\item[\env{xmpPageOne} and \env{xmpPageTwo}]Page styles used (by \package{scrpage2}) for the first and the remaining pages of a full/multi page example. 
+Typically prints the caption in the header or footer of the first page.
+The caption has to be manually made consistent with the standard captions.
+To change the layout use the \cmd{deftripstyle} command from the \package{scrpage2} package.
+\item[\env{\{xmp:\}}] Suggested prefix for labels.
+There are \package{fancyref} labels defined for this prefix.
+\end{description} 
 
 \section{Using LilyPond with \env{musicexamples}}
 \label{sec:xmp_lilypond-configuration}
+It is perfectly possible to stop reading here and use \package{musicexamples} with any kind of image files for music examples.
+I think that the package is useful even if you only use it to manage music examples of different kind.
+But the intended use is to use it together with the LilyPond notation software.
+Even if you \emph{do} use LilyPond to create your music examples you don't have to continue here and may just use them as images.
+
+\subsection{\package{musicexamples} and \package{lilypond-book}}
+\label{subsec:xmp_and-lilypond-book}
+Just as a side note: You can use \package{musicexamples} together with \package{lilypond-book}, if you are already used to the latter.
+It is an assumption -- as I didn't actually try this out -- but I'm sure you can place your \env{lilypond-book} items inside \package{musicexamples}' environments and use the new package to consistently number and label your floating and non-floating music examples.
+\env{lilypond-book} will write its examples in the intermediate document just like \cmd{lilypondMFE} does.
+Probably it isn't possible to use this combination for full-page examples, but you wouldn't be able to do that with pure \env{lilypond-book} anyway.
+
+\subsection{Minimal LilyPond configuration}
+\label{subsec:xmp_minimal-lilypond-configuration}
+If you don't want to use the advanced LilyPond techniques (and the respective include files) described in the next section, you should nevertheless read the following comments on some precautions you should take with your LilyPond scores.
+
+\package{musicexamples} does \emph{not} -- contrary to \env{lilypond-book} -- make any attempt to guess the text width of the \LaTeX{} document, so you will have to provide an appropriate layout for your LilyPond scores yourself.
+It is recommended that you make sure the scores are compiled with the final line width in order to provide a consistent layout (esp. concerning staff size).
+For this it is crucial to define the layout in a separate include file (and not within the actual music example file), so you can (quite) easily recompile all examples if you have to change the layout of your \LaTeX{} document later.
+We will show you helper scripts to simplify this kind of work-flow later in \fref{sec:xmp_python}.
+
+For \emph{full-page scores} it is generally advisable to suppress the printing of headers and footers (and page numbers) and let \LaTeX{} do this (as you won't know the final page numbers when preparing the scores and as it is quite difficult to typeset the headers and footers from LilyPond in a way so they match well with the rest of the document).
+It has to be admitted that it is a bit tricky to find out the right parameters to set up the document layout in a useful way, but it is surely better to let \LaTeX{} do the headers and footers consistently.
+And it is a good idea to take the header with the caption into account and leave some space for it when designing the layout of the LilyPond document.
+For example you should leave some space at the top of the first page if you print the caption in the header of this page.
+If you have a two-sided layout you should of course take care that your document starts on the correct side, i.\,e. on an odd or even page.
+As it wouldn't be practical to wait until the final layout of the text document to decide upon this there are supporting functions for this issue on the \LaTeX{} as well as on the LilyPond side.
+
+\emph{One system examples} should be compiled with LilyPond's “preview” option, which causes the output file to be cropped to its minimal dimension.
+This will enable \LaTeX{} to include it in its original dimensions if the line width of the LilyPond document matches the text width of the \LaTeX{} document.
+You can achieve this by supplying the \env{-dpreview} option on the command line (possibly in combination with \env{-dno-print-pages}).
+But you can also insert the Scheme statments \env{\#(ly:set-option 'preview \#t)} and \env{
+\#(ly:set-option 'print-pages \#f)} somewhere at top-level in your LilyPond source file.
+In the next section we'll provide templates, examples and include files to simplify your life in this respect \dots
+
+For \emph{multi system examples} you should \verb+\include 21"lilypond-book-preamble.ly"+ somewhere in your document.
+This lets LiylPond output each system as a separate (cropped) file with a naming convention that allows \package{musicexample}'s \cmd{lilypondMFE} command to iterate over all systems to print them.
+
+\subsection{Provided Configuration Files and Suggested Work-flows}
+\label{subsec:xmp_suggested-work-flows}
+The previous section described a few requirements LilyPond scores should meet in order to be used successfully with \package{musicexamples}.
+
 \begin{itemize}
-\item Minimal requirements
 \item suggested work-flows and provided configuration files\\
 (Move conf files to OLLincludes)
 \end{itemize}
 
-\section{The Python Scripts}
+
+\section{The Python Scripts \dots}
 \label{sec:xmp_python}
+\dots{} haven't been implemented yet, so they can't be documented, isn't it?
 
 \chapter{Implementation}
 
