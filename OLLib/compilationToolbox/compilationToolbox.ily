@@ -23,44 +23,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %{
-  OLLib/full.ily
-  This is the main entry point for openLilyLib's full OLLib.
+ OLLib/compilationToolbox/compilationToolbox.ily
+
+  This library is part of openLilyLib's OLLib
+  and may also be included separately.
+  
+  The compilation toolbox contains functions
+  that handle the compilation process for lilypond scores.
 %}
 
-% Include all (full) sub-toolboxes
 #(ly:set-option 'relative-includes #t)
-
-% Editorial additions and (multiple editors') productivity tools
-\include "editorialToolbox/editorialToolbox.ily"
-
-% Tools to simplify the usage of piano music
-\include "pianoToolbox/pianoToolbox.ily"
-
-% Tools that enhance the compilation process
-\include "compilationToolbox/compilationToolbox.ily"
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Includes that are not imported from the old ulLibrary
-
-% Visual highlightings of editorial Additions
-%\include "../includes/ulLibrary/editorialToolbox.ily"
-
-% Tools to manipulate (shape) curves (Slurs, PhrasingSlurs and Ties)
-% and to display (debug) their bezier control points
-%\include "../includes/ulLibrary/curvesToolbox.ily"
-
-% Toolbox with some general tools
-%\include "../includes/ulLibrary/generalTools.ily"
-
-% Toolbox with manual tweaks like moved objects
-%\include "../includes/ulLibrary/tweaks.ily"
-
-% A Scheme Engraver that prints double bar lines
-% before any \time changes
-%\include "../includes/ulLibrary/layout/DbBars_engraver.ily"
-
-% a function that correctly places tuplet numbers on kneed beams
-%\include "../includes/ulLibrary/layout/tuplet_numers_on_kneed_beams.ily"
-
-% A Scheme Engraver that corrects stem-side staccato alignment
-%\include "../includes/ulLibrary/layout/staccato_corrector_engraver.ily"
+\include "writeBook.ily"
+\include "writeScore.ily"

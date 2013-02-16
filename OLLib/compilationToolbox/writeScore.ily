@@ -18,10 +18,10 @@ writeScoreOddEven =
    (let ((book #{ \book { \score { $score } } #}))
    ; process with first-number 1
    (ly:output-def-set-variable! (ly:book-paper book) 'first-page-number oddpagenum)
-   (ly:book-process book #{ \paper {} #} #{ \layout {} #} mybasename)
+   (ly:book-process book #{ \paper {} #} #{ \layout {} #} (ly:parser-output-name parser))
    ; process with first-number 2
    (ly:output-def-set-variable! (ly:book-paper book) 'first-page-number (+ oddpagenum 1))
-   (ly:book-process book #{ \paper {} #} #{ \layout {} #} (format "~A-even" mybasename))
+   (ly:book-process book #{ \paper {} #} #{ \layout {} #} (format "~A-even" (ly:parser-output-name parser)))
    ))
 
 %{ Usage example:
