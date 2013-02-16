@@ -178,10 +178,10 @@
 	{musicexample}
 
 % Define default alignment of music example environments
-\def\xmpAlignment{\center}
+\newcommand*\xmpAlignment{\center}
 % Change the alignment of music examples
 \newcommand{\setXmpAlignment}[1]{%
-	\def\xmpAlignment{#1}
+	\renewcommand*\xmpAlignment{#1}
 }
 % Now this is the environment to be used in a document:
 \newenvironment{musicExample}{%
