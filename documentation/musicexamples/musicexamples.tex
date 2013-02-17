@@ -129,8 +129,19 @@ The \cmd{fullPageMusicExample} command gives you the possibility to include full
 It behaves differently from the above \emph{environments} in that it is a \emph{command} -- and in that it actually inserts the example in the document instead of only providing its environment.
 The command expects three mandatory arguments: 
 \# 1: the file name (including the relative path) to a pdf (and no other image) file.
-\#2: the caption and \#3: the label.
+\#2: the caption and \#3: a \cmd{label}.
+While it would have been easy to let you provide only the label itself, it makes sense to use this somewhat redundant syntax.
+This way you actually have a \cmd{label} at the right place in your source, and your editor may use this in helping you navigate your document.
 
+\begin{quote}
+\begin{verbatim}
+% Usage example
+\fullPageMusicExample
+    {examples/chapter01/helpfulexample} % path to image
+    {A helpful example} % caption text
+    {\label{xmp:helpful-example}}
+\end{verbatim}
+\end{quote}
 Internally the pages are included using \cmd{includepdf} and the \package{afterpage} package, so the score will start at the next page without leaving the rest of the current page empty.
 The label will be placed correctly on the new page so references will be correct.
 The handling of the caption is somewhat special with this command.

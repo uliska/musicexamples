@@ -252,7 +252,7 @@
 % Arguments:
 % #1 - file name (including path but without .pdf extension)
 % #2 - Caption to be printed
-% #3 - label (including 'xmp:')
+% #3 - label command (including 'xmp:')
 
 % Counter indexing the processed pages of a full page example
 \newcounter{xmpPageInd}
@@ -268,7 +268,8 @@
 		% command to give the right page number
 		% Manually add an entry in the index file
 		\addcontentsline{loxmp}{musicexample}{\protect\numberline{\arabic{musicexample}}{\ignorespaces #2\relax }}%%
-		\label{#3}
+		% provide a \label as argument #3
+        #3
 		\includepdf[%
 			pages=-,
 			pagecommand={%
