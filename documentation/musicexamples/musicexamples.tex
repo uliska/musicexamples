@@ -177,12 +177,13 @@ As with the full-page examples the “lilypond” versions is technically the sa
 You use both commands by providing the file basename as the mandatory argument, including the relative path but excluding the extension.
 Internally these commands include the example with \cmd{includegraphics}, and you can pass an optional argument with the same options that you can use to include images normally.
 However it is usually recommendable to prepare the images with the right size in advance and include them unaltered in order to get a consistent layout.
+\package{musicexamples} uses the \package{adjustbox} package which extends the capabilities of \package{graphicx} and adds some keys to it that you can also use (see the package documentation).
 
-The image is included in its own paragraph without indentation.
-So if you provide an image with a width of \cmd{textwidth} the example will fill the whole line.
-If the width of the image is smaller then it will be centered by default, and if it exceeds the text width it will flow over the right margin or even page border.
-\\\todo{It is intended to implement a conditional resizing that scales the image if it exceeds the text height or width \ghIssue{14}.}\\
-You can override the alignment manually with standard LaTeX commands inside the environment, and you can set the alignment for all subsequent musicexamples with \cmd{setXmpAlignment\{alignment-command\}}
+The image is included in its own paragraph without indentation, and it is centered by default.
+If you provide an image with a width of \cmd{textwidth} the example will fill the whole line.
+If the width of the image is smaller then it will be centered by default, and if it exceeds the text width it will automatically be scaled to the text width.
+So images will never protrude out of the text area, but you have to expect resizing if you provide too large images.
+You can override the alignment manually with standard LaTeX commands inside the environment, or you can set the alignment for all subsequent musicexamples with \cmd{setXmpAlignment\{alignment-command\}} (both as demonstrated before).
 
 \begin{quote}
 \begin{verbatim}

@@ -49,6 +49,10 @@
 %  of the non-float items)
 \RequirePackage{caption}
 
+% Enhance the \includegraphics command 
+% so it can have the 'max width' key.
+\RequirePackage[export]{adjustbox}
+
 % Allow reading the contents of an auxiliary file.
 % Needed for multi-system-examples, where the number of systems
 % is written to a ...systems.count file by LilyPond
@@ -89,11 +93,13 @@
 % and suppresses indentation.
 % If the image is wider than \texwidth, 
 % it is scaled to fit he text column.
-%TODO implement the optional downscaling to \textwidth
-%     (should also issue a warning)
+% This is realized by the use of [export]{adjustbox}.
+% You can pass an optional argument with key=value pairs
+% that are passed on to the \includegraphics command.
 \newcommand{\musicSFE}[2][]{
 
-	\includegraphics[#1]{#2}
+	\noindent
+    \includegraphics[max width=\textwidth,#1]{#2}
 
 }
 
