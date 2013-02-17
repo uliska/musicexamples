@@ -45,6 +45,13 @@ It consists of three parts: a \LaTeX{} package, a set of configuration files for
 
 \chapter{End User Documentation}
 \section{Installation and Requirements}
+The main requirement to make use of the present material is to make the \package{musicexamples} package available to your \LaTeX{} distribution.
+This basically consists of ensuring that the file \texttt{musicexamples.sty} is found.
+Usually it is enough to copy it somewhere into your \texttt{texmf} tree and run \env{texhash} afterwards.
+If you aren't sure what this means, please consult your \LaTeX{} documentation or a book.
+
+\todo{Describe more requirements when the remaining chapters have been written.}
+
 
 \section{musicexamples.sty}
 \label{sec:xmp_musicexamples}
@@ -76,6 +83,7 @@ You use \env{musicExample} like any other float environment, so you can optional
 Inside the environment you add the contents, the \cmd{caption} to be used, and a \cmd{label}.
 \begin{quote}
 \begin{verbatim}
+% Usage example
 \begin{musicExample}[t]
   \includegraphics{exampleimage}
   \caption{A typical music example}
@@ -99,9 +107,13 @@ To change the behaviour of all subsequent floating or non-floating environments 
 
 \begin{quote}
 \begin{verbatim}
+% Change the labelname of subsequent captions
 \setXmpCaptionLabel{Notenbeispiel}
+
+% Change alignment of subsequent music examples
 \setXmpAlignment{\flushleft}
 
+% Change the alignment of the current music example
 \begin{musicExample}
   \flushright
   \includegraphics{exampleimage}
@@ -152,8 +164,23 @@ By default the caption is printed on the left (or inner) part of the header of t
 The caption is styled manually within this page style and defaults to the default \cmd{caption} format.
 If you want to adapt these formats (page layout or caption formatting) you will have to redefine one or both formats using \cmd{deftripstyle} (see the KOMA-Script documentation for details).
 Note that if you change the formatting of the captions using \cmd{captionsetup} you will have to adjust these page styles too.
+Take the definition of the styles in the package as an example.
+The first argument is the name of the style to be modified, the next three arguments take what is to be printed in the three parts of the header, and finally there are three arguments for the footer.
+\begin{quote}
+\begin{verbatim}
+% Example of changing the page styles for full page examples
+\deftripstyle{xmpPageOne}%
+{\upshape\ollXmpCaptionLabel \arabic{musicexample}: \xmpCaption}{}{}%
+{}{--\,\pagemark\,--}{}
 
-\cmd{fullPageLilypondExample} behaves the same as \cmd{fullPageMusicExample} but you should use it for exmaples created with LilyPond, as it can be used (e.\,g. by scripts) to keep track of these examples (see \fref{sec:xmp_python}).
+\deftripstyle{xmpPageTwo}%
+{}{}{}
+{}{--\,\pagemark\,--}{}
+
+\end{verbatim}
+\end{quote}
+
+\cmd{fullPageLilypondExample} behaves the same as \cmd{fullPageMusicExample} but you should use it for examples created with LilyPond, as it can be used (e.\,g. by scripts) to keep track of these examples (see \fref{sec:xmp_python}).
 
 \begin{knownIssues}
 The pdf pages are included “as-is”, so nothing is done about page layout and margins.
@@ -198,8 +225,7 @@ You can override the alignment manually with standard LaTeX commands inside the 
 
 \begin{quote}
 \begin{verbatim}
-\setXmpAlignment{\flushleft}
-
+% Use of the printing command together with the optional argument
 \lilypondSFE[scale=1.2]{examples/lilypond/example1}
 \end{verbatim}
 \end{quote}
@@ -214,8 +240,9 @@ There is no “music“ variant of this command because it expects a series of m
 If you have a music example consisting of several individual image files you can still use \cmd{musicSFE} multiple times to print them manually.
 
 To use \cmd{lilypondMFE} you provide the file basename as the mandatory argument, just like with the other commands we saw so far.
+As with \cmd{lilypondSFE} this command accepts an optional argument and passes it unchanged to \cmd{includegraphics}.
 To work correctly the command expects a set of files to be present at the location specified by the argument.
-These are some of the files that you'll find when you include the file \texttt{lilypond-book-preable.ly} in your LilyPond document:
+These are some of the files that you'll find when you include the file \texttt{lilypond-book-preamble.ly} in your LilyPond document:
 \begin{description}
 \item[\texttt{BASENAME-\#(.pdf)}] Numbered files for each system.
 The music systems start with \#\,3, while the first two files are the book and score title markups, which are discarded by the command
@@ -242,8 +269,7 @@ Support for odd/even-starting scores is planned but not implemented yet.
 \item[\cmd{fullPageLilypondExample}] Same as above, but to be used for LilyPond generated examples.
 \end{description}
 
-More optional floating environments that are available when third-party packages are loaded.
-Some comments earlier in \fref{subsec:xmp_basic-usage}, more information in the respective package documentation:
+More optional floating environments that are available when third-party packages are loaded (some comments earlier in \fref{subsec:xmp_basic-usage}, more information in the respective package documentation):
 \begin{description}
 \item[\cmd{wrapmusicexample}](\texttt{wrapfig})
 \item[\cmd{sidewaysmusicexample}] (\texttt{rotating})
@@ -253,7 +279,7 @@ Some comments earlier in \fref{subsec:xmp_basic-usage}, more information in the 
 
 \subsubsection*{Commands that Print Music Examples}
 \begin{description}
-\item[\cmd{musicSFE} and \cmd{lilypondSFE}]Print single file.
+\item[\cmd{musicSFE} and \cmd{lilypondSFE}]Print a single file.
 \item[\cmd{lilypondMFE}]Print a music example consisting of several files.
 \end{description}
 
@@ -309,8 +335,8 @@ But you can also insert the Scheme statments \env{\#(ly:set-option 'preview \#t)
 \#(ly:set-option 'print-pages \#f)} somewhere at top-level in your LilyPond source file.
 In the next section we'll provide templates, examples and include files to simplify your life in this respect \dots
 
-For \emph{multi system examples} you should \verb+\include 21"lilypond-book-preamble.ly"+ somewhere in your document.
-This lets LiylPond output each system as a separate (cropped) file with a naming convention that allows \package{musicexample}'s \cmd{lilypondMFE} command to iterate over all systems to print them.
+For \emph{multi system examples} you should \verb+\include "lilypond-book-preamble.ly"+ somewhere in your document.
+This lets LilyPond output each system as a separate (cropped) file with a naming convention that allows \package{musicexample}'s \cmd{lilypondMFE} command to iterate over all systems to print them.
 
 \subsection{Provided Configuration Files and Suggested Work-flows}
 \label{subsec:xmp_suggested-work-flows}
