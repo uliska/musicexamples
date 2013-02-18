@@ -103,3 +103,18 @@
 
 \smallskip
 }
+
+
+\newcommand{\chaptertitle}[1]{*
+    \part*{#1}
+    \phantomsection
+    \addcontentsline{toc}{chapter}{#1}%
+    \markboth{#1}{#1}%
+}
+
+\newcommand{\parttitle}[1]{*
+    \part*{#1}
+    \phantomsection
+    \addcontentsline{toc}{part}{#1}%
+    \markboth{#1}{#1}%
+}

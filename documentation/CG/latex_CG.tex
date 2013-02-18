@@ -30,6 +30,8 @@
 
 \begin{document}
 
+\parttitle{\LaTeX{} Usage}
+
 \chapter{Directory structure, Document Class(es) etc.}
 
 \begin{authorAbstract}{Urs Liska}
@@ -38,6 +40,15 @@ Describe the main books, and how the parts are included into them using the \pac
 Describe the documentclass(es), list the included packages
 \end{authorAbstract}
 
+\bigskip
+
+\noindent \dots
+
+\bigskip
+Each subfile represents an enclosed entity, such as a documentation chapter or an individual tutorial.
+Depending on the type of book the subfile is included in its title represent the sectioning level of a \cmd{part} or a \cmd{chapter}, the top-level sectioning within the partial document being one level lower.
+Tutorials for example should use a \cmd{chapter} as its main title and \cmd{section}s as its main sectioning level.
+But as it doesn't look practical to have the “title” of a document using section numbers, we have implemented the commands \cmd{parttitle} and \cmd{chaptertitle}, which print them as a title without section numbers, but include them in the table of contents of the main document.
 
 
 
