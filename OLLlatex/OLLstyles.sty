@@ -72,6 +72,9 @@
 %TODO: Implement an index of contributors and their contributions
 \newcommand*{\contributor}[1]{\textit{#1}}
 
+% Format directory names
+\newcommand*{\dir}[1]{\texttt{#1}}
+
 % Format environment names
 \newcommand*{\env}[1]{\texttt{#1}}
 
@@ -102,19 +105,4 @@
 \hrule
 
 \smallskip
-}
-
-
-\newcommand{\chaptertitle}[1]{*
-    \part*{#1}
-    \phantomsection
-    \addcontentsline{toc}{chapter}{#1}%
-    \markboth{#1}{#1}%
-}
-
-\newcommand{\parttitle}[1]{*
-    \part*{#1}
-    \phantomsection
-    \addcontentsline{toc}{part}{#1}%
-    \markboth{#1}{#1}%
 }

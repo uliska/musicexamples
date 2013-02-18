@@ -32,24 +32,78 @@
 
 \parttitle{\LaTeX{} Usage}
 
-\chapter{Directory structure, Document Class(es) etc.}
-
 \begin{authorAbstract}{Urs Liska}
 To be done.\\
 Describe the main books, and how the parts are included into them using the \package{subfile} approach.\\
 Describe the documentclass(es), list the included packages
 \end{authorAbstract}
 
+\chapter{Directory structure, Document Class(es) etc.}
+
+If you want to contribute work for \openlilylib{} we assume that you have aqcuired the complete directory by either cloning the Git repository from Github or downloading the complete archive.
+For writing \LaTeX{} documents there are two subdirectories of interest: 
+\begin{description}
+\item[\dir{/OLLlatex}] contains the basic document classes and packages used for authoring documents.
+You have to make sure your \LaTeX{} installation finds this directory -- either by including it in the search path or by placing a link to it inside your \dir{texmf} tree.
+You won't need to do anything in this directory if you are only going to write documents (except maybe investigating it).
+\item[\dir{/documentation}] is the place where the actual documents are stored.
+\end{description}
+
+\openlilylib{} documentation is organized using the \package{subfiles} package.
+At the moment there are several main books on \openlilylib{} subjects.
+They are located in subdirectories of \dir{/documentation}:
+\begin{description}
+\item[\dir{CG/openLilyLib\_CG.tex}] The Contributor's Guide, explaining how to author \LaTeX{} documents and participate in the development of the different libraries and packages.
+\item[\dir{musicexamples/musicexamples.tex}] Documentation of \package{musicexamples}, a collection of a \LaTeX{} package, LilyPond resources and Python scripts to include and manage music examples in \LaTeX{} documents.
+\item[\dir{OLLib/OLLib.tex}] OLLib is the short name for the core \openlilylib{} library of LilyPond tools.
+\item[\dir{tutorials/tutorials.tex}] Independent tutorials, mainly on LilyPond topics.
+Maybe they can one day form a somewhat contigious “book”, but we start it as a random collection of what users are willing to contribute.
+Articles may range from short HowTos to full-fledged tutorials.\\
+\textsf{\textbf{Important notice}}: If you are interested in contributing some knowledge about LilyPond but don't know how to express yourself in \LaTeX{} \emph{please} don't hesitate to contact us -- if it seems an interesting contribution we'd surely not mind helping you converting it to a useable format.
+\end{description}
+
+These books have the document class \package{OLLbook}, which is based on \package{scrbook} from \package{KOMA-Script}.
+Instead of setting a title you should use \cmd{setbookmaintitle\{\#1\}} in the document preamble.
+This will set the title but will additionally keep it for (automatic) use on the title page of the sub-documents (see below).
+Inside the \env{document} environment you should use \cmd{maketitle} as usual.
+
 \bigskip
+If you are going to provide an independent contribution (e.\,g.\ a tutorial) you will usually have to create a \package{subfile} to one of these books (if this hasn't been prepared for you already).
+Such a file should be placed in a sensibly named subdirectory of the main book and be set up as follows:
+\begin{quote}
+\begin{verbatim}
+\documentclass[../nameofmainbook]{subfiles}
+\begin{document}
+\parttitle{Title of Your Contribution}
+\begin{authorAbstract}[Optional, Contributors]{Your Name}
+\chapter{Your First Heading}
 
-\noindent \dots
+% Contents ...
 
-\bigskip
-Each subfile represents an enclosed entity, such as a documentation chapter or an individual tutorial.
-Depending on the type of book the subfile is included in its title represent the sectioning level of a \cmd{part} or a \cmd{chapter}, the top-level sectioning within the partial document being one level lower.
-Tutorials for example should use a \cmd{chapter} as its main title and \cmd{section}s as its main sectioning level.
-But as it doesn't look practical to have the “title” of a document using section numbers, we have implemented the commands \cmd{parttitle} and \cmd{chaptertitle}, which print them as a title without section numbers, but include them in the table of contents of the main document.
+\includelicensepart
+\end{document}
+\end{verbatim}
+\end{quote}
+The document class is \package{subfiles}, with the optional argument pointing to the main book's file (without extension).
+Instead of a title you use the appropriate one of the new commands \cmd{parttitle}, \cmd{chaptertitle} or \cmd{sectiontitle}
+They are quite fancy and behave differently if you compile the subfile or the enclosing main document.
+If compiled as part of the main book the simply insert a \cmd{part}, \cmd{chapter} or \cmd{section} command in the document.
+But if you compile your subfile directly they will do several things:
 
+Firstly they will print a special version of a title page -- which will be the title page of your standalone document.
+This contains the title of your bookpart (the argument to the above commands), but without a section number.
+They create a header indicating that the document is part of the \openlilylib{} documentation and what book it is taken from.
+This works only if \cmd{setbookmaintitle} is placed correctly in the preamble of the main book -- it this isn't the case you will see an informative message instead.
+At the bottom of the page you will find the copyright notice.
+This is printed automatically and only if the subfile is compiled directly.
+There is also the explicit command \cmd{copyrightnotice} that also only prints something when called from a subfile.
+This is done to prevent the main books to be spammed by identical copyright notices for each and every subfile, while allowing them to be included in the standalone documents.
+
+After the \cmd{parttitle} or the first section heading you should place the \env{authorAbstract} environment to credit your contribution (and potential other contributors)
+
+At the very end of your subfile you should place one of the commands\cmd{includelicensepart}, \cmd{includelicensechapter} or \cmd{includelicensesection}.
+These commands insert the appropriate heading and input the file with the complete GPL and FDL, but only if we are inside a subfile.
+So standalone documents can also include the full license texts.
 
 
 \chapter{Command Reference}
@@ -83,11 +137,13 @@ If you want to mark a substantial contribution in a place where an abstract seem
 
 \begin{description}
 \item[\cmd{cmd}] Commands that start with a backslash can be printed using this command. It switches the font and prints the backslash in front of the command name.
+\item[\cmd{dir}] Directories and filenames can be highlighted with this command. 
 \item[\cmd{env}] Environment names are highlighted using this command.
 \item[\cmd{package}] You can enter package names with this command.
 \item[\cmd{todo}] Any TODO item should be entered in the source using this command, because it will guarantee a consistent appearance and it's quite spottable.
 This may someday be enhanced to create an index.
 \end{description}
+
 
 \section{Other Commands}
 \begin{description}
@@ -108,5 +164,7 @@ This package is part of \openlilylib{} and is included by the document class.
 Please refer to the package documentation for how to work with it.
 
 \todo{Code listings (LilyPond or \LaTeX) haven't been implemented yet}
+
+\includelicensechapter
 
 \end{document}

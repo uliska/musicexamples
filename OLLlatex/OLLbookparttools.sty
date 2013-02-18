@@ -1,0 +1,131 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                         %
+%      This file is part of the 'openLilyLib' library.                    %
+%                                ===========                              %
+%                                                                         %
+%              https://github.com/lilyglyphs/openLilyLib                  %
+%                                                                         %
+%  Copyright 2012-13 by Urs Liska, lilyglyphs@ursliska.de                 %
+%                                                                         %
+%  'openLilyLib' is free software: you can redistribute it and/or modify  %
+%  it under the terms of the GNU General Public License as published by   %
+%  the Free Software Foundation, either version 3 of the License, or      %
+%  (at your option) any later version.                                    %
+%                                                                         %
+%  This program is distributed in the hope that it will be useful,        %
+%  but WITHOUT ANY WARRANTY; without even the implied warranty of         %
+%  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the           %
+%  GNU General Public License for more details.                           %
+%                                                                         %
+%  You should have received a copy of the GNU General Public License      %
+%  along with this program.  If not, see <http://www.gnu.org/licenses/>.  %
+%                                                                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Tools to handle bookparts to behave
+% differently if they are compiled standalone
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{OLLbookparttools}
+
+% Set the main title of a book.
+% Used in the title and for the title page of subfiles
+\title{%
+	Undefined main book title\\
+	Please use \cmd{setbookmaintitle} in the\\
+	preamble of your document}
+\newcommand{\setbookmaintitle}[1]{
+	\newcommand{\bookmaintitle}{#1}
+	\title{#1}
+}
+
+
+% Conditionally include copyright notice and the full licenses
+% This combination of commands checks if the active document class
+% is 'subfiles'. Only in this case the commands include the 
+% copyright-notice or the full licenses.
+% This is done because we don't want these items to show up multiple times
+% in a compiled book.
+
+% First define the commands for use from the main book files
+\newcommand{\copyrightnotice}{}
+\newcommand{\includelicensepart}{}
+\newcommand{\includelicensechapter}{}
+\newcommand{\includelicensesection}{}
+\newcommand{\parttitle}[1]{\part{#1}}
+\newcommand{\chaptertitle}[1]{\chapter{#1}}
+\newcommand{\sectiontitle}[1]{\section{#1}}
+
+% Check if we're in a subfile and set a flag
+\makeatletter
+\newcommand{\issubfile}{
+	\@ifclassloaded{subfiles}
+		{\def\subfiletest{true}}
+		{}
+}
+\makeatother
+% Run it once
+\issubfile
+
+% Helper function that checks if a flag is set
+\makeatletter
+\newcommand*{\ifmacrodefined}[1]{%
+  \begingroup\expandafter\expandafter\expandafter\endgroup
+  \expandafter\ifx\csname #1\endcsname\relax
+    \expandafter\@secondoftwo
+  \else
+    \expandafter\@firstoftwo
+  \fi
+}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Define the commands that should be executed
+% when compiled from within a subfile
+
+\newcommand{\doctitleifsub}[2]{%
+	\thispagestyle{empty}
+	\begin{center}
+		\sffamily This document is part of the documentation of \openlilylib%
+		\footnote{\url{https://github.com/openlilylib/openLilyLib}},\\
+		a collection of resources for the LilyPond notation software%
+		\footnote{\url{http://www.lilypond.org}}\\
+		and the \LaTeX{} typesetting system.
+		\vfill
+		
+		\Large Excerpt from:\\
+		\textbf{\bookmaintitle}
+		
+		\bigskip
+    	\Huge\textsf{\textbf{#2}}
+    \end{center}
+    \phantomsection
+    \addcontentsline{toc}{#1}{#2}%
+    \markboth{#2}{#2}%
+    
+	\vfill
+    \copyrightnotice
+    \pagebreak
+}
+
+% call the in-subfile document title with the appropriate sectioning info
+\newcommand{\parttitleifsub}[1]{\doctitleifsub{part}{#1}}
+\newcommand{\chaptertitleifsub}[1]{\doctitleifsub{chapter}{#1}}
+\newcommand{\sectiontitleifsub}[1]{\doctitleifsub{section}{#1}}
+
+% If we _are_ in a subfile
+% then redefine the respective commands
+\ifmacrodefined{subfiletest}{
+			\renewcommand{\copyrightnotice}{\input{copyright-notice.inp}}
+			\renewcommand{\includelicensepart}{%
+				\part{Licenses}
+				\input{licenses.inp}}
+			\renewcommand{\includelicensechapter}{%
+				\chapter{Licenses}
+				\input{licenses.inp}}
+			\renewcommand{\includelicensesection}{%
+				\section{Licenses}
+				\input{licenses.inp}}
+			\renewcommand{\parttitle}[1]{\parttitleifsub{#1}}
+			\renewcommand{\chaptertitle}[1]{\chaptertitleifsub{#1}}
+			\renewcommand{\sectiontitle}[1]{\sectiontitleifsub{#1}}
+}{}
