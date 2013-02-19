@@ -324,6 +324,46 @@
 	{}{}{}%
 	{}{--\,\pagemark\,--}{}
 
+% Check for the presence of generic, -odd and -even
+% versions of the given pdf file.
+% The three commands for the respective filenames
+% are either set to their new basename or to {}
+% Finally the command returns the three names concatenated:
+% If at least one of the files is present, this will
+% print _something_, otherwise the string is empty.
+\newcommand*{\xmpOddFile}{}
+\newcommand*{\xmpEvenFile}{}
+\newcommand*{\xmpGenericFile}{}
+
+\newcommand{\xmpFilePresent}[1]{%
+    \IfFileExists{#1.pdf}%
+    {\renewcommand*{\xmpGenericFile}{#1}}%
+    {\renewcommand*{\xmpGenericFile}{}}%
+    \IfFileExists{#1-odd.pdf}%
+    {\renewcommand*{\xmpOddFile}{#1-odd}}%
+    {\renewcommand*{\xmpOddFile}{}}%
+    \IfFileExists{#1-even.pdf}%
+    {\renewcommand*{\xmpEvenFile}{#1-even}}%
+    {\renewcommand*{\xmpEvenFile}{}}%
+    \xmpGenericFile\xmpOddFile\xmpEvenFile%
+}
+
+% Internal command to print a fullPageMusicExample
+\newcommand{\printFullPageExample}[3]{%
+    % Manually add an entry in the index file
+    \addcontentsline{loxmp}{musicexample}{\protect\numberline{\arabic{musicexample}}{\ignorespaces #2\relax }}%%
+    % provide a \label as argument #3
+%    #3
+%    \includepdf[%
+%    pages=-,
+%    pagecommand={%
+%        \stepcounter{xmpPageInd}
+%        \ifthenelse{\value{xmpPageInd} = 1}
+%        {\thispagestyle{xmpPageOne}}
+%        {\thispagestyle{xmpPageTwo}}	
+%    }]{#1}
+}
+
 % \fullPageMusicExample
 %
 % Includes a full-page music example with one or more pages.
@@ -337,33 +377,59 @@
 % Arguments:
 % #1 - file name (including path but without .pdf extension)
 % #2 - Caption to be printed
-% #3 - label command (including 'xmp:')
+% #3 - label command ('\label{xmp:...}')
 
 % Counter indexing the processed pages of a full page example
 \newcounter{xmpPageInd}
-\newcommand{\fullPageMusicExample}[3]{%
-	% Restart page counter
-	\setcounter{xmpPageInd}{0}
-	% Increment music example counter manually
-	\refstepcounter{musicexample}
-	% Set the caption text for use in the page style
-	\def\xmpCaption{#2}
-	\afterpage{
-		% The following two commands have to be placed after the \afterpage
-		% command to give the right page number
-		% Manually add an entry in the index file
-		\addcontentsline{loxmp}{musicexample}{\protect\numberline{\arabic{musicexample}}{\ignorespaces #2\relax }}%%
-		% provide a \label as argument #3
-        #3
-		\includepdf[%
-			pages=-,
-			pagecommand={%
-				\stepcounter{xmpPageInd}
-				\ifthenelse{\value{xmpPageInd} = 1}
-					{\thispagestyle{xmpPageOne}}
-					{\thispagestyle{xmpPageTwo}}	
-			}]{#1}
-	}
+\newcommand{\fullPageMusicExample}[1]{%
+    % Check if at least one file version is present
+%\def\test{\xmpFilePresent{\expandafter\test\expandafter{#1}}}
+%\test
+%    \def\argFile{#1}
+%    
+%    \argFile
+%    
+%    \def\filePresent{\expandafter\xmpFilePresent\expandafter{#1}}
+%    
+%    \filePresent
+%    
+    \ifthenelse{\equal{}{\expandafter\xmpFilePresent\expandafter{#1}}}%
+        {% No valid file found
+%        
+%            \bigskip
+            \cmd{fullPageMusicExample}:\\
+            No valid version of \dir{#1} found!
+%            
+%            \bigskip
+        }
+        {% OK, we have a valid file.
+        	% Restart page counter
+%
+            File found
+%            
+%        	\setcounter{xmpPageInd}{0}
+        	% Increment music example counter manually
+%        	\refstepcounter{musicexample}
+        	% Set the caption text for use in the page style
+%        	\def\xmpCaption{#2}
+%        	\afterpage{
+%                Afterpage
+                
+%                \hrule
+%                \includepdf{#1}
+%                \printFullPageExample{#1}{#2}{#3}
+%                \ifodd\value{page}
+%                Odd page!
+%                \else \expandafter\afterpage
+%                \fi
+%                {
+%                    Even page!
+%                }
+                    
+        		% The following two commands have to be placed after the \afterpage
+        		% command to give the right page number
+            }
+%        }
 }
 
 % \fullPageLilypondExample
