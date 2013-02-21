@@ -226,6 +226,14 @@ If you provide an image with a width of \cmd{textwidth} the example will fill th
 If the width of the image is smaller then it will be centered by default, and if it exceeds the text width it will automatically be scaled to the text width.
 So images will never protrude out of the text area, but you have to expect resizing if you provide too large images.
 You can override the alignment manually with standard LaTeX commands inside the environment, or you can set the alignment for all subsequent musicexamples with \cmd{setXmpAlignment\{alignment-command\}} (both as demonstrated before).
+If you give a filename that doesn't point to an existing and valid image file two things will happen:
+Instead of giving and error message to the log file the command will print a colored box with a message in it, and the caption will be colored red in the list of musicexamples (if you have one).
+The point of this isn't mainly to spot missing image files, but rather to be able to safely enter placeholders for music examples that haven't yet been created.
+\begin{knownIssues}
+You shouldn't actually use special characters in file names.
+While \cmd{includegraphics} may handle some of them, the other functions probably won't. 
+If your filename contains underscores for example the image will be printed just fine, but if the image is missing, \LaTeX{} will try to print the filename -- which it can't because of the underscore -- which will result in strange error messages.
+\end{knownIssues}
 
 \begin{quote}
 \begin{verbatim}

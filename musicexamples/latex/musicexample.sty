@@ -82,6 +82,68 @@
 % without keeping track of them or numbering them.
 % While it is perfectly possible to directly include image files
 % instead, it is advisable to use them as a consistent interface
+%
+% The commands check if the given file name points to a useable image.
+% If it doesn't they print a message box instead,
+% and they color the entry in the \listofmusicxamples .
+%
+% First the image file check
+% (Solution by Ulrike Fischer,
+% http://tex.stackexchange.com/questions/99070/check-for-a-valid-file-before-using-includegraphics)
+% Usage:
+% \ifvalidimage{file name}{Yes, do X}{No, do Y}
+\makeatletter
+\newif\ifgraphicexist
+
+\catcode`\*=11
+\newcommand\ifvalidimage[1]{%
+    \begingroup
+    \global\graphicexisttrue
+    \let\input@path\Ginput@path
+    \filename@parse{#1}%
+    \ifx\filename@ext\relax
+    \@for\Gin@temp:=\Gin@extensions\do{%
+        \ifx\Gin@ext\relax
+        \Gin@getbase\Gin@temp
+        \fi}%
+    \else
+    \Gin@getbase{\Gin@sepdefault\filename@ext}%
+    \ifx\Gin@ext\relax
+    \global\graphicexistfalse
+    \def\Gin@base{\filename@area\filename@base}%
+    \edef\Gin@ext{\Gin@sepdefault\filename@ext}%
+    \fi
+    \fi
+    \ifx\Gin@ext\relax
+    \global\graphicexistfalse
+    \else 
+    \@ifundefined{Gin@rule@\Gin@ext}%
+    {\global\graphicexistfalse}%
+    {}%
+    \fi  
+    \ifx\Gin@ext\relax 
+    \gdef\imageextension{unknown}%
+    \else
+    \xdef\imageextension{\Gin@ext}%
+    \fi 
+    \endgroup 
+    \ifgraphicexist
+    \expandafter \@firstoftwo
+    \else
+    \expandafter \@secondoftwo
+    \fi 
+} 
+\catcode`\*=12
+\makeatother 
+
+% Now define a command that colors a loxmp entry red.
+% This is necessary because the parts in \DeclareCaptionListFormat
+% are put in separate groups by LaTeX.
+\DeclareRobustCommand{\colortwogroups}{\makeredaux\aftergroup\makeredaux}
+\newcommand\makeredaux{\color{red}}
+
+% Declare a caption list format for use with missing images
+\DeclareCaptionListFormat{xmpMissing}{\colortwogroups#1 #2}
 
 % \musicSFE
 %
@@ -97,10 +159,30 @@
 % You can pass an optional argument with key=value pairs
 % that are passed on to the \includegraphics command.
 \newcommand{\musicSFE}[2][]{
-
+    \ifvalidimage{#2}
+    { % If we have a correct image file:
+        
 	\noindent
     \includegraphics[max width=\textwidth,#1]{#2}
-
+    
+    }
+    { % if we don't find an appropriate image:
+        
+        \bigskip
+        % make the caption red (in the \listofmusicexamples)
+        \captionsetup{listformat=xmpMissing}
+        % print a box instead of the image
+        \framebox{%
+            \colorbox{yellow}{%
+                \parbox[c]{.7\textwidth}{~\\
+                    \textbf{\textsf{Missing image:}}\\
+                    #2\\
+                }
+            }
+        }
+        
+        \bigskip
+    }
 }
 
 % \lilypondSFE
