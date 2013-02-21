@@ -229,6 +229,9 @@ You can override the alignment manually with standard LaTeX commands inside the 
 If you give a filename that doesn't point to an existing and valid image file two things will happen:
 Instead of giving and error message to the log file the command will print a colored box with a message in it, and the caption will be colored red in the list of musicexamples (if you have one).
 The point of this isn't mainly to spot missing image files, but rather to be able to safely enter placeholders for music examples that haven't yet been created.
+The message in the box defaults to “Missing Image:“, but you can configure it with \cmd{setXmpMissingImageLabel}.
+I didn't bother to make the appearance of the box configurable so far because I regard this as a convenience tool for document authors that shouldn't be part of a final version.
+But feel free to suggest improvements.
 \begin{knownIssues}
 You shouldn't actually use special characters in file names.
 While \cmd{includegraphics} may handle some of them, the other functions probably won't. 

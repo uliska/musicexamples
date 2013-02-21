@@ -145,6 +145,12 @@
 % Declare a caption list format for use with missing images
 \DeclareCaptionListFormat{xmpMissing}{\colortwogroups#1 #2}
 
+% Enable the label printed for a missing image
+% to be configured
+\newcommand*{\xmpMissingImageLabel}{Missing image:}
+\newcommand*{\setXmpMissingImageLabel}[1]{%
+    \renewcommand*{\xmpMissingImageLabel}{#1}}
+
 % \musicSFE
 %
 % SingleFileExample (generic file)
@@ -173,7 +179,7 @@
         % print a box instead of the image
         \fcolorbox{red}{yellow}{%
                 \parbox[c]{.7\textwidth}{~\\
-                    \centering\textbf{\textsf{Missing image:}}\\
+                    \centering\textbf{\textsf{\xmpMissingImageLabel}}\\
                     #2\\
                     ~\\
                 }
