@@ -160,27 +160,24 @@
 % that are passed on to the \includegraphics command.
 \newcommand{\musicSFE}[2][]{
     \ifvalidimage{#2}
-    { % If we have a correct image file:
-        
+    {% If we have a correct image file:
+   
 	\noindent
     \includegraphics[max width=\textwidth,#1]{#2}
-    
+
     }
-    { % if we don't find an appropriate image:
-        
+    {% if we don't find an appropriate image:
         \bigskip
         % make the caption red (in the \listofmusicexamples)
         \captionsetup{listformat=xmpMissing}
         % print a box instead of the image
-        \framebox{%
-            \colorbox{yellow}{%
+        \fcolorbox{red}{yellow}{%
                 \parbox[c]{.7\textwidth}{~\\
-                    \textbf{\textsf{Missing image:}}\\
+                    \centering\textbf{\textsf{Missing image:}}\\
                     #2\\
+                    ~\\
                 }
             }
-        }
-        
         \bigskip
     }
 }
