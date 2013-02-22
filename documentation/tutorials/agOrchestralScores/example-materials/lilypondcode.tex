@@ -1,0 +1,20 @@
+\documentclass{article}
+% To work further you can just paste the following lines
+% into your copy of OLLstyles.sty:
+\usepackage{verbatim}
+\newenvironment{lilypondcode}
+    {\verbatim}
+    {\endverbatim}
+    
+\begin{document}
+\section{Test}
+This is some normal text.
+\begin{lilypondcode}
+\version "2.16.1"
+% Some sample code
+
+\header{}
+\end{lilypondcode}
+And some more normal text.
+\end{document}
+
