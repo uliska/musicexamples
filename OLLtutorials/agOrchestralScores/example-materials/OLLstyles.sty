@@ -47,3 +47,9 @@
 
 % Format LaTeX or LilyPond commands and save typing of the backslash
 \newcommand*{\cmd}[1]{\texttt{\textbackslash #1}}
+
+% To include Lilypond code
+\usepackage{verbatim}
+\newenvironment{lilypondcode}
+    {\verbatim}
+    {\endverbatim}

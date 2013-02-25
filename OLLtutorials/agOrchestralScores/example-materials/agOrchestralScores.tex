@@ -69,10 +69,6 @@ We will see later how to include it.
 
 Let's begin by creating a file with all the blocks we need to create a score for the first flute. Here is the code:
 
-\newenvironment{lilypondcode}
-    {\verbatim}
-    {\endverbatim}
-
 \begin{lilypondcode}
 \version 2.16.1 %or whatever other version of Lilypond you are using
 
@@ -123,7 +119,7 @@ Having to write them all again in every score would be tedious and will ultimate
 Therefore, I created a file with all those changes to be included in every score, so I don't have to write them down repeatedly.
 The first lines of this file look like this:
 
-\begin{verbatim}
+\begin{lilypondcode}
 \version "2.16.1"
 
 Metrics = {
@@ -137,7 +133,7 @@ Metrics = {
   .
   etc.
 }
-\end{verbatim}
+\end{lilypondcode}
 
 As you can see, it is just a series of time signature changes and tempo markings separated by skips. 
 The complete file can be found amongst the files uploaded to the Mutopia Project.
@@ -146,7 +142,7 @@ The second file which I have included is called MyDefinitions.ly and is located 
 This file contains the code of all the tweaks that I use throughout my scores. 
 The first lines of this file look like this:
 
-\begin{verbatim}
+\begin{lilypondcode}
 \version "2.16.1"
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -164,7 +160,7 @@ restNeutral = \revert Rest #'staff-position
 multirestMiddle = \override MultiMeasureRest #'staff-position = #-0.01
 multirestFourthLine = \override MultiMeasureRest #'staff-position = #2
 multirestNeutral = \revert MultiMeasureRest #'staff-position
-\end{verbatim}
+\end{lilypondcode}
 
 The whole point about creating definitions - known in Lilypond as "variables" - is that they make it easier for us to perform a particular task.
 Instead of writing a whole bunch of code every time we need to do something, we just have to enclose that code inside a variable, and write it's name where we need the task to be performed.
