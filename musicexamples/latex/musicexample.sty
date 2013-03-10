@@ -145,11 +145,14 @@
 % Declare a caption list format for use with missing images
 \DeclareCaptionListFormat{xmpMissing}{\colortwogroups#1 #2}
 
-% Enable the label printed for a missing image
+% Enable the label printed for a missing image or full-page example
 % to be configured
 \newcommand*{\xmpMissingImageLabel}{Missing image:}
 \newcommand*{\setXmpMissingImageLabel}[1]{%
     \renewcommand*{\xmpMissingImageLabel}{#1}}
+\newcommand*{\xmpMissingFullpageLabel}{Missing full-page example:}
+\newcommand*{\setXmpMissingFullpageLabel}[1]{%
+	\renewcommand*{\xmpMissingFullpageLabel}{#1}}
 
 % \musicSFE
 %
@@ -316,6 +319,9 @@
 % To change this to your needs, you only have to 
 % redefine the xmpPageOne and xmpPageTwo styles afterwards
 % using \deftripstyle again (see the KOMA-Script documentation).
+
+% Define variable for in-header caption
+\newcommand*{\xmpCaption}{}
 \deftripstyle{xmpPageOne}%
 	{\upshape\ollXmpCaptionLabel \arabic{musicexample}: \xmpCaption}{}{}%
 	{}{--\,\pagemark\,--}{}
@@ -324,112 +330,165 @@
 	{}{}{}%
 	{}{--\,\pagemark\,--}{}
 
+% Variables for the names of the different file versions
+\newrobustcmd*{\xmpOddFile}{}
+\newrobustcmd*{\xmpEvenFile}{}
+\newrobustcmd*{\xmpGenericFile}{}
+% File name to be finally used
+\newrobustcmd*{\xmpFileName}{}
+% Flags indicating the presence of generic, odd or even file versions
+\newbool{xmpOddFile}
+\newbool{xmpEvenFile}
+\newbool{xmpGenericFile}
+% Flag indicating the presence of _any_ file(s)
+\newbool{xmpFilesPresent}
+
+% Flag indicating whether the full-page example should be printed
+% immediately (i.e. \afterpage) (true) or one further page later (false)
+\newbool{xmpThisPage}
+
 % Check for the presence of generic, -odd and -even
 % versions of the given pdf file.
 % The three commands for the respective filenames
-% are either set to their new basename or to {}
-% Finally the command returns the three names concatenated:
-% If at least one of the files is present, this will
-% print _something_, otherwise the string is empty.
-\newcommand*{\xmpOddFile}{}
-\newcommand*{\xmpEvenFile}{}
-\newcommand*{\xmpGenericFile}{}
-
+% are either set to their new basename or to {}.
 \newcommand{\xmpFilePresent}[1]{%
+	% Reset 'local' variables
+	\boolfalse{xmpFilesPresent}%
+	\renewrobustcmd*{\xmpFileName}{}%
     \IfFileExists{#1.pdf}%
-    {\renewcommand*{\xmpGenericFile}{#1}}%
-    {\renewcommand*{\xmpGenericFile}{}}%
+    {\renewrobustcmd*{\xmpGenericFile}{#1}%
+	    \booltrue{xmpGenericFile}%
+	    \booltrue{xmpFilesPresent}%
+    }%
+    {\renewrobustcmd*{\xmpGenericFile}{}}%
     \IfFileExists{#1-odd.pdf}%
-    {\renewcommand*{\xmpOddFile}{#1-odd}}%
-    {\renewcommand*{\xmpOddFile}{}}%
+    {\renewrobustcmd*{\xmpOddFile}{#1-odd}%
+    \booltrue{xmpOddFile}%
+    \booltrue{xmpFilesPresent}%
+    }%
+    {\renewrobustcmd*{\xmpOddFile}{}}%
     \IfFileExists{#1-even.pdf}%
-    {\renewcommand*{\xmpEvenFile}{#1-even}}%
-    {\renewcommand*{\xmpEvenFile}{}}%
-    \xmpGenericFile\xmpOddFile\xmpEvenFile%
+    {\renewrobustcmd*{\xmpEvenFile}{#1-even}%
+    \booltrue{xmpEvenFile}%
+    \booltrue{xmpFilesPresent}%
+    }%
+    {\renewrobustcmd*{\xmpEvenFile}{}}%
 }
 
-% Internal command to print a fullPageMusicExample
-\newcommand{\printFullPageExample}[3]{%
+% Internal command to actually print a fullPageMusicExample
+% Counter indexing the processed pages of a full page example
+\newcounter{xmpPageInd}
+\newcommand{\printFullPageExample}[2]{%
+    %TODO: insert an \afterpage ifbool{xmpThisPage}
     % Manually add an entry in the index file
-    \addcontentsline{loxmp}{musicexample}{\protect\numberline{\arabic{musicexample}}{\ignorespaces #2\relax }}%%
-    % provide a \label as argument #3
-%    #3
-%    \includepdf[%
-%    pages=-,
-%    pagecommand={%
-%        \stepcounter{xmpPageInd}
-%        \ifthenelse{\value{xmpPageInd} = 1}
-%        {\thispagestyle{xmpPageOne}}
-%        {\thispagestyle{xmpPageTwo}}	
-%    }]{#1}
+    \addcontentsline{loxmp}{musicexample}{\protect\numberline{\arabic{musicexample}}{\ignorespaces #1\relax }}%%
+    \renewcommand*{\xmpCaption}{#1}
+    % provide a \label as argument #2
+    #2
+    \includepdf[%
+    pages=-,%
+    pagecommand={%
+    	% count upwards,
+    	% give the first page a different pagestyle from the remaining page(s)
+        \stepcounter{xmpPageInd}%
+        \ifthenelse{\value{xmpPageInd} = 1}%
+        {\thispagestyle{xmpPageOne}}%
+        {\thispagestyle{xmpPageTwo}}%
+    }]{\expandonce\xmpFileName}%
 }
 
 % \fullPageMusicExample
 %
 % Includes a full-page music example with one or more pages.
 % The document author is responsible to provide files with suitable page margins
-% as there isn't a suitable mechanism yet to adapt it
-% (especially not for right/left layout)
+% as there isn't a suitable mechanism yet to adapt it.
+% The command checks for the presence of 
+% - generic
+% - -odd
+% - -even file versions and prints the example appropriately on the
+% next or the next odd/even page.
+% If no file is found a warning is printed and the list entry colored red.
 % The caption is printed in the header or footer of the (first) page
 % using the scrpage2 mechanism.
 % The \pagestyle for the first page is set to "xmpPageOne",
 % while the \pagestyle for any following page is set to "xmpPageTwo".
+%
 % Arguments:
 % #1 - file name (including path but without .pdf extension)
 % #2 - Caption to be printed
 % #3 - label command ('\label{xmp:...}')
 
-% Counter indexing the processed pages of a full page example
-\newcounter{xmpPageInd}
-\newcommand{\fullPageMusicExample}[1]{%
-    % Check if at least one file version is present
-%\def\test{\xmpFilePresent{\expandafter\test\expandafter{#1}}}
-%\test
-%    \def\argFile{#1}
-%    
-%    \argFile
-%    
-%    \def\filePresent{\expandafter\xmpFilePresent\expandafter{#1}}
-%    
-%    \filePresent
-%    
-    \ifthenelse{\equal{}{\expandafter\xmpFilePresent\expandafter{#1}}}%
-        {% No valid file found
-%        
-%            \bigskip
-            \cmd{fullPageMusicExample}:\\
-            No valid version of \dir{#1} found!
-%            
-%            \bigskip
-        }
+\newcommand{\fullPageMusicExample}[3]{%
+    % Increment music example counter manually
+	\refstepcounter{musicexample}%
+	% Check if at least one file version is present
+	\xmpFilePresent{#1}%
+    \ifbool{xmpFilesPresent}%
         {% OK, we have a valid file.
-        	% Restart page counter
-%
-            File found
-%            
-%        	\setcounter{xmpPageInd}{0}
-        	% Increment music example counter manually
-%        	\refstepcounter{musicexample}
-        	% Set the caption text for use in the page style
-%        	\def\xmpCaption{#2}
-%        	\afterpage{
-%                Afterpage
-                
-%                \hrule
-%                \includepdf{#1}
-%                \printFullPageExample{#1}{#2}{#3}
-%                \ifodd\value{page}
-%                Odd page!
-%                \else \expandafter\afterpage
-%                \fi
-%                {
-%                    Even page!
-%                }
-                    
-        		% The following two commands have to be placed after the \afterpage
-        		% command to give the right page number
-            }
-%        }
+        	\afterpage{%
+				% print example on the current page
+				% (if the further tests don't change our mind)
+				\booltrue{xmpThisPage}%
+                \ifnumodd{\value{page}}%
+                {% a) we arrived at an odd page
+                	\ifbool{xmpOddFile}%
+                		{% -odd file present
+                			\renewrobustcmd*{\xmpFileName}{\xmpOddFile}%
+                		}%
+                		{% no -odd file present
+                			\ifbool{xmpGenericFile}%
+                			{% generic file present
+                				\renewrobustcmd*{\xmpFileName}{\xmpGenericFile}%
+                			}%
+                			{% no generic file present 
+                			 % - there must be an -even file
+                			 % let that be printed on the next page
+                			 \boolfalse{xmpThisPage}%
+                			 \renewrobustcmd*{\xmpFileName}{\xmpEvenFile}%
+                			}%
+                		}%
+                }%
+                {% b) we arrived at an even page
+                	\ifbool{xmpEvenFile}%
+                	{% -even file present
+                		\renewrobustcmd*{\xmpFileName}{\xmpEvenFile}%
+                	}
+                	{% no -even file present
+                			\ifbool{xmpGenericFile}%
+                			{% generic file present
+                				\renewrobustcmd*{\xmpFileName}{\xmpGenericFile}%
+                			}%
+                			{% no generic file present 
+                			 % - there must be an -odd file
+                			 % let that be printed on the next page
+                			 \boolfalse{xmpThisPage}%
+                			 \renewrobustcmd*{\xmpFileName}{\xmpOddFile}%
+                			}%
+                	}%
+                }%
+                % Print the file with the name
+                % determined by above checks
+                \printFullPageExample{#2}{#3}%
+            }%
+        }%
+        {% No valid file found
+        
+        \bigskip
+	    % Manually add a colored entry in the index file
+	    \addcontentsline{loxmp}{musicexample}{\protect\numberline{\arabic{musicexample}}{\ignorespaces \textcolor{red}{#2\relax }}}%
+	    % print a box instead of the image
+	    % indicating the fact and the name of the missing example
+        \begin{center}%
+        \fcolorbox{red}{yellow}{%
+                \parbox[c]{.7\textwidth}{~\\
+                    \centering\textbf{\textsf{\xmpMissingFullpageLabel}}\\
+                    #1\\
+                    ~\\
+                }%
+            }%
+        \end{center}%
+        \bigskip
+        }%
 }
 
 % \fullPageLilypondExample
