@@ -154,8 +154,8 @@ As \texttt{musicexamples} offers its own solution for full-page music examples (
 The \cmd{fullPageMusicExample} command gives you the possibility to include full-page scores with one ore more pages.
 It behaves differently from the above \emph{environments} in that it is a \emph{command} -- and in that it actually inserts the example in the document instead of only providing its environment.
 The command expects three mandatory arguments: 
-\# 1: the file name (including the relative path) to a pdf (and no other image) file.
-\#2: the caption and \#3: a \cmd{label}.
+\# 1: the file name (including the relative path but without the extension) to a pdf (and no other image) file.
+\#2: the caption and \#3: a \cmd{label} command.
 While it would have been easy to let you provide only the label itself, it makes sense to use this somewhat redundant syntax.
 This way you actually have a \cmd{label} at the right place in your source which your editor may use to help you navigate your document.
 
@@ -170,6 +170,8 @@ This way you actually have a \cmd{label} at the right place in your source which
 \end{quote}
 Internally the pages are included using \cmd{includepdf} and the \package{afterpage} package, so the score will start at the next page without leaving the rest of the current page empty.
 The label will be placed correctly on the new page so references will be correct.
+Great effort has been put into the handling of examples starting on odd or even pages (see below for details).
+
 The handling of the caption is somewhat special with this command.
 The caption -- which isn't a real \cmd{caption} but just text used as such -- is printed in the header or footer of the (first) page of the example.
 This is realized through the use of the \package{scrpage2} package from \package{KOMA-Script}.
@@ -194,7 +196,7 @@ The first argument is the name of the style to be modified, the next three argum
 \end{verbatim}
 \end{quote}
 
-The command checks the existence of a pdf file with the basename given as the first argument, but also of files with \texttt{-odd} or \texttt{-even} suffixes.
+The full-page example command first checks if there is a pdf file on disk with the basename given as the first argument or with one of the suffixes \texttt{-odd} or \texttt{-even}.
 If none of them is present there will be a colored box indicating the missing full-page example, additionally the entry in the list of music examples (if you have one) will be colored red.
 The message in the box defaults to “Missing full-page example:“, but you can configure it with \cmd{setXmpMissingFullpageLabel}.
 
@@ -209,11 +211,9 @@ If you finally have a two-sided score that should explicitely start on an odd or
 \cmd{fullPageLilypondExample} behaves the same as \cmd{fullPageMusicExample} but you should use it for examples created with LilyPond, as it can be used (e.\,g. by scripts) to keep track of these examples (see \fref{chap:xmp_python}).
 
 \begin{knownIssues}
-The LilyPond configuration files provide commands to compile odd- and even-starting pdf files from one source file, but that is not quite perfect and not documented yet. 
+The LilyPond configuration files provide functions to compile odd- and even-starting pdf files from one source file, but they are not quite perfect and not documented yet. 
 Maybe I'll also implement the possibility to include “cropped“ scores (without page margins) that can be scaled into the text area of the \LaTeX{} document.
-
-Other than described above the functionality to explicitely start on an odd or even page isn't working so far!
-Obviously I've run into an issue with macro expanding that I didn't manage to solve so far \ghIssue{23}
+And maybe I'll implement functionality to use one-sided scores (on smaller paper) that are placed correctly on the page (but that's only an idea so far).
 \end{knownIssues}
 
 \bigskip

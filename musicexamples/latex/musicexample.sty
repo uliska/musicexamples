@@ -331,11 +331,11 @@
 	{}{--\,\pagemark\,--}{}
 
 % Variables for the names of the different file versions
-\newrobustcmd*{\xmpOddFile}{}
-\newrobustcmd*{\xmpEvenFile}{}
-\newrobustcmd*{\xmpGenericFile}{}
+\newcommand*{\xmpOddFile}{}
+\newcommand*{\xmpEvenFile}{}
+\newcommand*{\xmpGenericFile}{}
 % File name to be finally used
-\newrobustcmd*{\xmpFileName}{}
+\newcommand*{\xmpFileName}{}
 % Flags indicating the presence of generic, odd or even file versions
 \newbool{xmpOddFile}
 \newbool{xmpEvenFile}
@@ -354,25 +354,26 @@
 \newcommand{\xmpFilePresent}[1]{%
 	% Reset 'local' variables
 	\boolfalse{xmpFilesPresent}%
-	\renewrobustcmd*{\xmpFileName}{}%
+	\renewcommand*{\xmpFileName}{}%
+	%
     \IfFileExists{#1.pdf}%
-    {\renewrobustcmd*{\xmpGenericFile}{#1}%
+    {\renewcommand*{\xmpGenericFile}{#1}%
 	    \booltrue{xmpGenericFile}%
 	    \booltrue{xmpFilesPresent}%
     }%
-    {\renewrobustcmd*{\xmpGenericFile}{}}%
+    {\renewcommand*{\xmpGenericFile}{}}%
     \IfFileExists{#1-odd.pdf}%
-    {\renewrobustcmd*{\xmpOddFile}{#1-odd}%
+    {\renewcommand*{\xmpOddFile}{#1-odd}%
     \booltrue{xmpOddFile}%
     \booltrue{xmpFilesPresent}%
     }%
-    {\renewrobustcmd*{\xmpOddFile}{}}%
+    {\renewcommand*{\xmpOddFile}{}}%
     \IfFileExists{#1-even.pdf}%
-    {\renewrobustcmd*{\xmpEvenFile}{#1-even}%
+    {\renewcommand*{\xmpEvenFile}{#1-even}%
     \booltrue{xmpEvenFile}%
     \booltrue{xmpFilesPresent}%
     }%
-    {\renewrobustcmd*{\xmpEvenFile}{}}%
+    {\renewcommand*{\xmpEvenFile}{}}%
 }
 
 % Internal command to actually print a fullPageMusicExample
@@ -380,6 +381,7 @@
 \newcounter{xmpPageInd}
 \newcommand{\printFullPageExample}[2]{%
     %TODO: insert an \afterpage ifbool{xmpThisPage}
+    \afterpage{
     % Manually add an entry in the index file
     \addcontentsline{loxmp}{musicexample}{\protect\numberline{\arabic{musicexample}}{\ignorespaces #1\relax }}%%
     \renewcommand*{\xmpCaption}{#1}
@@ -394,7 +396,8 @@
         \ifthenelse{\value{xmpPageInd} = 1}%
         {\thispagestyle{xmpPageOne}}%
         {\thispagestyle{xmpPageTwo}}%
-    }]{\expandonce\xmpFileName}%
+    }]{\xmpFileName}%
+    }
 }
 
 % \fullPageMusicExample
@@ -425,51 +428,55 @@
 	\xmpFilePresent{#1}%
     \ifbool{xmpFilesPresent}%
         {% OK, we have a valid file.
-        	\afterpage{%
-				% print example on the current page
-				% (if the further tests don't change our mind)
-				\booltrue{xmpThisPage}%
-                \ifnumodd{\value{page}}%
-                {% a) we arrived at an odd page
-                	\ifbool{xmpOddFile}%
-                		{% -odd file present
-                			\renewrobustcmd*{\xmpFileName}{\xmpOddFile}%
-                		}%
-                		{% no -odd file present
-                			\ifbool{xmpGenericFile}%
-                			{% generic file present
-                				\renewrobustcmd*{\xmpFileName}{\xmpGenericFile}%
-                			}%
-                			{% no generic file present 
-                			 % - there must be an -even file
-                			 % let that be printed on the next page
-                			 \boolfalse{xmpThisPage}%
-                			 \renewrobustcmd*{\xmpFileName}{\xmpEvenFile}%
-                			}%
-                		}%
-                }%
-                {% b) we arrived at an even page
-                	\ifbool{xmpEvenFile}%
-                	{% -even file present
-                		\renewrobustcmd*{\xmpFileName}{\xmpEvenFile}%
-                	}
-                	{% no -even file present
-                			\ifbool{xmpGenericFile}%
-                			{% generic file present
-                				\renewrobustcmd*{\xmpFileName}{\xmpGenericFile}%
-                			}%
-                			{% no generic file present 
-                			 % - there must be an -odd file
-                			 % let that be printed on the next page
-                			 \boolfalse{xmpThisPage}%
-                			 \renewrobustcmd*{\xmpFileName}{\xmpOddFile}%
-                			}%
-                	}%
-                }%
-                % Print the file with the name
-                % determined by above checks
-                \printFullPageExample{#2}{#3}%
+			% print example on the current page
+			% (if the further tests don't change our mind)
+			\booltrue{xmpThisPage}%
+            \ifnumodd{\value{page}}%
+            {% a) the next page will be an even page
+               	\ifbool{xmpEvenFile}%
+               	{% -even file present
+               		\renewcommand*{\xmpFileName}{\xmpEvenFile}%
+               	}
+               	{% no -even file present
+               			\ifbool{xmpGenericFile}%
+               			{% generic file present
+               				\renewcommand*{\xmpFileName}{\xmpGenericFile}%
+               			}%
+               			{% no generic file present 
+              			 % - there must be an -odd file
+              			 % let that be printed on the next page
+              			 \boolfalse{xmpThisPage}%
+              			 \renewcommand*{\xmpFileName}{\xmpOddFile}%
+               			}%
+               	}%
             }%
+            {% b) the next page will be an odd page
+               	\ifbool{xmpOddFile}%
+               		{% -odd file present
+               			\renewcommand*{\xmpFileName}{\xmpOddFile}%
+               		}%
+               		{% no -odd file present
+               			\ifbool{xmpGenericFile}%
+               			{% generic file present
+               				\renewcommand*{\xmpFileName}{\xmpGenericFile}%
+               			}%
+               			{% no generic file present 
+              			 % - there must be an -even file
+              			 % let that be printed on the next page
+              			 \boolfalse{xmpThisPage}%
+              			 \renewcommand*{\xmpFileName}{\xmpEvenFile}%
+               			}%
+               		}%
+            }%
+            % Print the file with the name
+            % determined by above checks
+            \ifbool{xmpThisPage}%
+            	{% appropriate file present, print on next page
+            		\printFullPageExample{#2}{#3}%
+            	}%
+            	{% only opposite side file present, print on second-to-next page
+            		\afterpage{\printFullPageExample{#2}{#3}}%
+            	}%
         }%
         {% No valid file found
         
