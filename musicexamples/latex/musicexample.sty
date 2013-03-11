@@ -44,6 +44,9 @@
 % Allow definition of new pagestyles for fullpage examples
 \RequirePackage{scrpage2}
 
+% use \ifthispageodd
+\RequirePackage{scrextend}
+
 % Format the captions of the float environment
 % (Try making the coherent with the manually typeset captions
 %  of the non-float items)
@@ -431,7 +434,7 @@
 			% print example on the current page
 			% (if the further tests don't change our mind)
 			\booltrue{xmpThisPage}%
-            \ifnumodd{\value{page}}%
+            \ifthispageodd%
             {% a) the next page will be an even page
                	\ifbool{xmpEvenFile}%
                	{% -even file present
