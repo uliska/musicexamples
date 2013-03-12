@@ -1,12 +1,13 @@
-openLilyLib - Open Source LilyPond Library
-==========================================
+`musicexamples` 
+===============
+LaTeX package (and LilyPond resources) to manage music examples in LaTeX documents.
 
-Initiated by <br>
-**Urs Liska** (lilypond@ursliska.de) and <br>
-**Janek Warchoł**  (janek.lilypond@gmail.com)
+Written by:  
+**Urs Liska** (git@ursliska.de)
 
-With initial support from <br>
-**David Nalesnik** (david.nalesnik@gmail.com)
+Project page:  
+https://sourceforge.net/projects/musicexamples.openlilylib.p/
 
+`musicexamples` is part of the `openLilyLib` family of resources located at www.openlilylib.org
 
 

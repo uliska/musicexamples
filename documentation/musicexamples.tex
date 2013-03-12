@@ -1,11 +1,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                         %
-%      This file is part of the 'openLilyLib' library.                    %
-%                                ===========                              %
+%      This file is part of 'openLilyLib'                                 %
+%                            ===========                                  %
 %                                                                         %
-%              https://github.com/lilyglyphs/openLilyLib                  %
+%                     http://www.openlilylib.org                          %
 %                                                                         %
-%  Copyright 2012-13 by Urs Liska, lilyglyphs@ursliska.de                 %
+%  Copyright 2012-13 by Urs Liska, git@ursliska.de                        %
 %                                                                         %
 %  'openLilyLib' is free software: you can redistribute it and/or modify  %
 %  it under the terms of the GNU General Public License as published by   %
@@ -88,7 +88,7 @@ The list title defaults to “List of Music Examples” and can be changed using
 
 
 \subsection{Environments for Shorter Music Examples}
-\label{subsec:basic-usage_environments}
+\label{subsec:xmp_basic-usage_environments}
 
 There are two environments to be used for non-fullpage music examples: \env{musicExample} and \env{musicExampleNonFloat}.
 It is \emph{not} the point having a non-floating environment to have more control over the placement of the item, but rather to allow it to cross page breaks, so that a group of music systems may flow over one or more pages. 
@@ -153,7 +153,7 @@ As \texttt{musicexamples} offers its own solution for full-page music examples (
 \end{description}
 
 \subsection{Full Page Music Examples}
-\label{subsec:basic-usage_full-page-examples}
+\label{subsec:xmp_basic-usage_full-page-examples}
 
 The \cmd{fullPageMusicExample} command gives you the possibility to include full-page scores with one ore more pages.
 It behaves differently from the above \emph{environments} in that it is a \emph{command} -- and in that it actually inserts the example in the document instead of only providing its environment.
@@ -356,7 +356,7 @@ If you don't want to use the advanced LilyPond techniques (and the respective in
 \package{musicexamples} does \emph{not} -- contrary to \env{lilypond-book} -- make any attempt to guess the text width of the \LaTeX{} document, so you will have to provide an appropriate layout for your LilyPond scores yourself.
 It is recommended that you make sure the scores are compiled with the final line width in order to provide a consistent layout (esp. concerning staff size).
 For this it is crucial to define the layout in a separate include file (and not within the actual music example file), so you can (quite) easily recompile all examples if you have to change the layout of your \LaTeX{} document later.
-We will show you helper scripts to simplify this kind of work-flow later in \fref{sec:xmp_python}.
+We will show you helper scripts to simplify this kind of work-flow later in \fref{chap:xmp_python}.
 
 For \emph{full-page scores} it is generally advisable to suppress the printing of headers and footers (and page numbers) and let \LaTeX{} do this (as you won't know the final page numbers when preparing the scores and as it is quite difficult to typeset the headers and footers from LilyPond in a way so they match well with the rest of the document).
 It has to be admitted that it is a bit tricky to find out the right parameters to set up the document layout in a useful way, but it is surely better to let \LaTeX{} do the headers and footers consistently.
