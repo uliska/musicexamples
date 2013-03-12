@@ -24,7 +24,7 @@
 
 \documentclass{OLLbook}
 
-\setbookmaintitle{The \env{musicexamples} LaTeX{} Package}
+\setbookmaintitle{\env{musicexamples}}
 \author{Urs Liska}
 
 \begin{document}
@@ -38,9 +38,13 @@
 \texttt{musicexamples} is a set of tools intended for printing and managing music examples in \LaTeX{} documents.
 It was developed with examples in mind that are produced using the LilyPond notation software%
 \footnote{\url{www.lilypond.org}},
-but it can also be used to handle any kind of images.
+but it can also be used to handle any kind of image files.
 
 It consists of three parts: a \LaTeX{} package, a set of configuration files for LilyPond scores and a set of Python scripts (to be implemented).
+
+\texttt{musicexamples} is part of the \texttt{openLilyLib} project%
+\footnote{\url{www.openlilylib.org}}, 
+a family of resources for the LilyPond notation software and \LaTeX{} authoring about music.
 \end{authorAbstract}
 
 \vfill
@@ -297,9 +301,6 @@ To finish off this section I will provide a short list of the available commands
 \begin{description}
 \item[\env{musicExample}] Floating environment, content is centered by default.
 \item[\env{musicExampleNonFloat}] Non-floating environment that can enclose multiple images across page breaks.
-\item[\cmd{fullPageMusicExample}] \emph{Command} that prints full-page music examples.
-Support for odd/even-starting scores is planned but not implemented yet.
-\item[\cmd{fullPageLilypondExample}] Same as above, but to be used for LilyPond generated examples.
 \end{description}
 
 More optional floating environments that are available when third-party packages are loaded (some comments earlier in \fref{sec:xmp_basic-usage}, more information in the respective package documentation):
@@ -312,8 +313,11 @@ More optional floating environments that are available when third-party packages
 
 \subsection*{Commands that Print Music Examples}
 \begin{description}
-\item[\cmd{musicSFE} and \cmd{lilypondSFE}]Print a single file.
+\item[\cmd{musicSFE} and \cmd{lilypondSFE}]Print a single file (system).
 \item[\cmd{lilypondMFE}]Print a music example consisting of several files.
+\item[\cmd{fullPageMusicExample}] \emph{Command} that prints full-page music examples.
+Starting examples on odd or even pages is fully supported.
+\item[\cmd{fullPageLilypondExample}] Same as above, but to be used for LilyPond generated examples.
 \end{description}
 
 \subsection*{Miscellaneous Options and Commands}
