@@ -326,7 +326,7 @@
 % Define variable for in-header caption
 \newcommand*{\xmpCaption}{}
 \deftripstyle{xmpPageOne}%
-	{\upshape\ollXmpCaptionLabel \arabic{musicexample}: \xmpCaption}{}{}%
+	{\upshape\ollXmpCaptionLabel \themusicexample: \xmpCaption}{}{}%
 	{}{--\,\pagemark\,--}{}
 
 \deftripstyle{xmpPageTwo}%
@@ -386,7 +386,7 @@
     %TODO: insert an \afterpage ifbool{xmpThisPage}
     \afterpage{
     % Manually add an entry in the index file
-    \addcontentsline{loxmp}{musicexample}{\protect\numberline{\arabic{musicexample}}{\ignorespaces #1\relax }}%%
+    \addcontentsline{loxmp}{musicexample}{\protect\numberline{\themusicexample}{\ignorespaces #1\relax }}%%
     \renewcommand*{\xmpCaption}{#1}
     % provide a \label as argument #2
     #2
@@ -485,7 +485,7 @@
         
         \bigskip
 	    % Manually add a colored entry in the index file
-	    \addcontentsline{loxmp}{musicexample}{\protect\numberline{\arabic{musicexample}}{\ignorespaces \textcolor{red}{#2\relax }}}%
+	    \addcontentsline{loxmp}{musicexample}{\protect\numberline{\themusicexample}{\ignorespaces \textcolor{red}{#2\relax }}}%
 	    % print a box instead of the image
 	    % indicating the fact and the name of the missing example
         \begin{center}%
