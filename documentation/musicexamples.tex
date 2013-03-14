@@ -71,7 +71,7 @@ The package was developed from the perspective of a user of the LilyPond notatio
 \footnote{\url{http://www.lilypond.org}}, but you can use it with any kind of suitable music example images.
 The package has some similarities with LilyPond's \package{lilypond-book} script, but it doesn't understand itself as a competitor for this, but rather as a different approach for people with somewhat different needs.
 It can even be used in parallel, i.\,e.\ you can use \package{musicexamples'} environments to wrap \package{lilypond-book}-like source snippets.
-For anybody writing (about) music it may also be a good idea to have a look at my \package{lilyglyphs} package that will eventually be merged into the openLilyLib family of resources.
+For anybody writing (about) music it may also be a good idea to have a look at my \package{lilyglyphs} package that is \package{musicexample}s sibling in the \package{openLilyLib} family of resources.
 
 The following documentation is split into “basic” and “advanced” usage sections because there are basic possibilities that you can use without bothering about the advanced ones.
 Especially you are in no way forced to use LilyPond as the source of your music examples (although I can't recommend it highly enough \dots).
@@ -254,6 +254,9 @@ The point of this isn't mainly to spot missing image files, but rather to be abl
 The message in the box defaults to “Missing Image:“, but you can configure it with \cmd{setXmpMissingImageLabel}.
 I didn't bother to make the appearance of the box configurable so far because I regard this as a convenience tool for document authors that shouldn't be part of a final version.
 But feel free to suggest improvements.
+You can use file names with more than one dot in it (like the default output files of LilyPond with the \texttt{-dpreview} option). 
+In this case you still leave out the \texttt{.pdf} part but enclose the file name in \emph{three} pairs of curly braces, like \cmd{musicSFE\{\{\{example-image.preview\}\}\}}.
+
 \begin{knownIssues}
 You shouldn't actually use special characters in file names.
 While \cmd{includegraphics} may handle some of them, the other functions probably won't. 
