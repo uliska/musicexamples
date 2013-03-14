@@ -31,6 +31,11 @@
 % Allow definition of the new float environment
 \RequirePackage{newfloat}
 
+% Allow boolean values
+\RequirePackage{etoolbox}
+
+\RequirePackage{color}
+
 % Include the following packages
 % to automatically provide versions of the environment4
 % (feature of the newfloat package):
@@ -60,6 +65,13 @@
 % Needed for multi-system-examples, where the number of systems
 % is written to a ...systems.count file by LilyPond
 \RequirePackage{catchfile}
+
+% Allow the use of example files with more than one dot in the name
+% (e.g. the .preview.pdf files created by the -dpreview option)
+% In such cases provide the filename with out the .pdf extension
+% but enclose it in three pairs of curly braces 
+% (e.g. \musicSFE{{{example.preview}}} )
+\usepackage[multidot]{grffile}
 
 % Loop through the systems of a multi-system example
 \RequirePackage{forloop}
@@ -513,6 +525,8 @@
 % Enable fancyref to work with music examples
 % (you will have to use the fancyref package manually)
 % Then you can write \fref{xmp:your-label}
+
+\RequirePackage{fancyref}
 
 \newcommand*{\fancyrefxmplabelprefix}{xmp}
 
