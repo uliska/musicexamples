@@ -40,7 +40,8 @@ It was developed with examples in mind that are produced using the LilyPond nota
 \footnote{\url{www.lilypond.org}},
 but it can also be used to handle any kind of image files.
 
-It consists of three parts: a \LaTeX{} package, a set of configuration files for LilyPond scores and a set of Python scripts (to be implemented).
+It consists of three parts: a \LaTeX{} package, a set of configuration files for LilyPond scores and a set of Python scripts.
+Currently only the \LaTeX{} package is ready to use, but is actually working quite well.
 
 \texttt{musicexamples} is part of the \texttt{openLilyLib} project%
 \footnote{\url{www.openlilylib.org}}, 
@@ -53,9 +54,28 @@ a family of resources for the LilyPond notation software and \LaTeX{} authoring 
 
 \chapter{Installation and Requirements}
 The main requirement to make use of the present material is to make the \package{musicexamples} package available to your \LaTeX{} distribution.
-This basically consists of ensuring that the file \texttt{musicexamples.sty} is found.
-Usually it is enough to copy it somewhere into your \texttt{texmf} tree and run \env{texhash} afterwards.
+If you have obtained \package{musicexamples} as an archived download archive you may just unpack it into a folder inside your \dir{texmf/tex/latex} directory.
+Depending on your (operating and \LaTeX) system you may have to run \env{texhash} afterwards.
 If you aren't sure what this means, please consult your \LaTeX{} documentation or a book.
+
+If you want to clone the original Git repository from SourceForge instead you can do the same (i.\,e. navigate to \dir{texmf/tex/latex} and run\\
+\texttt{git clone git://git.code.sf.net/p/openlilylib/musicexamples/code musicexamples} or one of the other access methods stated on \url{https://sourceforge.net/p/openlilylib/musicexamples/code}) from there.
+But it is preferrable to keep the Git repository and the texmf tree separate, so I suggest that you either add \package{musicexamples}' root directory to your search path or place a (symbolic) link to that directory into \dir{texmf/tex/latex}.
+
+You can test the installaton by compiling a Minimal Working Example like the following
+\begin{quote}
+\begin{verbatim}
+\documentclass{article}
+\usepackage{musicexamples}
+\begin{document}
+Test
+\end{document}
+\end{verbatim}
+\end{quote}
+
+If that compiles without errors you have successfully installed \package{musicexamples}.
+
+In the current pre-release state you can only use the \LaTeX{} package, the LilyPond configuration files and the Python scripts are unfortunately not yet part of the package.
 
 \todo{Describe more requirements when the remaining chapters have been written.}
 
@@ -79,7 +99,8 @@ In the basic “mode” you can simply use \package{musicexamples} as a tool to 
 
 \section{Basic Usage}
 \label{sec:xmp_basic-usage}
-In order to use \texttt{musicexamples} you simply write \cmd{usepackage\{musicexamples\}} or \cmd{RequirePackage\{musicexamples\}}.
+In order to use \texttt{musicexamples} you simply \emph{use} or \emph{Require} the \package\{musicexamples\} 
+in your document preamble.
 You will then have access to its commands and environments.
 
 Music examples printed by any of the following environments or commands are numbered in one list (they share the counter \env{musicexamples}).
@@ -91,7 +112,7 @@ The list title defaults to “List of Music Examples” and can be changed using
 \label{subsec:xmp_basic-usage_environments}
 
 There are two environments to be used for non-fullpage music examples: \env{musicExample} and \env{musicExampleNonFloat}.
-It is \emph{not} the point having a non-floating environment to have more control over the placement of the item, but rather to allow it to cross page breaks, so that a group of music systems may flow over one or more pages. 
+The point of having a non-floating environment to \emph{not} to have more control over the placement of the item, but rather to allow it to cross page breaks, so that a group of music systems may flow over one or more pages. 
 These environments do not print the music examples themselves but only provide the environment for them (as a \texttt{figure} environment doesn't already print the figure), managing their placement, captions, numbering and listing.
 
 You use \env{musicExample} like any other float environment, so you can optionally add the placement directive after the \cmd{begin} statement (of the floating version).
@@ -108,8 +129,8 @@ Inside the environment you add the contents, the \cmd{caption} to be used, and a
 \end{quote}
 
 This will print your image in a floating environment [preferrably at the top of a page], will take care of the numbering and prepares for the inclusion in a list of music examples.
-If you have loaded the \package{fancyref} package you can profit from the predefined set of reference strings for the new \texttt{xmp:} prefix shown in the example.
-There are also German strings provided if you load \package{fancyref} with the \texttt{german} option, but this doesn't work yet \ghIssue{5}.
+\package{musicexamples} loads the \package{fancyref} package, and you can profit from the predefined set of reference strings for the new \texttt{xmp:} prefix shown in the example.
+There are also German strings provided if you load \package{fancyref} with the \texttt{german} option, but this doesn't work yet \ollTicket{7}.
 
 The usage of \env{musicExampleNonFloat} is identical, except that it doesn't accept the optional placement argument.
 It will print the example right where you inserted the environment, and while the floating version can only print the example in a box on a single page, this one can spread over page breaks -- provided the music systems are given as separate images.
@@ -155,10 +176,10 @@ As \texttt{musicexamples} offers its own solution for full-page music examples (
 \subsection{Full Page Music Examples}
 \label{subsec:xmp_basic-usage_full-page-examples}
 
-The \cmd{fullPageMusicExample} command gives you the possibility to include full-page scores with one ore more pages.
+The \cmd{fullPageMusicExample} command gives you the possibility to include pdf files as full-page scores with one or more pages.
 It behaves differently from the above \emph{environments} in that it is a \emph{command} -- and in that it actually inserts the example in the document instead of only providing its environment.
 The command expects three mandatory arguments: 
-\# 1: the file name (including the relative path but without the extension) to a pdf (and no other image) file.
+\# 1: the file name (including the relative path but without the extension) to a pdf (and no other image) file,
 \#2: the caption and \#3: a \cmd{label} command.
 While it would have been easy to let you provide only the label itself, it makes sense to use this somewhat redundant syntax.
 This way you actually have a \cmd{label} at the right place in your source which your editor may use to help you navigate your document.
@@ -205,14 +226,14 @@ If none of them is present there will be a colored box indicating the missing fu
 The message in the box defaults to “Missing full-page example:“, but you can configure it with \cmd{setXmpMissingFullpageLabel}.
 
 Through the use of file name suffixes you can control the placement of your full-page music examples.
-Files with the plain name are considered as one-sided, i.\,e. as being able to start at an arbitrary page. 
+Files with the plain name are considered as one-sided, i.\,e.\ as being able to start at an arbitrary page. 
 File names with a suffix indicate two-sided layout with the first page being odd or even respectively.
 If you have a score with one-sided layout then you will provide just the file with the plain basename, and it will be printed starting at the next page.
 If you have a score with two-sided layout but you don't mind it starting on an odd or even page you should provide two files with both suffixes, the command will then print the example starting on the next page and use the appropriate example file.
-If you finally have a two-sided score that should explicitely start on an odd or even page (typically one might want to have two page scores printed on one double page) then you should only provide one file with the appropriate suffix, which will be printed on the next odd or even page (as indicated by the file suffix), possibly skipping another page of text.
+If you finally have a two-sided score that should explicitely start on an odd or even page (typically one might want to have two page scores printed on one double page for example) then you should only provide one file with the appropriate suffix, which will be printed on the next odd or even page (as indicated by the file suffix), possibly skipping another page of text.
 
 \medskip
-\cmd{fullPageLilypondExample} behaves the same as \cmd{fullPageMusicExample} but you should use it for examples created with LilyPond, as it can be used (e.\,g. by scripts) to keep track of these examples (see \fref{chap:xmp_python}).
+\cmd{fullPageLilypondExample} behaves the same as \cmd{fullPageMusicExample} but you should use it for examples created with LilyPond, as it can be used (e.\,g.\ by scripts) to keep track of these examples (see \fref{chap:xmp_python}).
 
 \begin{knownIssues}
 The LilyPond configuration files provide functions to compile odd- and even-starting pdf files from one source file, but they are not quite perfect and not documented yet. 
@@ -232,7 +253,7 @@ You are free to enter anything (presumably images) within the environments and u
 But we have provided several commands that are explicitely intended for printing the music examples which give you a consistent interface and perhaps a few other advantages.
 
 \cmd{musicSFE} and \cmd{lilypondSFE} are used to print Single File Examples.
-Technically they consist of one \emph{file}, but for the sake of consistency it is recommended to use them for examples with one \emph{music system} only.
+Technically they print one \emph{file}, but for the sake of consistency it is recommended to use them for examples with one \emph{music system} only.
 
 As with the full-page examples the “lilypond” versions is technically the same as the “music” version, but you should use them to distinguish between music examples provided by arbitrary image files and examples generated by LilyPond.
 \\\todo{Note: The script hasn't been implemented yet.}
@@ -291,7 +312,7 @@ This number includes the first two unused systems, so if you have an example wit
 \end{description}
 
 \cmd{lilypondMFE} will now iterate over the files 3 to n to consecutively print the systems using the \cmd{musicSFE} command.
-\\\todo{It is intended to implement some optional element between consecutive systems (just as  \texttt{lilypond-book} does) \ghIssue{6}.}
+\\\todo{It is intended to implement some optional element between consecutive systems (just as  \texttt{lilypond-book} does) \ollTicket{6}.}
 
 As mentioned the book and score title markups from the LilyPond score are discarded by this command.
 If you need to have titles in the example you will have to supply them directly within the music example environment or as markups in the LilyPond score (not in the header but in the music part).
@@ -326,7 +347,7 @@ Starting examples on odd or even pages is fully supported.
 \subsection*{Miscellaneous Options and Commands}
 \begin{description}
 \item[\cmd{SetupFloatingEnvironment}](\package{caption}): Modify the appearance of the captions of the (floating and non-floating) environments.
-\item[\cmd{setXmpCaptionLabel}]Set the label used for the captions (e.\,s. set it to your own language)
+\item[\cmd{setXmpCaptionLabel}]Set the label used for the captions (e.\,g.\ set it to your own language)
 \item[\cmd{setXmpListName}]Set the Title for the list of music examples.
 \item[\cmd{setXmpAlignment}] Set the alignment for all subsequent music examples.
 To modify the alignment of a single example use standard \LaTeX{} commands inside the environment.
@@ -382,10 +403,15 @@ This lets LilyPond output each system as a separate (cropped) file with a naming
 \label{sec:xmp_suggested-work-flows}
 The previous section described a few requirements LilyPond scores should meet in order to be used successfully with \package{musicexamples}.
 
-\begin{itemize}
-\item suggested work-flows and provided configuration files\\
-(Move conf files to OLLincludes)
-\end{itemize}
+\bigskip
+\begin{center}
+\fcolorbox{red}{yellow}{%
+\parbox{.7\textwidth}{%
+This manual stops here, because the remaining items haven't been implemented yet.
+But as the \LaTeX{} package is already useful by itself I decided to already make a file release at this point.
+}}
+\end{center}
+
 
 
 \chapter{The Python Scripts \dots}
