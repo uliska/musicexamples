@@ -43,4 +43,6 @@
 *.png
 *.jpg
 
+# We don't want to add our deployment directory
+deploy/*
 
