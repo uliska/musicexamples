@@ -1,5 +1,7 @@
 \documentclass{article}
 \usepackage{rotating}
+\usepackage{sidecap}
+\usepackage{wrapfig}
 \usepackage{musicexamples}
 
 \begin{document}
@@ -95,13 +97,13 @@ Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie co
     This can be used to enter placeholders for music examples that haven't been finished yet.
     Note that the entry in the list of music examples is printed red.
     
-    \begin{quote}
-        \begin{verbatim}
-        \fullPageLilypondExample{missing-score}
-        {Fullpage example whose pdf file isn't present}
-        {\label{xmp:missing-fullpage-example}}
-        \end{verbatim}
-    \end{quote}
+\begin{quote}
+    \begin{verbatim}
+    \fullPageLilypondExample{missing-score}
+    {Fullpage example whose pdf file isn't present}
+    {\label{xmp:missing-fullpage-example}}
+    \end{verbatim}
+\end{quote}
 }
 \fullPageMusicExample{missing-score}
 {Fullpage example whose pdf file isn't present}
@@ -171,11 +173,90 @@ Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. 
 
 \medskip
-\noindent
-\textcolor{red}{
-\textbf{Please note:}\\
-the functionality mentioned in the manual that automatically creates additional floating environment doesn't seem to work yet.
-}
+\color{red}{
+Having included the \texttt{rotating} package we can now print \fref{xmp:sidewaysexample} that is rotated by 90 degree:
+    
+\begin{quote}
+\begin{verbatim}
+\begin{sidewaysmusicexample}
+    \lilypondSFE{{{single-system-example.preview}}}
+    \caption{Sideways music example}
+    \label{xmp:sidewaysexample}
+\end{sidewaysmusicexample}
+\end{verbatim}
+\end{quote}
+
+\color{black}
+\begin{sidewaysmusicexample}
+    \lilypondSFE{{{single-system-example.preview}}}
+    \caption{Sideways music example}
+    \label{xmp:sidewaysexample}
+\end{sidewaysmusicexample}
+
+Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. 
+
+Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. 
+
+Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis. 
+
+At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. 
+
+\medskip
+\color{red}{
+Having included the \texttt{sidecap} package we can now print \fref{xmp:sidecapexample} where the caption is printed beside instead of below.
+    
+\begin{quote}
+\begin{verbatim}
+\begin{SCmusicexample}
+    \lilypondSFE{{{really-short-example.preview}}}
+    \caption{Example with caption beside}
+    \label{xmp:sidecapexample}
+\end{SCmusicexample}
+\end{verbatim}
+\end{quote}
+
+\color{black}
+\begin{SCmusicexample}
+    \lilypondSFE{{{really-short-example.preview}}}
+    \caption{Example with caption beside}
+    \label{xmp:sidecapexample}
+\end{SCmusicexample}
+
+Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. 
+
+Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. 
+
+Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis. 
+
+\medskip
+\color{red}{
+Finally we can -- having included the \texttt{wrapfig} package -- print \fref{xmp:wrapfigexample} where the text is wrapped around the example.
+    
+\begin{quote}
+\begin{verbatim}
+\begin{wrapmusicexample}{4}{6.2cm}
+    \lilypondSFE{{{really-short-example.preview}}}
+    \caption{Example with text warp}
+    \label{xmp:wrapfigxample}
+\end{wrapmusicexample}
+\end{verbatim}
+\end{quote}
+
+\color{black}
+\begin{wrapmusicexample}{4}{6.2cm}
+    \lilypondSFE{{{really-short-example.preview}}}
+    \caption{Example with text warp}
+    \label{xmp:wrapfigxample}
+\end{wrapmusicexample}
+
+Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. 
+
+Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. 
+
+Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis. 
+
+At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. 
+
 
 \listofmusicexamples
 \label{list-of-examples}
