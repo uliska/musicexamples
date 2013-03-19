@@ -26,7 +26,7 @@
 % Intended for use with LilyPond documents,
 % but works with any images basically
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{musicexample}
+\ProvidesPackage{musicexamples}
 
 % Allow definition of the new float environment
 \RequirePackage{newfloat}
@@ -48,6 +48,12 @@
 
 % Allow definition of new pagestyles for fullpage examples
 \RequirePackage{scrpage2}
+
+% Start fullpage example on next page
+\RequirePackage{afterpage}
+
+% Include full-page scores
+\RequirePackage{pdfpages}
 
 % use \ifthispageodd
 \RequirePackage{scrextend}
@@ -338,7 +344,7 @@
 % Define variable for in-header caption
 \newcommand*{\xmpCaption}{}
 \deftripstyle{xmpPageOne}%
-	{\upshape\ollXmpCaptionLabel \themusicexample: \xmpCaption}{}{}%
+	{\upshape\ollXmpCaptionLabel{} \themusicexample: \xmpCaption}{}{}%
 	{}{--\,\pagemark\,--}{}
 
 \deftripstyle{xmpPageTwo}%
@@ -369,7 +375,10 @@
 \newcommand{\xmpFilePresent}[1]{%
 	% Reset 'local' variables
 	\boolfalse{xmpFilesPresent}%
-	\renewcommand*{\xmpFileName}{}%
+	\boolfalse{xmpGenericFile}%
+	\boolfalse{xmpOddFile}%
+    \boolfalse{xmpEvenFile}%
+    \renewcommand*{\xmpFileName}{}%
 	%
     \IfFileExists{#1.pdf}%
     {\renewcommand*{\xmpGenericFile}{#1}%
@@ -395,7 +404,8 @@
 % Counter indexing the processed pages of a full page example
 \newcounter{xmpPageInd}
 \newcommand{\printFullPageExample}[2]{%
-    %TODO: insert an \afterpage ifbool{xmpThisPage}
+    % Reset page counter
+    \setcounter{xmpPageInd}{0}%
     \afterpage{
     % Manually add an entry in the index file
     \addcontentsline{loxmp}{musicexample}{\protect\numberline{\themusicexample}{\ignorespaces #1\relax }}%%
