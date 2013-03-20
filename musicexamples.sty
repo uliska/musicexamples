@@ -527,32 +527,3 @@
 \newcommand{\fullPageLilypondExample}[3]{%
 	\fullPageMusicExample{#1}{#2}{#3}
 }
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Enable fancyref to work with music examples
-% (you will have to use the fancyref package manually)
-% Then you can write \fref{xmp:your-label}
-
-\RequirePackage{fancyref}
-
-\newcommand*{\fancyrefxmplabelprefix}{xmp}
-
-\fancyrefaddcaptions{english}{%
-  \providecommand*{\frefxmpname}{example}
-  \providecommand*{\Frefxmpname}{Example}
-}
-
-\fancyrefaddcaptions{german}{%
-  \providecommand*{\frefxmpname}{Notenbeispiel}
-  \providecommand*{\Frefxmpname}{Notenbeispiel}
-}
-
-\frefformat{plain}{\fancyrefxmplabelprefix}{\frefxmpname\fancyrefdefaultspacing#1}
-\Frefformat{plain}{\fancyrefxmplabelprefix}{\Frefxmpname\fancyrefdefaultspacing#1}
-
-\frefformat{vario}{\fancyrefxmplabelprefix}{%
-  \frefxmpname\fancyrefdefaultspacing#1#3%
-}
-\Frefformat{vario}{\fancyrefxmplabelprefix}{%
-  \Frefxmpname\fancyrefdefaultspacing#1#3%
-}
