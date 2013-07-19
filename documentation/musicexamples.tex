@@ -22,9 +22,12 @@
 %                                                                         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass{OLLbook}
+\documentclass{report}
 
-\setbookmaintitle{\env{musicexamples}}
+\usepackage{musicexamplesStyles}
+
+\title{musicexamples\\
+	\normalsize{0.\,2}}
 \author{Urs Liska}
 
 \begin{document}
@@ -34,7 +37,7 @@
 
 \pagebreak
 
-\begin{authorAbstract}{Urs Liska}
+\begin{abstract}
 \texttt{musicexamples} is a set of tools intended for printing and managing music examples in \LaTeX{} documents.
 It was developed with examples in mind that are produced using the LilyPond notation software%
 \footnote{\url{www.lilypond.org}},
@@ -46,10 +49,10 @@ Currently only the \LaTeX{} package is ready to use, but is actually working qui
 \texttt{musicexamples} is part of the \texttt{openLilyLib} project%
 \footnote{\url{www.openlilylib.org}}, 
 a family of resources for the LilyPond notation software and \LaTeX{} authoring about music.
-\end{authorAbstract}
+\end{abstract}
 
 \vfill
-\input{copyright-notice.inp}
+%\input{copyright-notice.inp}
 
 
 \chapter{Installation and Requirements}
@@ -130,7 +133,7 @@ Inside the environment you add the contents, the \cmd{caption} to be used, and a
 
 This will print your image in a floating environment [preferrably at the top of a page], will take care of the numbering and prepares for the inclusion in a list of music examples.
 \package{musicexamples} loads the \package{fancyref} package, and you can profit from the predefined set of reference strings for the new \texttt{xmp:} prefix shown in the example.
-There are also German strings provided if you load \package{fancyref} with the \texttt{german} option, but this doesn't work yet \ollTicket{7}.
+There are also German strings provided if you load \package{fancyref} with the \texttt{german} option, but this doesn't work yet \ghIssue{7} \todo{Look for the right issue}.
 
 The usage of \env{musicExampleNonFloat} is identical, except that it doesn't accept the optional placement argument.
 It will print the example right where you inserted the environment, and while the floating version can only print the example in a box on a single page, this one can spread over page breaks -- provided the music systems are given as separate images.
@@ -312,7 +315,7 @@ This number includes the first two unused systems, so if you have an example wit
 \end{description}
 
 \cmd{lilypondMFE} will now iterate over the files 3 to n to consecutively print the systems using the \cmd{musicSFE} command.
-\\\todo{It is intended to implement some optional element between consecutive systems (just as  \texttt{lilypond-book} does) \ollTicket{6}.}
+\\\todo{It is intended to implement some optional element between consecutive systems (just as  \texttt{lilypond-book} does) \ghIssue{6}.}
 
 As mentioned the book and score title markups from the LilyPond score are discarded by this command.
 If you need to have titles in the example you will have to supply them directly within the music example environment or as markups in the LilyPond score (not in the header but in the music part).
@@ -423,8 +426,5 @@ But as the \LaTeX{} package is already useful by itself I decided to already mak
 \section{musicexamples.sty}
 
 \section{LilyPond Files}
-
-\chapter{Licenses}
-\input{licenses.inp}
 
 \end{document}
