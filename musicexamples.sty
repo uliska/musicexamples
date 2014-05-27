@@ -243,7 +243,7 @@
 \newcommand{\lilypondmfe}[2][]{
 	% (Use catchfile to set lilySysCnt to the number inside
 	% LilyPonds -systems.count file)
-	\CatchFileDef{\scfftemp}{#1-systems.count}{\endlinechar=-1 }%
+	\CatchFileDef{\scfftemp}{#2-systems.count}{\endlinechar=-1 }%
 	\setcounter{lilySysCnt}{\scfftemp}
 	% Increment counter for the forloop comparison
 	\stepcounter{lilySysCnt}
