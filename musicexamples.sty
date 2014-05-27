@@ -251,7 +251,7 @@
 	% (start with 3 because 1 and 2 are only the titles)
 	% and include them as \musicSFE systems
 	\forloop{lilySysInd}
-		{3}
+		{1}
 		{\value{lilySysInd} < \value{lilySysCnt}}
 		{\musicSFE[#1]{#2-\arabic{lilySysInd}}}
 	\endgroup % (End the group started by \lilypondMFE)
