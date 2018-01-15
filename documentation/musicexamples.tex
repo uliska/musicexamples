@@ -22,13 +22,13 @@
 %                                                                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass{report}
+\documentclass[DIV=11]{scrartcl}
 
 \usepackage{musicexamplesStyles}
 
 \title{musicexamples\\
 	\normalsize{0.\,2}}
-\author{Urs Liska}
+\author{Urs Liska\\ul@openlilylib.org}
 
 \begin{document}
 
@@ -38,53 +38,46 @@
 \pagebreak
 
 \begin{abstract}
-\texttt{musicexamples} is a set of tools intended for printing and managing music examples in \LaTeX{} documents.
-It was developed with examples in mind that are produced using the LilyPond notation software%
+\texttt{musicexamples} is a \LaTeX\ package intended for printing and managing music examples in text documents. Its primary focus is on integrating \LaTeX\ with the LilyPond notation%
 \footnote{\url{www.lilypond.org}},
-but it can also be used to handle any kind of image files.
-
-It consists of three parts: a \LaTeX{} package, a set of configuration files for LilyPond scores and a set of Python scripts.
-Currently only the \LaTeX{} package is ready to use, but is actually working quite well.
-
-\texttt{musicexamples} is part of the \texttt{openLilyLib} project%
-\footnote{\url{www.openlilylib.org}}, 
-a family of resources for the LilyPond notation software and \LaTeX{} authoring about music.
+software but it can be used to handle any kind of image files.
+The package is specific designed to complement the \package{lyluatex}%
+\footnote{\url{https://ctan.org/pkg/lyluatex}}
+package which manages a seamless and cached compilation of LilyPond scores directly from \LuaLaTeX.
 \end{abstract}
 
 \vfill
 %\input{copyright-notice.inp}
 
 
-\chapter{Installation and Requirements}
-The main requirement to make use of the present material is to make the \package{musicexamples} package available to your \LaTeX{} distribution.
-If you have obtained \package{musicexamples} as an archived download archive you may just unpack it into a folder inside your \dir{texmf/tex/latex} directory.
-Depending on your (operating and \LaTeX) system you may have to run \env{texhash} afterwards.
+\section{Installation and Requirements}
+\label{sec:installation}
+The main requirement to make use of the present material is to make the \package{musicexamples} package available to your \LaTeX{} distribution.%
+\footnote{We aim at publishing the package on CTAN, which will then make it available through the major \LaTeX\ distributions.}
+So far you can download or clone it from its development platform on Github.%
+\footnote{\url{https://github.com/uliska/musicexamples}}. The source directory should be placed anywhere inside your \dir{texmf/tex/latex} directory or in a separate location linked to from there.
+Depending on your (operating and \LaTeX) system you may have to run \env{texhash} or \env{mktexlsr} afterwards.
 If you aren't sure what this means, please consult your \LaTeX{} documentation or a book.
 
-If you want to clone the original Git repository from SourceForge instead you can do the same (i.\,e. navigate to \dir{texmf/tex/latex} and run\\
-\texttt{git clone git://git.code.sf.net/p/openlilylib/musicexamples/code musicexamples} or one of the other access methods stated on \url{https://sourceforge.net/p/openlilylib/musicexamples/code}) from there.
-But it is preferrable to keep the Git repository and the texmf tree separate, so I suggest that you either add \package{musicexamples}' root directory to your search path or place a (symbolic) link to that directory into \dir{texmf/tex/latex}.
+You can test the installaton by compiling the following Minimal Working Example which prints a short music example using one of the images from the example document:
 
-You can test the installaton by compiling a Minimal Working Example like the following
-\begin{quote}
 \begin{verbatim}
 \documentclass{article}
 \usepackage{musicexamples}
 \begin{document}
-Test
+\begin{musicExample}
+  \includegraphics{documentation/example-document/single-system-example.preview.pdf}
+  \caption{My first music example}
+\end{musicExample}
 \end{document}
 \end{verbatim}
-\end{quote}
 
 If that compiles without errors you have successfully installed \package{musicexamples}.
 
-In the current pre-release state you can only use the \LaTeX{} package, the LilyPond configuration files and the Python scripts are unfortunately not yet part of the package.
-
-\todo{Describe more requirements when the remaining chapters have been written.}
 
 
-\chapter{musicexamples.sty}
-\label{cha:xmp_musicexamples}
+\section{musicexamples.sty}
+\label{sec:xmp_musicexamples}
 
 \texttt{musicexamples} is a \LaTeX{} package that defines environments and commands to handle music examples (scores and fragments) within \LaTeX{} documents.
 It supports floating or non-floating examples as well as full-(one- or multi-)page scores.
@@ -100,8 +93,8 @@ The following documentation is split into “basic” and “advanced” usage s
 Especially you are in no way forced to use LilyPond as the source of your music examples (although I can't recommend it highly enough \dots).
 In the basic “mode” you can simply use \package{musicexamples} as a tool to number and list your music examples.
 
-\section{Basic Usage}
-\label{sec:xmp_basic-usage}
+\subsection{Basic Usage}
+\label{subsec:xmp_basic-usage}
 In order to use \texttt{musicexamples} you simply \emph{use} or \emph{Require} the \package\{musicexamples\} 
 in your document preamble.
 You will then have access to its commands and environments.
@@ -111,8 +104,8 @@ You can create a list of music examples just as you would create a list of table
 The list title defaults to “List of Music Examples” and can be changed using \cmd{setXmpListName}.
 
 
-\subsection{Environments for Shorter Music Examples}
-\label{subsec:xmp_basic-usage_environments}
+\subsubsection{Environments for Shorter Music Examples}
+\label{subsubsec:xmp_basic-usage_environments}
 
 There are two environments to be used for non-fullpage music examples: \env{musicExample} and \env{musicExampleNonFloat}.
 The point of having a non-floating environment to \emph{not} to have more control over the placement of the item, but rather to allow it to cross page breaks, so that a group of music systems may flow over one or more pages. 
@@ -176,8 +169,8 @@ It will create a music example with the caption placed on the previous or next p
 As \texttt{musicexamples} offers its own solution for full-page music examples (see below) you probably won't need this.
 \end{description}
 
-\subsection{Full Page Music Examples}
-\label{subsec:xmp_basic-usage_full-page-examples}
+\subsubsection{Full Page Music Examples}
+\label{subsubsec:xmp_basic-usage_full-page-examples}
 
 The \cmd{fullPageMusicExample} command gives you the possibility to include pdf files as full-page scores with one or more pages.
 It behaves differently from the above \emph{environments} in that it is a \emph{command} -- and in that it actually inserts the example in the document instead of only providing its environment.
@@ -246,8 +239,8 @@ And maybe I'll implement functionality to use one-sided scores (on smaller paper
 
 \bigskip
 
-\section{Advanced Usage}
-\label{sec:xmp_advanced-usage}
+\subsection{Advanced Usage}
+\label{subsec:xmp_advanced-usage}
 
 So far we have discussed the environments to place music examples in and the commands to print full-page examples.
 Now we're going to see how to actually print music examples inside the environments.
@@ -320,11 +313,12 @@ This number includes the first two unused systems, so if you have an example wit
 As mentioned the book and score title markups from the LilyPond score are discarded by this command.
 If you need to have titles in the example you will have to supply them directly within the music example environment or as markups in the LilyPond score (not in the header but in the music part).
 
-\section{Command Reference}
-\label{sec:xmp_command-reference}
+\subsection{Command Reference}
+\label{subsec:xmp_command-reference}
 To finish off this section I will provide a short list of the available commands:
 
-\subsection*{Environments to Place Music Examples in}
+\subsubsection*{Environments to Place Music Examples in}
+\label{subsubsec:environments}
 \begin{description}
 \item[\env{musicExample}] Floating environment, content is centered by default.
 \item[\env{musicExampleNonFloat}] Non-floating environment that can enclose multiple images across page breaks.
@@ -362,69 +356,50 @@ To change the layout use the \cmd{deftripstyle} command from the \package{scrpag
 There are \package{fancyref} labels defined for this prefix.
 \end{description} 
 
-\chapter{Using LilyPond with \env{musicexamples}}
-\label{chap:xmp_lilypond-configuration}
-It is perfectly possible to stop reading here and use \package{musicexamples} with any kind of image files for music examples.
-I think that the package is useful even if you only use it to manage music examples of different kind.
-But the intended use is to use it together with the LilyPond notation software.
-Even if you \emph{do} use LilyPond to create your music examples you don't have to continue here and may just use them as images.
+\section{Using \env{musicexamples} with Plain LilyPond}
+\label{sec:xmp_lilypond}
 
-\section{\package{musicexamples} and \package{lilypond-book}}
-\label{sec:xmp_and-lilypond-book}
-Just as a side note: You can use \package{musicexamples} together with \package{lilypond-book}, if you are already used to the latter.
-It is an assumption -- as I didn't actually try this out -- but I'm sure you can place your \env{lilypond-book} items inside \package{musicexamples}' environments and use the new package to consistently number and label your floating and non-floating music examples.
-\env{lilypond-book} will write its examples in the intermediate document just like \cmd{lilypondMFE} does.
-Probably it isn't possible to use this combination for full-page examples, but you wouldn't be able to do that with pure \env{lilypond-book} anyway.
+Although it is not really recommended \env{musicexamples} works well with scores
+generated by LilyPond separately. Basically the package will treat such scores
+agnostically as image files, and it's the responsibility of the author of the
+LilyPond files to make them work smoothly with the text document. However, it
+may be necessary to go that route when it is not possible to use the
+\package{lyluatex} package with \LuaLaTeX\ as explained in the next chapter. The most important caveats are:
 
-\section{Minimal LilyPond configuration}
-\label{sec:xmp_minimal-lilypond-configuration}
-If you don't want to use the advanced LilyPond techniques (and the respective include files) described in the next section, you should nevertheless read the following comments on some precautions you should take with your LilyPond scores.
+\begin{itemize}
+\item Staff size and line width have to be set explicitly to match the
+appearance of the final text document. The tools don't give any support for
+adjusting the scores to changes in the document layout.
 
-\package{musicexamples} does \emph{not} -- contrary to \env{lilypond-book} -- make any attempt to guess the text width of the \LaTeX{} document, so you will have to provide an appropriate layout for your LilyPond scores yourself.
-It is recommended that you make sure the scores are compiled with the final line width in order to provide a consistent layout (esp. concerning staff size).
-For this it is crucial to define the layout in a separate include file (and not within the actual music example file), so you can (quite) easily recompile all examples if you have to change the layout of your \LaTeX{} document later.
-We will show you helper scripts to simplify this kind of work-flow later in \fref{chap:xmp_python}.
+\item Full-page scores also have to make sure their page margins match that of
+the text document. Specific care has to be taken with two-sided layout.
+\package{musicexamples} is able to detect the presence of an \texttt{-odd} or
+\texttt{-even} suffix to the file name to automatically start the score on an
+odd or even page. But it is completely up to the author of the LilyPond files to
+ensure correct behaviour.
 
-For \emph{full-page scores} it is generally advisable to suppress the printing of headers and footers (and page numbers) and let \LaTeX{} do this (as you won't know the final page numbers when preparing the scores and as it is quite difficult to typeset the headers and footers from LilyPond in a way so they match well with the rest of the document).
-It has to be admitted that it is a bit tricky to find out the right parameters to set up the document layout in a useful way, but it is surely better to let \LaTeX{} do the headers and footers consistently.
-And it is a good idea to take the header with the caption into account and leave some space for it when designing the layout of the LilyPond document.
-For example you should leave some space at the top of the first page if you print the caption in the header of this page.
-If you have a two-sided layout you should of course take care that your document starts on the correct side, i.\,e. on an odd or even page.
-As it wouldn't be practical to wait until the final layout of the text document to decide upon this there are supporting functions for this issue on the \LaTeX{} as well as on the LilyPond side.
+\item Full-page scores should generally suppress the printing of headers and
+footers, and leave this to \LaTeX. This is especially useful for pagination
+purposes.
 
-\emph{One system examples} should be compiled with LilyPond's “preview” option, which causes the output file to be cropped to its minimal dimension.
-This will enable \LaTeX{} to include it in its original dimensions if the line width of the LilyPond document matches the text width of the \LaTeX{} document.
-You can achieve this by supplying the \env{-dpreview} option on the command line (possibly in combination with \env{-dno-print-pages}).
-But you can also insert the Scheme statments \env{\#(ly:set-option 'preview \#t)} and \env{
-\#(ly:set-option 'print-pages \#f)} somewhere at top-level in your LilyPond source file.
-In the next section we'll provide templates, examples and include files to simplify your life in this respect \dots
+\item When printing the caption in the header of full-page scores some extra
+top-margin should be left in the scores.
 
-For \emph{multi system examples} you should \verb+\include "lilypond-book-preamble.ly"+ somewhere in your document.
-This lets LilyPond output each system as a separate (cropped) file with a naming convention that allows \package{musicexample}'s \cmd{lilypondMFE} command to iterate over all systems to print them.
+\item \emph{One system examples} should be compiled with LilyPond's “preview”
+option, which causes the output file to be cropped to its minimal dimension.
 
-\section{Provided Configuration Files and Suggested Work-flows}
-\label{sec:xmp_suggested-work-flows}
-The previous section described a few requirements LilyPond scores should meet in order to be used successfully with \package{musicexamples}.
+\item For \emph{multi system examples} you should 
+\verb+\include "lilypond-book-preamble.ly"+ somewhere in your document. 
+This lets LilyPond output each system as a separate (cropped) file with
+a naming convention that allows \package{musicexample}'s \cmd{lilypondMFE}
+command to iterate over all systems to print them.
+\end{itemize}
 
-\bigskip
-\begin{center}
-\fcolorbox{red}{yellow}{%
-\parbox{.7\textwidth}{%
-This manual stops here, because the remaining items haven't been implemented yet.
-But as the \LaTeX{} package is already useful by itself I decided to already make a file release at this point.
-}}
-\end{center}
+\section{Using \package{musicexamples} with \package{lyluatex}}
+\label{sec:xmp_lyluatex}
 
+\package{musicexamples} is designed to work well with the \package{lyluatex} package.\footnote{\url{https://ctan.org/pkg/lyluatex}}
 
-
-\chapter{The Python Scripts \dots}
-\label{chap:xmp_python}
-\dots{} haven't been implemented yet, so they can't be documented, isn't it?
-
-\chapter{Implementation}
-
-\section{musicexamples.sty}
-
-\section{LilyPond Files}
+\todo{To be documented}
 
 \end{document}

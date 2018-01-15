@@ -6,6 +6,10 @@
 
 #### Current Git
 
+- Discard the efforts to provide support for the generation
+  of LilyPond scores. This will be achieved by working with
+  the lyluatex package.
+
 - Move fancyref support in separate package xmpFancyref  
   It isn't nice behaviour to load a package like fancyref
   in a package like `musicexamples`.  
