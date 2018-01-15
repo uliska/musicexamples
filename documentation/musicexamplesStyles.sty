@@ -23,7 +23,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e} 
-\ProvidesPackage{musicexamplesStyle}
+\ProvidesPackage{musicexamplesStyles}
 
 % Of course we need musicexamples itself :-)
 \RequirePackage{musicexamples}
@@ -37,47 +37,19 @@
 
 % fontspec base settings
 \defaultfontfeatures{%
-	Ligatures=TeX
+	Ligatures=TeX,
+	Numbers=OldStyle,
+	Numbers=Proportional
 }
 \setmainfont{Linux Libertine O}
-\setsansfont{Linux Biolinum O}
+\setsansfont[BoldFont={Linux Biolinum O Bold}]{Linux Biolinum O}
 \setmonofont[Scale=MatchLowercase]{Inconsolata}
 
 % Typeset XeLaTeX and LuaTeX logos regardless of engine used
-\RequirePackage{hologo}  
+\RequirePackage{metalogo}  
 
-% Enhanced table commands
-\RequirePackage{booktabs}
-
-% Common table format for reference tables
-\newenvironment{reftable}[2]
-	{%
-		\begin{table}[ht]
-			\begin{center}
-				\caption{#1}
-				\label{tab:#2}
-				\begin{tabular}[t]{lll}
-					\toprule
-					&\\
-	}
-	{%
-					&\\
-					\bottomrule
-				\end{tabular}
-			\end{center}
-		\end{table}
-	}
-
-
-\newenvironment{knownIssues}[1][Known issues and warnings:]{
-
-	\begin{quote}
-	\noindent
-	\textcolor{red}{\textsf{\textbf{#1}}}
-}{%
-	\end{quote}
-	
-}
+% Add fancyref for smart cross-references 
+\RequirePackage{fancyref}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -106,59 +78,15 @@
 % Reference an Issue on openLilyLib's Github account
 \newcommand*{\ghIssue}[1]{\href{https://github.com/openlilylib/musicexamples/issues/#1}{(GitHub-Issue \#1)}}
 
-% print "LilyPond" (may be formatted later)
-\newcommand*{\lilypond}{\texttt{LilyPond}}
+\newenvironment{knownIssues}[1][Known issues and warnings:]{
 
-% print "openLilyLib" (may be formatted later)
-\newcommand*{\openlilylib}{\texttt{openLilyLib}}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Add fancyref for smart cross-references 
-\RequirePackage{fancyref}
-
-% categories for subsection and subsubsection:
-
-% subsection - subsec:
-
-\newcommand*{\fancyrefsubseclabelprefix}{subsec}
-
-\fancyrefaddcaptions{english}{%
-  \providecommand*{\frefsubsecname}{subsection}%
-  \providecommand*{\Frefsubsecname}{Subsection}%
+	\begin{quote}
+	\noindent
+	\textcolor{red}{\textsf{\textbf{#1}}}
+}{%
+	\end{quote}
+	
 }
-
-\frefformat{plain}{\fancyrefsubseclabelprefix}{\frefsubsecname\fancyrefdefaultspacing#1}
-\Frefformat{plain}{\fancyrefsubseclabelprefix}{\Frefsubsecname\fancyrefdefaultspacing#1}
-
-\frefformat{vario}{\fancyrefsubseclabelprefix}{%
-  \frefsubsecname\fancyrefdefaultspacing#1#3%
-}
-\Frefformat{vario}{\fancyrefsubseclabelprefix}{%
-  \Frefsubsecname\fancyrefdefaultspacing#1#3%
-}
-
-% subsubsection - subsubsec:
-
-\newcommand*{\fancyrefsubsubseclabelprefix}{subsubsec}
-
-\fancyrefaddcaptions{english}{%
-  \providecommand*{\frefsubsubsecname}{subsection}% the same as for subsection
-  \providecommand*{\Frefsubsubsecname}{Subsection}%
-}
-
-\frefformat{plain}{\fancyrefsubsubseclabelprefix}{\frefsubsubsecname\fancyrefdefaultspacing#1}
-\Frefformat{plain}{\fancyrefsubsubseclabelprefix}{\Frefsubsubsecname\fancyrefdefaultspacing#1}
-
-\frefformat{vario}{\fancyrefsubsubseclabelprefix}{%
-  \frefsubsubsecname\fancyrefdefaultspacing#1#3%
-}
-\Frefformat{vario}{\fancyrefsubsubseclabelprefix}{%
-  \Frefsubsubsecname\fancyrefdefaultspacing#1#3%
-}
-
-% End fancyref
-%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options for use of hyperlinks
