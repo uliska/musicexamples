@@ -202,7 +202,7 @@ Great effort has been put into the handling of examples starting on odd or even 
 
 The handling of the caption is somewhat special with this command.
 The caption -- which isn't a real \cmd{caption} but just text used as such -- is printed in the header or footer of the (first) page of the example.
-This is realized through the use of the \package{scrpage2} package from \package{KOMA-Script}.
+This is realized through the use of the \package{scrlayer-scrpage} package from \package{KOMA-Script}.
 The pagestyle for the first page is set to the predefined \env{xmpPageOne} while the remaining pages are assigned \env{xmpPageTwo}.
 By default the caption is printed on the left (or inner) part of the header of the first page, while the page number is centered in the footer.
 The caption is styled manually within this page style and defaults to the default \cmd{caption} format.
@@ -354,10 +354,10 @@ Starting examples on odd or even pages is fully supported.
 \item[\cmd{setXmpListName}]Set the Title for the list of music examples.
 \item[\cmd{setXmpAlignment}] Set the alignment for all subsequent music examples.
 To modify the alignment of a single example use standard \LaTeX{} commands inside the environment.
-\item[\env{xmpPageOne} and \env{xmpPageTwo}]Page styles used (by \package{scrpage2}) for the first and the remaining pages of a full/multi page example. 
+\item[\env{xmpPageOne} and \env{xmpPageTwo}]Page styles used (by \package{scrlayer-scrpage}) for the first and the remaining pages of a full/multi page example. 
 Typically prints the caption in the header or footer of the first page.
 The caption has to be manually made consistent with the standard captions.
-To change the layout use the \cmd{deftripstyle} command from the \package{scrpage2} package.
+To change the layout use the \cmd{deftripstyle} command from the \package{scrlayer-scrpage} package.
 \item[\env{\{xmp:\}}] Suggested prefix for labels.
 There are \package{fancyref} labels defined for this prefix.
 \end{description} 
